@@ -6,7 +6,8 @@ targets:
     type: application
     platform: iOS
     deploymentTarget: "17.0"
-    sources: TaskiAI/TaskiAI
+    sources:
+      - path: TaskiAI/TaskiAI
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.taskiai.app
@@ -18,7 +19,8 @@ targets:
     type: bundle.unit-test
     platform: iOS
     deploymentTarget: "17.0"
-    sources: TaskiAITests
+    sources:
+      - path: TaskiAITests
     dependencies:
       - target: TaskiAI
 schemes: {}
