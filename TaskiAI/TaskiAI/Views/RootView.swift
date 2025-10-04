@@ -51,7 +51,10 @@ struct HomeView: View {
             Text("7 Days")
         }
         .padding()
-        .background(RoundedRectangle(cornerRadius: 16).fill(.black.opacity(0.9)))
+        .background(
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.black.opacity(0.9))
+        )
         .foregroundStyle(.white)
     }
 
@@ -71,6 +74,10 @@ struct HomeView: View {
         }
         .frame(height: 140)
         .padding()
-        .background(RoundedRectangle(cornerRadius: 16).fill(.ultraThickMaterial))
+        .background(
+            Color.clear
+                .background(.ultraThickMaterial)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+        )
     }
 }

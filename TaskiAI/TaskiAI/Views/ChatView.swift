@@ -26,7 +26,11 @@ struct ChatView: View {
     @ViewBuilder private func bubble(for msg: ChatMessage) -> some View {
         HStack { if msg.isUser { Spacer() }
             Text(msg.text).padding(12)
-                .background(RoundedRectangle(cornerRadius: 16).fill(msg.isUser ? Color.blue.opacity(0.2) : .ultraThickMaterial))
+                .background(
+                    (msg.isUser ? Color.blue.opacity(0.2) : Color.clear)
+                        .background(msg.isUser ? Color.clear : .ultraThickMaterial)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                )
             if !msg.isUser { Spacer() }
         }
     }

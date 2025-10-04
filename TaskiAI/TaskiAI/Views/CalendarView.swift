@@ -46,7 +46,11 @@ private struct MonthGrid: View {
         CalendarMonthView(date: date, selectedDate: $selectedDate)
             .frame(maxWidth: .infinity)
             .padding(8)
-            .background(RoundedRectangle(cornerRadius: 16).fill(.ultraThinMaterial))
+            .background(
+                Color.clear
+                    .background(.ultraThinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+            )
     }
 }
 
@@ -57,7 +61,9 @@ private struct DaySections: View {
 
     init(date: Date) {
         self.date = date
-        _tasks = Query(filter: #Predicate<Task> { Calendar.current.isDate($0.date, inSameDayAs: date) }, sort: \Task.date)
+        let start = Calendar.current.startOfDay(for: date)
+        let end = Calendar.current.date(byAdding: .day, value: 1, to: start)!
+        _tasks = Query(filter: #Predicate<Task> { $0.date >= start && $0.date < end }, sort: \Task.date)
     }
 
     var body: some View {
@@ -128,8 +134,8 @@ struct DayCell: View {
                 .padding(8)
                 .foregroundStyle(day.inMonth ? .primary : .secondary)
                 .background(
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(Calendar.current.isDate(selectedDate, inSameDayAs: day.date) ? Color.blue.opacity(0.2) : .clear)
+                    (Calendar.current.isDate(selectedDate, inSameDayAs: day.date) ? Color.blue.opacity(0.2) : Color.clear)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
                 )
         }
         .buttonStyle(.plain)
