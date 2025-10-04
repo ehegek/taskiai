@@ -1,10 +1,12 @@
 # Ionic Appflow setup
 
-This repository uses XcodeGen instead of committing an `.xcodeproj`.
+This repository now commits the generated `.xcodeproj` so Appflow can pick it up without custom config.
 
-Appflow configuration:
+Workflow:
 
-- `appflow.config.json` sets `iosPath` to the repo root and defines a `before_build` hook.
-- `scripts/appflow_before_build.sh` installs XcodeGen and generates `TaskiAI.xcodeproj` before Appflow steps run.
+- Run the manual workflow `Generate Xcode Project` in GitHub Actions to (re)generate and commit `TaskiAI.xcodeproj` from `Project.yml`.
+- Appflow: set iOS Project Path to `.`; no hooks/config needed.
 
-No changes to GitHub Actions are required.
+Notes:
+
+- `scripts/appflow_before_build.sh` remains for local use but is not required by Appflow anymore.
