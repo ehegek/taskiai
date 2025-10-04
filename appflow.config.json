@@ -1,0 +1,8 @@
+{
+  "ios": {
+    "iosPath": "."
+  },
+  "hooks": {
+    "before_build": "bash scripts/appflow_before_build.sh"
+  }
+}
