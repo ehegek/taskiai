@@ -6,8 +6,7 @@ targets:
     type: application
     platform: iOS
     deploymentTarget: "17.0"
-    sources:
-      - TaskiAI/TaskiAI
+    sources: TaskiAI/TaskiAI
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.taskiai.app
@@ -15,14 +14,11 @@ targets:
         DEVELOPMENT_TEAM: ""
         SWIFT_VERSION: 5.9
         INFOPLIST_FILE: TaskiAI/TaskiAI/Info.plist
-    info:
-      path: TaskiAI/TaskiAI/Info.plist
   TaskiAITests:
     type: bundle.unit-test
     platform: iOS
     deploymentTarget: "17.0"
-    sources:
-      - TaskiAITests
+    sources: TaskiAITests
     dependencies:
       - target: TaskiAI
 schemes: {}
