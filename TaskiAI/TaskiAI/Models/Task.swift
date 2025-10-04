@@ -39,10 +39,10 @@ final class Task: Identifiable {
     var isCompleted: Bool
     var category: Category?
     var reminderEnabled: Bool
-    @Attribute(.transformable) var reminderChannels: [ReminderChannel]
+    @Attribute(.transformable) var reminderChannels: [ReminderChannel] = []
     var reminderTime: Date?
-    @Attribute(.transformable) var repeatRule: RepeatRule
-    @Attribute(.transformable) var imageIDs: [UUID]
+    @Attribute(.transformable) var repeatRule: RepeatRule = RepeatRule()
+    @Attribute(.transformable) var imageIDs: [UUID] = []
 
     init(id: UUID = UUID(),
          title: String,

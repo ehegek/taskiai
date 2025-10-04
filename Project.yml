@@ -23,4 +23,8 @@ targets:
       - path: TaskiAITests
     dependencies:
       - target: TaskiAI
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGNING_ALLOWED: NO
 schemes: {}
