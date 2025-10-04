@@ -9,12 +9,15 @@ targets:
     deploymentTarget: "17.0"
     sources:
       - path: TaskiAI/TaskiAI
+        excludes:
+          - "**/*.md"
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.taskiai.app
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: ""
         SWIFT_VERSION: 5.9
+        INFOPLIST_FILE: TaskiAI/TaskiAI/Info.plist
     info:
       properties:
         UILaunchScreen: {}
