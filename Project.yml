@@ -1,16 +1,13 @@
 name: TaskiAI
 options:
   bundleIdPrefix: com.taskiai
-packages: {}
 targets:
   TaskiAI:
     type: application
     platform: iOS
     deploymentTarget: "17.0"
     sources:
-      - path: TaskiAI/TaskiAI
-        excludes:
-          - "**/*.md"
+      - TaskiAI/TaskiAI
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.taskiai.app
@@ -19,29 +16,13 @@ targets:
         SWIFT_VERSION: 5.9
         INFOPLIST_FILE: TaskiAI/TaskiAI/Info.plist
     info:
-      properties:
-        UILaunchScreen: {}
-        UIApplicationSceneManifest:
-          UIApplicationSupportsMultipleScenes: false
-        NSUserNotificationUsageDescription: "We use notifications to remind you about your tasks."
-        NSSpeechRecognitionUsageDescription: "Speech is used for voice-to-text in Taski Bot."
-        NSMicrophoneUsageDescription: "The microphone is used to capture your voice for speech recognition."
+      path: TaskiAI/TaskiAI/Info.plist
   TaskiAITests:
     type: bundle.unit-test
     platform: iOS
     deploymentTarget: "17.0"
     sources:
-      - path: TaskiAITests
+      - TaskiAITests
     dependencies:
       - target: TaskiAI
-schemes:
-  TaskiAI:
-    build:
-      targets:
-        TaskiAI: all
-        TaskiAITests: [test]
-    test:
-      gatherCoverageData: false
-      targets:
-        - name: TaskiAITests
-          parallelizable: true
+schemes: {}
