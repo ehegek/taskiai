@@ -21,8 +21,17 @@ jobs:
           brew update
           brew install xcodegen
 
+      - name: Verify repository paths
+        run: |
+          set -euo pipefail
+          pwd
+          ls -la
+          ls -la TaskiAI
+          ls -la TaskiAI/TaskiAI
+          test -d TaskiAI/TaskiAI
+
       - name: Generate Xcode project
-        run: xcodegen generate
+        run: xcodegen generate --spec Project.yml --project-root .
 
       - name: Cache SwiftPM artifacts
         uses: actions/cache@v4
@@ -33,7 +42,10 @@ jobs:
           key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved', 'Project.yml') }}
 
       - name: Show schemes
-        run: xcodebuild -list -project TaskiAI.xcodeproj
+        run: |
+          ls -la
+          test -d TaskiAI.xcodeproj
+          xcodebuild -list -project TaskiAI.xcodeproj
 
       - name: Build and test (iOS Simulator)
         env:
