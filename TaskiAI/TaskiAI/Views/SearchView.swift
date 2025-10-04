@@ -9,7 +9,10 @@ struct SearchView: View {
         _tasks = Query(sort: \Task.date)
     }
 
-    var results: [Task] { if query.isEmpty { return [] } ; return tasks.filter { $0.title.localizedCaseInsensitiveContains(query) || ($0.notes ?? "").localizedCaseInsensitiveContains(query) } }
+    var results: [Task] {
+        if query.isEmpty { return [Task]() }
+        return tasks.filter { $0.title.localizedCaseInsensitiveContains(query) || ($0.notes ?? "").localizedCaseInsensitiveContains(query) }
+    }
 
     var body: some View {
         VStack {

@@ -39,10 +39,38 @@ final class Task: Identifiable {
     var isCompleted: Bool
     var category: Category?
     var reminderEnabled: Bool
-    @Attribute(.transformable) var reminderChannels: [ReminderChannel] = []
+    // Store codable values as Data to avoid transformable compiler issues on CI
+    @Attribute var reminderChannelsBlob: Data? = nil
+    var reminderChannels: [ReminderChannel] {
+        get {
+            guard let data = reminderChannelsBlob, let val = try? JSONDecoder().decode([ReminderChannel].self, from: data) else { return [] }
+            return val
+        }
+        set {
+            reminderChannelsBlob = try? JSONEncoder().encode(newValue)
+        }
+    }
     var reminderTime: Date?
-    @Attribute(.transformable) var repeatRule: RepeatRule = RepeatRule()
-    @Attribute(.transformable) var imageIDs: [UUID] = []
+    @Attribute var repeatRuleBlob: Data? = nil
+    var repeatRule: RepeatRule {
+        get {
+            guard let data = repeatRuleBlob, let val = try? JSONDecoder().decode(RepeatRule.self, from: data) else { return RepeatRule() }
+            return val
+        }
+        set {
+            repeatRuleBlob = try? JSONEncoder().encode(newValue)
+        }
+    }
+    @Attribute var imageIDsBlob: Data? = nil
+    var imageIDs: [UUID] {
+        get {
+            guard let data = imageIDsBlob, let val = try? JSONDecoder().decode([UUID].self, from: data) else { return [] }
+            return val
+        }
+        set {
+            imageIDsBlob = try? JSONEncoder().encode(newValue)
+        }
+    }
 
     init(id: UUID = UUID(),
          title: String,
