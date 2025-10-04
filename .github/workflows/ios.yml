@@ -1,13 +1,13 @@
-name: iOS starter workflow
+name: iOS starter workflow (disabled)
 
+# Disabled in favor of ios-ci.yml which generates the Xcode project via XcodeGen.
+# Keep this workflow manual-only to avoid duplicate/failed runs.
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
+    if: ${{ false }} # fully disabled; use ios-ci.yml
     name: Build and Test default scheme using any available iPhone simulator
     runs-on: macos-latest
 
