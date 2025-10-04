@@ -46,11 +46,9 @@ private struct MonthGrid: View {
         CalendarMonthView(date: date, selectedDate: $selectedDate)
             .frame(maxWidth: .infinity)
             .padding(8)
-            .background(
-                Color.clear
-                    .background(.ultraThinMaterial)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
-            )
+            .background {
+                RoundedRectangle(cornerRadius: 16).fill(.ultraThinMaterial)
+            }
     }
 }
 

@@ -25,12 +25,15 @@ struct ChatView: View {
 
     @ViewBuilder private func bubble(for msg: ChatMessage) -> some View {
         HStack { if msg.isUser { Spacer() }
-            Text(msg.text).padding(12)
-                .background(
-                    (msg.isUser ? Color.blue.opacity(0.2) : Color.clear)
-                        .background(msg.isUser ? Color.clear : .ultraThickMaterial)
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                )
+            Text(msg.text)
+                .padding(12)
+                .background {
+                    if msg.isUser {
+                        RoundedRectangle(cornerRadius: 16).fill(Color.blue.opacity(0.2))
+                    } else {
+                        RoundedRectangle(cornerRadius: 16).fill(.ultraThickMaterial)
+                    }
+                }
             if !msg.isUser { Spacer() }
         }
     }

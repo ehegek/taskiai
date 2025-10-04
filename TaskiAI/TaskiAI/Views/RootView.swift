@@ -74,10 +74,8 @@ struct HomeView: View {
         }
         .frame(height: 140)
         .padding()
-        .background(
-            Color.clear
-                .background(.ultraThickMaterial)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-        )
+        .background {
+            RoundedRectangle(cornerRadius: 16).fill(.ultraThickMaterial)
+        }
     }
 }

@@ -75,11 +75,9 @@ struct TaskListView: View {
             .buttonStyle(.borderedProminent)
         }
         .padding()
-        .background(
-            Color.clear
-                .background(.thinMaterial)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-        )
+        .background {
+            RoundedRectangle(cornerRadius: 12).fill(.thinMaterial)
+        }
         .padding(.horizontal)
     }
 
