@@ -90,6 +90,5 @@ jobs:
             -sdk iphonesimulator \
             -configuration Debug \
             clean build test \
-            GENERATE_INFOPLIST_FILE=YES \
             CODE_SIGNING_ALLOWED=NO
         shell: bash
