@@ -1,15 +1,8 @@
 {
-  "ios": {
-    "iosPath": "."
-  },
+  "iosPath": ".",
   "hooks": {
-    "before_build": {
-      "ios": [
-        "bash scripts/appflow_before_build.sh"
-      ]
-    },
-    "after_build": {
-      "ios": []
-    }
+    "before_build": [
+      "bash scripts/appflow_before_build.sh"
+    ]
   }
 }

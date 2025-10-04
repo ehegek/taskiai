@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "iosPath": { "type": "string" },
+    "hooks": {
+      "type": "object",
+      "properties": {
+        "before_build": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "after_build": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
