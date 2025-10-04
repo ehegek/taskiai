@@ -13,8 +13,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Select Xcode 15.4
-        run: sudo xcode-select -s /Applications/Xcode_15.4.app
+      - name: Select latest installed Xcode
+        run: |
+          set -euo pipefail
+          echo "Available Xcodes:" && ls -1 /Applications | grep -E '^Xcode_.*\.app' || true
+          XCODE_PATH=$(ls -d /Applications/Xcode_*.app | sort -V | tail -n1)
+          echo "Selecting $XCODE_PATH"
+          sudo xcode-select -s "$XCODE_PATH"
+          xcodebuild -version
 
       - name: Install XcodeGen (pinned)
         run: |
@@ -49,6 +55,16 @@ jobs:
           test -d TaskiAI.xcodeproj
           xcodebuild -list -project TaskiAI.xcodeproj
 
+      - name: Resolve available iOS Simulator
+        id: sim
+        shell: bash
+        run: |
+          set -euo pipefail
+          name=$(xcrun simctl list devices available | awk -F'\(' '/iPhone/ {print $1; exit}' | sed -e 's/^ *//;s/ *$//')
+          if [ -z "$name" ]; then name="iPhone 15"; fi
+          echo "Using simulator: $name"
+          echo "device=$name" >> "$GITHUB_OUTPUT"
+
       - name: Resolve default scheme (JSON)
         id: resolve
         shell: bash
@@ -67,7 +83,7 @@ jobs:
           xcodebuild \
             -project TaskiAI.xcodeproj \
             -scheme "${{ steps.resolve.outputs.scheme }}" \
-            -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.5' \
+            -destination "platform=iOS Simulator,name=${{ steps.sim.outputs.device }}" \
             -sdk iphonesimulator \
             -configuration Debug \
             clean build test
