@@ -1,0 +1,33 @@
+name: iOS CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode 15
+        run: sudo xcode-select -s /Applications/Xcode_15.4.app
+
+      - name: Cache SPM
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Developer/Xcode/DerivedData
+            ~/Library/Caches/org.swift.swiftpm
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+
+      - name: Build and test (Simulator)
+        run: |
+          set -e
+          xcodebuild -scheme TaskiAI -destination 'platform=iOS Simulator,name=iPhone 15,OS=17.5' -sdk iphonesimulator -configuration Debug build test | xcpretty
+        env:
+          NSUnbufferedIO: "YES"
+        shell: bash

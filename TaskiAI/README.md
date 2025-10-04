@@ -25,6 +25,10 @@ Important: You need a Mac with Xcode to build and run. This repo provides all Sw
 5. Capabilities: Push Notifications (optional), Background Modes: Remote notifications (optional), and enable Notifications.
 6. Run on a simulator or device.
 
+### CI with GitHub Actions
+- This repo contains `.github/workflows/ios-ci.yml` which builds and tests on `macos-14` using Xcode 15.4.
+- If you prefer generating the Xcode project from sources, a `Project.yml` (XcodeGen) is provided; update the workflow to run `xcodegen` before `xcodebuild`.
+
 ## Next steps
 - Hook an LLM for Taski Bot and intent parsing
 - Polish the calendar UI per design
