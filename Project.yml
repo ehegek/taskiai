@@ -1,6 +1,7 @@
 name: TaskiAI
 options:
   bundleIdPrefix: com.taskiai
+  xcodeVersion: "15.4"
 targets:
   TaskiAI:
     type: application

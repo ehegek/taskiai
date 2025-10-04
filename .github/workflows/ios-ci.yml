@@ -16,10 +16,10 @@ jobs:
       - name: Select Xcode 15.4
         run: sudo xcode-select -s /Applications/Xcode_15.4.app
 
-      - name: Install XcodeGen
+      - name: Install XcodeGen (pinned)
         run: |
           brew update
-          brew install xcodegen
+          brew install xcodegen@2.41 || brew install xcodegen
 
       - name: Verify repository paths
         run: |
@@ -30,8 +30,10 @@ jobs:
           ls -la TaskiAI/TaskiAI
           test -d TaskiAI/TaskiAI
 
-      - name: Generate Xcode project
-        run: xcodegen generate --spec Project.yml --project-root .
+      - name: Regenerate Xcode project for Xcode 15.4
+        run: |
+          rm -rf TaskiAI.xcodeproj
+          xcodegen generate --spec Project.yml --project-root .
 
       - name: Cache SwiftPM artifacts
         uses: actions/cache@v4
