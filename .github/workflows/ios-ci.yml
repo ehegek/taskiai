@@ -74,7 +74,7 @@ jobs:
         run: |
           set -euo pipefail
           json=$(xcodebuild -list -project TaskiAI.xcodeproj -json | tr -d '\n')
-          scheme=$(ruby -r json -e "j=JSON.parse(STDIN.read); puts((j['project'] && j['project']['schemes'] && j['project']['schemes'][0]) || (j['project'] && j['project']['targets'] && j['project']['targets'][0]) || 'TaskiAI')" <<< "$json")
+          scheme=$(ruby -r json -e "j=JSON.parse(STDIN.read); s=(j['project'] && j['project']['schemes'])||[]; preferred='TaskiAI'; if s.include?(preferred); puts preferred; else; puts((s.find{|x| x =~ /TaskiAI/} || 'TaskiAI')); end" <<< "$json")
           echo "Using scheme: $scheme"
           echo "scheme=$scheme" >> "$GITHUB_OUTPUT"
 

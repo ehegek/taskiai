@@ -19,6 +19,7 @@ targets:
       - path: TaskiAI/TaskiAI
     dependencies:
       - package: RevenueCat
+        product: RevenueCat
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.taskiai.app
