@@ -3,6 +3,7 @@ import SwiftData
 
 struct TaskListView: View {
     @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) private var dismiss
     @StateObject private var store = TaskStore()
     @State private var newTaskTitle = ""
     var date: Date
@@ -41,8 +42,7 @@ struct TaskListView: View {
                 .scrollContentBackground(.hidden)
             }
         }
-        .navigationTitle("Task")
-        .toolbar { topActions }
+        .toolbar(.hidden, for: .navigationBar)
         .alert("Open task?", isPresented: $showOpenConfirm) {
             Button("No", role: .cancel) {}
             Button("Yes") { selectedTask = pendingOpenTask }
@@ -55,7 +55,7 @@ struct TaskListView: View {
     private var header: some View {
         VStack(spacing: 8) {
             HStack {
-                Button { /* back */ } label: { Image(systemName: "chevron.left") }
+                Button { dismiss() } label: { Image(systemName: "chevron.left") }
                 Spacer()
                 HStack(spacing: 16) {
                     CategoryPickerView(selection: $store.filterCategory)
