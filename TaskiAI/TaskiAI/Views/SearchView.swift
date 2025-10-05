@@ -4,6 +4,7 @@ import SwiftData
 struct SearchView: View {
     @State private var query = ""
     @Query private var tasks: [Task]
+    @State private var showCreate = false
 
     init() {
         _tasks = Query(sort: \Task.date)
@@ -15,13 +16,20 @@ struct SearchView: View {
     }
 
     var body: some View {
-        VStack {
-            TextField("Search For Task", text: $query)
-                .textFieldStyle(.roundedBorder)
-            List(results) { TaskRow(task: $0) }
-            Spacer()
+        ZStack(alignment: .bottomTrailing) {
+            VStack {
+                TextField("Search for Task", text: $query)
+                    .textFieldStyle(.roundedBorder)
+                List(results) { TaskRow(task: $0) }
+                Spacer()
+            }
+            Button { showCreate = true } label: {
+                Image(systemName: "plus.circle.fill").font(.system(size: 56))
+            }
+            .padding(24)
         }
         .padding()
         .navigationTitle("Search")
+        .navigationDestination(isPresented: $showCreate) { NewTaskView(defaultDate: .now) }
     }
 }

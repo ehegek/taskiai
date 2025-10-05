@@ -19,58 +19,85 @@ struct HomeView: View {
         ZStack(alignment: .bottomTrailing) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
+                    topBar
                     header
-                    streak
+                    streakAndProgress
                     grid
                 }
                 .padding()
             }
+            .background(Color.black.opacity(0.02).ignoresSafeArea())
+
             Button { showCreate = true } label: {
-                Image(systemName: "plus.circle.fill").font(.system(size: 56))
+                Image(systemName: "plus").font(.system(size: 28)).foregroundStyle(.white)
+                    .padding(24)
+                    .background(Circle().fill(Color.black))
             }
             .padding(24)
         }
         .navigationTitle("")
-        .toolbar { ToolbarItem(placement: .topBarTrailing) { Image(systemName: "person.crop.circle") } }
         .navigationDestination(isPresented: $showCreate) { NewTaskView(defaultDate: .now) }
+    }
+
+    private var topBar: some View {
+        HStack {
+            Text(Date.now, style: .time).font(.caption).foregroundStyle(.secondary)
+            Spacer()
+            HStack(spacing: 16) {
+                NavigationLink(destination: SearchView()) { Image(systemName: "magnifyingglass") }
+                NavigationLink(destination: SettingsView()) {
+                    let initial = String((appState.currentUserName ?? "").prefix(1)).uppercased()
+                    ZStack { Circle().fill(Color.black.opacity(0.9)); Text(initial.isEmpty ? "?" : initial).foregroundStyle(.white).bold() }.frame(width: 28, height: 28)
+                }
+            }
+        }
     }
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text("Good Afternoon,")
+            Text(greeting())
                 .font(.title2).bold()
             Text(appState.currentUserName ?? "There").font(.largeTitle).bold()
             Text(Date.now.formatted(date: .complete, time: .omitted)).foregroundStyle(.secondary)
         }
     }
 
-    private var streak: some View {
-        HStack {
-            Image(systemName: "flame.fill").foregroundStyle(.orange)
-            Text("Streak")
-            Spacer()
-            Text("7 Days")
+    private var streakAndProgress: some View {
+        VStack(spacing: 12) {
+            HStack {
+                Image(systemName: "flame.fill").foregroundStyle(.orange)
+                Text("Streak")
+                Spacer()
+                Text("\(appState.streakDays) Days")
+            }
+            .padding()
+            .background(RoundedRectangle(cornerRadius: 16).fill(Color.black.opacity(0.9)))
+            .foregroundStyle(.white)
+            VStack(alignment: .leading) {
+                HStack { Image(systemName: "checkmark.seal.fill"); Text("Completion") ; Spacer(); Text("\(completionPercent(), specifier: "%.0f")%") }
+                ProgressView(value: completionRatio())
+                    .tint(.black)
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.black.opacity(0.1)))
+            }
+            .padding()
+            .background(RoundedRectangle(cornerRadius: 16).fill(Color.white))
+            .shadow(color: .black.opacity(0.05), radius: 8, y: 4)
         }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.black.opacity(0.9))
-        )
-        .foregroundStyle(.white)
     }
 
     private var grid: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-            NavigationLink { TaskListView(date: .now) } label: { card(title: "Task") }
-            NavigationLink { ChatView() } label: { card(title: "Taski Bot") }
-            NavigationLink { ActionReminderView(selectedDate: .now) } label: { card(title: "Action Reminder") }
-            NavigationLink { CalendarView() } label: { card(title: "Calendar") }
+            NavigationLink { TaskListView(date: .now) } label: { card(title: "Task", subtitle: "Quick access to tasks") }
+            NavigationLink { ChatView() } label: { card(title: "Taski Bot", subtitle: "What can I help with?") }
+            NavigationLink { ActionReminderView(selectedDate: .now) } label: { card(title: "Action Reminder", subtitle: "Only tasks with reminders") }
+            NavigationLink { CalendarView() } label: { card(title: "Calendar", subtitle: "Monthly overview") }
         }
     }
 
-    private func card(title: String) -> some View {
+    private func card(title: String, subtitle: String) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title).bold()
+            Text(subtitle).font(.footnote).foregroundStyle(.secondary)
             Spacer()
         }
         .frame(height: 140)
@@ -78,5 +105,17 @@ struct HomeView: View {
         .background {
             RoundedRectangle(cornerRadius: 16).fill(.ultraThickMaterial)
         }
+    }
+
+    private func completionRatio() -> Double {
+        let total = tasks.count
+        guard total > 0 else { return 0 }
+        let done = tasks.filter { $0.isCompleted }.count
+        return Double(done) / Double(total)
+    }
+    private func completionPercent() -> Double { completionRatio() * 100 }
+    private func greeting() -> String {
+        let h = Calendar.current.component(.hour, from: Date())
+        switch h { case 5..<12: return "Good Morning,"; case 12..<17: return "Good Afternoon,"; default: return "Good Evening," }
     }
 }
