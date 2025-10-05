@@ -68,15 +68,11 @@ jobs:
           echo "Using simulator: $name ($udid)"
           echo "id=$udid" >> "$GITHUB_OUTPUT"
 
-      - name: Resolve default scheme (JSON)
+      - name: Set scheme
         id: resolve
         shell: bash
         run: |
-          set -euo pipefail
-          json=$(xcodebuild -list -project TaskiAI.xcodeproj -json | tr -d '\n')
-          scheme=$(ruby -r json -e "j=JSON.parse(STDIN.read); s=(j['project'] && j['project']['schemes'])||[]; preferred='TaskiAI'; if s.include?(preferred); puts preferred; else; puts((s.find{|x| x =~ /TaskiAI/} || 'TaskiAI')); end" <<< "$json")
-          echo "Using scheme: $scheme"
-          echo "scheme=$scheme" >> "$GITHUB_OUTPUT"
+          echo "scheme=TaskiAI" >> "$GITHUB_OUTPUT"
 
       - name: Build for testing (iOS Simulator)
         env:
@@ -85,7 +81,7 @@ jobs:
           set -euo pipefail
           xcodebuild \
             -project TaskiAI.xcodeproj \
-            -scheme "${{ steps.resolve.outputs.scheme }}" \
+            -scheme "TaskiAI" \
             -destination "id=${{ steps.sim.outputs.id }}" \
             -sdk iphonesimulator \
             -configuration Debug \
@@ -100,7 +96,7 @@ jobs:
           set -euo pipefail
           xcodebuild \
             -project TaskiAI.xcodeproj \
-            -scheme "${{ steps.resolve.outputs.scheme }}" \
+            -scheme "TaskiAI" \
             -destination "id=${{ steps.sim.outputs.id }}" \
             -sdk iphonesimulator \
             -configuration Debug \
@@ -115,7 +111,7 @@ jobs:
           DERIVED=build/DerivedData
           xcodebuild \
             -project TaskiAI.xcodeproj \
-            -scheme "${{ steps.resolve.outputs.scheme }}" \
+            -scheme "TaskiAI" \
             -sdk iphonesimulator \
             -configuration Release \
             -destination 'generic/platform=iOS Simulator' \
