@@ -1,7 +1,9 @@
 import SwiftUI
+import RevenueCat
 
 struct PaywallView: View {
     @EnvironmentObject var appState: AppState
+    @ObservedObject private var rc = RevenueCatManager.shared
     @State private var isPurchasing = false
     @State private var error: String?
 
@@ -16,19 +18,12 @@ struct PaywallView: View {
                 Text("Unlock unlimited tasks, AI chat, and reminders.")
                     .foregroundStyle(.white.opacity(0.9))
 
-                VStack(alignment: .leading, spacing: 8) {
-                    label("Unlimited tasks")
-                    label("AI assistant")
-                    label("Calendar & reminders")
-                    label("Priority support")
-                }
-                .padding()
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+                offeringCard
 
                 Button(action: purchase) {
                     HStack {
                         if isPurchasing { ProgressView().tint(.black) }
-                        Text(isPurchasing ? "Purchasing…" : "Start 7‑day Free Trial")
+                        Text(isPurchasing ? "Purchasing…" : primaryCTA)
                             .bold()
                     }
                     .frame(maxWidth: .infinity)
@@ -39,6 +34,9 @@ struct PaywallView: View {
                 .disabled(isPurchasing)
 
                 if let error { Text(error).foregroundStyle(.red).font(.footnote) }
+
+                Button("Restore Purchases") { Task { await restore() } }
+                    .foregroundStyle(.white.opacity(0.9))
 
                 Button("Maybe later (dev)") {
                     withAnimation { appState.hasActiveSubscription = true }
@@ -60,12 +58,55 @@ struct PaywallView: View {
             .foregroundStyle(.white)
     }
 
-    private func purchase() {
-        // Placeholder purchase flow; integrate StoreKit 2 in real app.
-        isPurchasing = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            isPurchasing = false
-            withAnimation { appState.hasActiveSubscription = true }
+    private var primaryPackage: Package? { rc.currentOffering?.availablePackages.first }
+    private var primaryCTA: String {
+        if let pkg = primaryPackage {
+            return "Continue: \(pkg.storeProduct.localizedPriceString)"
         }
+        return "Continue"
+    }
+
+    @MainActor
+    private func purchase() {
+        guard let pkg = primaryPackage else { error = "No products available"; return }
+        isPurchasing = true
+        Task {
+            do {
+                _ = try await rc.purchase(package: pkg, appState: appState)
+                error = nil
+            } catch {
+                self.error = error.localizedDescription
+            }
+            isPurchasing = false
+        }
+    }
+
+    @MainActor
+    private func restore() async {
+        do {
+            _ = try await rc.restorePurchases(appState: appState)
+            error = nil
+        } catch {
+            self.error = error.localizedDescription
+        }
+    }
+
+    private var offeringCard: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if let pkg = primaryPackage {
+                label("Includes: \(pkg.storeProduct.localizedTitle)")
+                if !pkg.storeProduct.localizedDescription.isEmpty {
+                    Text(pkg.storeProduct.localizedDescription)
+                        .foregroundStyle(.white.opacity(0.9))
+                }
+            } else {
+                label("Unlimited tasks")
+                label("AI assistant")
+                label("Calendar & reminders")
+                label("Priority support")
+            }
+        }
+        .padding()
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
     }
 }

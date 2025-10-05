@@ -18,5 +18,9 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>REVENUECAT_API_KEY</key>
+	<string>__SET_RC_PUBLIC_API_KEY__</string>
+	<key>REVENUECAT_ENTITLEMENT_ID</key>
+	<string>premium</string>
 </dict>
 </plist>

@@ -5,6 +5,10 @@ options:
     base:
       CURRENT_PROJECT_VERSION: 1
       MARKETING_VERSION: 1.0.0
+packages:
+  RevenueCat:
+    url: https://github.com/RevenueCat/purchases-ios
+    from: 4.0.0
 targets:
   TaskiAI:
     type: application
@@ -12,6 +16,8 @@ targets:
     deploymentTarget: "17.0"
     sources:
       - path: TaskiAI/TaskiAI
+    dependencies:
+      - package: RevenueCat
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.taskiai.app
