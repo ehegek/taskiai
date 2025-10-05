@@ -92,3 +92,50 @@ jobs:
             clean build test \
             CODE_SIGNING_ALLOWED=NO
         shell: bash
+
+      - name: Build Release simulator .app (zip)
+        shell: bash
+        run: |
+          set -euo pipefail
+          DERIVED=build/DerivedData
+          xcodebuild \
+            -project TaskiAI.xcodeproj \
+            -scheme "${{ steps.resolve.outputs.scheme }}" \
+            -sdk iphonesimulator \
+            -configuration Release \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$DERIVED" \
+            CODE_SIGNING_ALLOWED=NO \
+            clean build
+          APP_DIR="$DERIVED/Build/Products/Release-iphonesimulator"
+          APP_PATH="$APP_DIR/TaskiAI.app"
+          test -d "$APP_PATH"
+          (cd "$APP_DIR" && zip -r "../../../TaskiAI-Release-sim.app.zip" "$(basename "$APP_PATH")")
+
+      - name: Try to create unsigned .ipa (best-effort)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! xcodebuild -project TaskiAI.xcodeproj -scheme "${{ steps.resolve.outputs.scheme }}" -configuration Release -sdk iphoneos -archivePath build/TaskiAI.xcarchive CODE_SIGNING_ALLOWED=NO SKIP_INSTALL=NO archive; then
+            echo "Archive failed (likely due to signing). Skipping unsigned .ipa creation."
+            exit 0
+          fi
+          APP_PATH="build/TaskiAI.xcarchive/Products/Applications/TaskiAI.app"
+          if [ -d "$APP_PATH" ]; then
+            mkdir -p build/Payload
+            cp -R "$APP_PATH" build/Payload/
+            (cd build && zip -r TaskiAI-unsigned.ipa Payload)
+          fi
+
+      - name: Upload simulator .app zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: TaskiAI-Release-sim-app
+          path: build/DerivedData/TaskiAI-Release-sim.app.zip
+
+      - name: Upload unsigned .ipa (if present)
+        if: ${{ hashFiles('build/TaskiAI-unsigned.ipa') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: TaskiAI-unsigned-ipa
+          path: build/TaskiAI-unsigned.ipa
