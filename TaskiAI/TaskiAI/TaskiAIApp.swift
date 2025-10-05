@@ -1,6 +1,5 @@
 import SwiftUI
 import SwiftData
-import RevenueCat
 
 @main
 struct TaskiAIApp: App {

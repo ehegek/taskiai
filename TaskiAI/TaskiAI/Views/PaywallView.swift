@@ -1,4 +1,6 @@
 import SwiftUI
+
+#if canImport(RevenueCat)
 import RevenueCat
 
 struct PaywallView: View {
@@ -110,3 +112,25 @@ struct PaywallView: View {
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
     }
 }
+#else
+
+struct PaywallView: View {
+    @EnvironmentObject var appState: AppState
+    var body: some View {
+        ZStack {
+            LinearGradient(colors: [.purple, .pink], startPoint: .topLeading, endPoint: .bottomTrailing)
+                .ignoresSafeArea()
+            VStack(spacing: 20) {
+                Text("Go Pro").font(.largeTitle).bold().foregroundStyle(.white)
+                Text("RevenueCat SDK not available in this build.")
+                    .foregroundStyle(.white.opacity(0.9))
+                Button("Continue (dev)") { appState.hasActiveSubscription = true }
+                    .buttonStyle(.borderedProminent)
+                Spacer()
+            }
+            .padding()
+        }
+    }
+}
+
+#endif
