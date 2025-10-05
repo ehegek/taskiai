@@ -21,6 +21,7 @@ struct CalendarView: View {
             .padding()
         }
         .navigationTitle("Calendar")
+        .toolbar(.hidden, for: .navigationBar)
     }
 }
 

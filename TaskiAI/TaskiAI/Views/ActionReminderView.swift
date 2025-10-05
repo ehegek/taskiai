@@ -20,5 +20,6 @@ struct ActionReminderView: View {
             }
         }
         .navigationTitle("Action Reminder")
+        .toolbar(.hidden, for: .navigationBar)
     }
 }

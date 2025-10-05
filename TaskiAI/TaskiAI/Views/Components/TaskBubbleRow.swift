@@ -18,20 +18,21 @@ struct TaskBubbleRow: View {
             }
 
             HStack(spacing: 8) {
-                ForEach(task.reminderChannels, id: \.self) { ch in
+                ForEach(ReminderChannel.allCases) { ch in
+                    let on = task.reminderChannels.contains(ch)
                     Image(systemName: icon(for: ch))
                         .font(.system(size: 12, weight: .bold))
+                        .foregroundStyle(on ? .primary : .secondary)
                         .padding(6)
-                        .background(Circle().fill(Color(.systemGray6)))
+                        .background(Circle().fill(on ? Color(.systemGray6) : Color(.systemGray6).withAlphaComponent(0.6)))
                 }
-                if task.reminderEnabled, let t = task.reminderTime ?? task.date as Date? {
-                    Text(timeString(t))
-                        .font(.caption)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 4)
-                        .background(RoundedRectangle(cornerRadius: 8).fill(Color.black))
-                        .foregroundStyle(.white)
-                }
+                let t = task.reminderTime ?? task.date
+                Text(timeString(t))
+                    .font(.caption)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 4)
+                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.black))
+                    .foregroundStyle(.white)
             }
         }
         .padding(14)

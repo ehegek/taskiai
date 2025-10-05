@@ -12,7 +12,8 @@ struct ChatView: View {
     var body: some View {
         ZStack {
             Color(.systemBackground).ignoresSafeArea(.all)
-            VStack {
+            VStack(alignment: .leading) {
+                HStack { NavigationLink(destination: RootView()) { Image(systemName: "chevron.left").padding(8) } ; Spacer() }
                 ScrollViewReader { proxy in
                     ScrollView { LazyVStack(alignment: .leading, spacing: 12) { ForEach(messages) { msg in bubble(for: msg) } } }
                         .onChange(of: messages.count) { _ in
@@ -24,6 +25,7 @@ struct ChatView: View {
             .padding()
         }
         .navigationTitle("Taski AI Chat")
+        .toolbar(.hidden, for: .navigationBar)
     }
 
     @ViewBuilder private func bubble(for msg: ChatMessage) -> some View {
