@@ -24,7 +24,9 @@ struct TaskBubbleRow: View {
                         .font(.system(size: 12, weight: .bold))
                         .foregroundStyle(on ? .primary : .secondary)
                         .padding(6)
-                        .background(Circle().fill(on ? Color(.systemGray6) : Color(.systemGray6).withAlphaComponent(0.6)))
+                        .background(
+                            Circle().fill(Color(.systemGray6).opacity(on ? 1 : 0.6))
+                        )
                 }
                 let t = task.reminderTime ?? task.date
                 Text(timeString(t))
