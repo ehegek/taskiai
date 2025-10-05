@@ -34,7 +34,10 @@ struct OnboardingView: View {
                 Spacer()
                 VStack(spacing: 12) {
                     Button { next() } label: { Text("Start Now").bold().frame(maxWidth: .infinity).padding().background(Color.white, in: RoundedRectangle(cornerRadius: 12)).foregroundStyle(.black) }
-                    Button { appState.hasCompletedOnboarding = true } label: { Text("Already have an account? Sign In") }
+                    Button { 
+                        appState.hasCompletedOnboarding = true
+                        appState.isAuthenticated = false
+                    } label: { Text("Already have an account? Sign In") }
                         .foregroundStyle(.white.opacity(0.9))
                     Button { /* open privacy */ } label: { Text("Privacy Policy") }.foregroundStyle(.white.opacity(0.7)).font(.footnote)
                 }.padding(.horizontal)

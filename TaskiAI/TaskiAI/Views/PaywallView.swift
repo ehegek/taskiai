@@ -12,7 +12,7 @@ struct PaywallView: View {
     var body: some View {
         ZStack {
             LinearGradient(colors: [.purple, .pink], startPoint: .topLeading, endPoint: .bottomTrailing)
-                .ignoresSafeArea()
+                .ignoresSafeArea(.all)
             VStack(spacing: 20) {
                 Text("Go Pro")
                     .font(.largeTitle).bold()
@@ -119,7 +119,7 @@ struct PaywallView: View {
     var body: some View {
         ZStack {
             LinearGradient(colors: [.purple, .pink], startPoint: .topLeading, endPoint: .bottomTrailing)
-                .ignoresSafeArea()
+                .ignoresSafeArea(.all)
             VStack(spacing: 20) {
                 Text("Go Pro").font(.largeTitle).bold().foregroundStyle(.white)
                 Text("RevenueCat SDK not available in this build.")

@@ -8,7 +8,7 @@ struct AuthView: View {
 
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            Color.black.ignoresSafeArea(.all)
             VStack(spacing: 24) {
                 VStack(spacing: 8) {
                     Text("Sign In").font(.largeTitle).bold().foregroundStyle(.white)

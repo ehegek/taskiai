@@ -19,10 +19,12 @@ struct NewTaskView: View {
     let defaultDate: Date
 
     var body: some View {
-        Form {
-            Section { TextField("Enter task name", text: $title) }
-            DatePicker("Date", selection: $date, displayedComponents: [.date, .hourAndMinute])
-            Section("Category") { CategoryPickerView(selection: $category) }
+        ZStack {
+            Color.black.opacity(0.02).ignoresSafeArea(.all)
+            Form {
+                Section { TextField("Enter task name", text: $title) }
+                DatePicker("Date", selection: $date, displayedComponents: [.date, .hourAndMinute])
+                Section("Category") { CategoryPickerView(selection: $category) }
             Toggle("Repeat", isOn: $repeatOn)
             if repeatOn {
                 Picker("Frequency", selection: $repeatFreq) { ForEach(RepeatFrequency.allCases) { Text($0.rawValue.capitalized).tag($0) } }
@@ -47,14 +49,15 @@ struct NewTaskView: View {
                 }
                 DatePicker("Time", selection: $reminderTime, displayedComponents: .hourAndMinute)
             }
-            Section("Details (optional)") { TextField("Notes", text: $notes, axis: .vertical) }
+                Section("Details (optional)") { TextField("Notes", text: $notes, axis: .vertical) }
+            }
+            .navigationTitle("New Task")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) { Button { dismiss() } label: { Image(systemName: "xmark") } }
+                ToolbarItem(placement: .topBarTrailing) { Button { create() } label: { Image(systemName: "checkmark.circle") } }
+            }
+            .onAppear { date = defaultDate }
         }
-        .navigationTitle("New Task")
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) { Button { dismiss() } label: { Image(systemName: "xmark") } }
-            ToolbarItem(placement: .topBarTrailing) { Button { create() } label: { Image(systemName: "checkmark.circle") } }
-        }
-        .onAppear { date = defaultDate }
     }
 
     private func create() {

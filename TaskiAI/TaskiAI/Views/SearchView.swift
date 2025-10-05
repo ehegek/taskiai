@@ -17,6 +17,7 @@ struct SearchView: View {
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
+            Color.black.opacity(0.02).ignoresSafeArea(.all)
             VStack {
                 TextField("Search for Task", text: $query)
                     .textFieldStyle(.roundedBorder)

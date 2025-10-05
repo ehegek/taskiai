@@ -6,6 +6,7 @@ struct RootView: View {
         NavigationStack {
             HomeView()
         }
+        .ignoresSafeArea(.all)
     }
 }
 
@@ -26,7 +27,7 @@ struct HomeView: View {
                 }
                 .padding()
             }
-            .background(Color.black.opacity(0.02).ignoresSafeArea())
+            .background(Color.black.opacity(0.02).ignoresSafeArea(.all))
 
             Button { showCreate = true } label: {
                 Image(systemName: "plus").font(.system(size: 28)).foregroundStyle(.white)
