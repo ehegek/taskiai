@@ -27,7 +27,14 @@ struct NewTaskView: View {
             if repeatOn {
                 Picker("Frequency", selection: $repeatFreq) { ForEach(RepeatFrequency.allCases) { Text($0.rawValue.capitalized).tag($0) } }
                 Stepper(value: $repeatInterval, in: 1...30) { Text("Repeat Every \(repeatInterval)") }
-                DatePicker("Repeat Ends", selection: Binding($repeatEnd, Date.now), displayedComponents: .date)
+                DatePicker(
+                    "Repeat Ends",
+                    selection: Binding(
+                        get: { repeatEnd ?? date },
+                        set: { repeatEnd = $0 }
+                    ),
+                    displayedComponents: .date
+                )
             }
             Toggle("Reminder", isOn: $reminderOn)
             if reminderOn {
