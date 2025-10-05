@@ -25,32 +25,36 @@ struct OnboardingView: View {
     private var welcome: some View {
         ZStack {
             Color.black.ignoresSafeArea()
-            VStack(spacing: 24) {
+            VStack(spacing: 16) {
                 Spacer()
-                Image(systemName: "checkmark.seal.fill").font(.system(size: 72)).foregroundStyle(.white)
+                Image("Orange_Minimalist_Travel_App_Business_Logo-removebg-preview 2")
+                    .resizable().scaledToFit().frame(width: 120)
                 Text("Welcome To TASKI AI").font(.largeTitle).bold().foregroundStyle(.white)
                 Text("Never Miss a Task").foregroundStyle(.white.opacity(0.9))
-                Rectangle().fill(.white.opacity(0.15)).frame(height: 180).overlay(Text("[Mockups]").foregroundStyle(.white.opacity(0.8)))
+                HStack(spacing: 16) {
+                    Image("Rectangle 89").resizable().scaledToFit().frame(height: 160)
+                    Image("Rectangle 89").resizable().scaledToFit().frame(height: 160)
+                    Image("Rectangle 89").resizable().scaledToFit().frame(height: 160)
+                }.padding(.horizontal)
                 Spacer()
                 VStack(spacing: 12) {
                     Button { next() } label: { Text("Start Now").bold().frame(maxWidth: .infinity).padding().background(Color.white, in: RoundedRectangle(cornerRadius: 12)).foregroundStyle(.black) }
-                    Button { 
-                        appState.hasCompletedOnboarding = true
-                        appState.isAuthenticated = false
-                    } label: { Text("Already have an account? Sign In") }
+                    Button { appState.hasCompletedOnboarding = true; appState.isAuthenticated = false } label: { Text("Already have an account? Sign In") }
                         .foregroundStyle(.white.opacity(0.9))
-                    Button { /* open privacy */ } label: { Text("Privacy Policy") }.foregroundStyle(.white.opacity(0.7)).font(.footnote)
+                    Button { } label: { Text("Privacy Policy") }.foregroundStyle(.white.opacity(0.7)).font(.footnote)
                 }.padding(.horizontal)
-            }.padding()
+            }
+            .padding(.bottom, 24)
+            .padding(.top, 32)
         }
     }
 
     private func painPoint(icon: String, title: String, desc: String) -> some View {
-        ZStack {
-            Color.red.ignoresSafeArea()
+        ZStack { Color(red: 0.98, green: 0.25, blue: 0.24).ignoresSafeArea()
             VStack(spacing: 16) {
                 Spacer()
-                Image(systemName: icon).font(.system(size: 72)).foregroundStyle(.white)
+                Image("\(title)") // files named exactly like provided headings
+                    .resizable().scaledToFit().frame(height: 180)
                 Text(title).font(.title).bold().foregroundStyle(.white).multilineTextAlignment(.center).padding(.horizontal)
                 Text(desc).foregroundStyle(.white.opacity(0.9)).multilineTextAlignment(.center).padding(.horizontal)
                 Spacer()
@@ -63,10 +67,10 @@ struct OnboardingView: View {
 
     private var justification: some View {
         ZStack {
-            Color.blue.ignoresSafeArea()
+            Color(red: 0.12, green: 0.44, blue: 0.84).ignoresSafeArea()
             VStack(spacing: 16) {
                 Spacer()
-                Text("Path to Completion").font(.largeTitle).bold().foregroundStyle(.white)
+                Image("Path to Completion").resizable().scaledToFit().frame(height: 190)
                 Text("Retrain your brain and focus on what matters.").foregroundStyle(.white.opacity(0.9)).multilineTextAlignment(.center).padding(.horizontal)
                 Text("Where we help >>>").foregroundStyle(.white).padding(.top)
                 Spacer()
@@ -81,7 +85,7 @@ struct OnboardingView: View {
         ZStack { Color.black.ignoresSafeArea()
             VStack(spacing: 16) {
                 Spacer()
-                Image(systemName: icon).font(.system(size: 64)).foregroundStyle(.green)
+                Image(title).resizable().scaledToFit().frame(height: 180)
                 Text(title).font(.title).bold().foregroundStyle(.white)
                 Text(desc).foregroundStyle(.white.opacity(0.9)).multilineTextAlignment(.center).padding(.horizontal)
                 Spacer()
