@@ -1,10 +1,20 @@
 {
   "iosPath": ".",
+  "ios": {
+    "iosPath": "."
+  },
   "hooks": {
-    "pre_build": { "ios": [] },
-    "before_build": { "ios": [] },
-    "build": { "ios": [] },
-    "post_build": { "ios": [] },
-    "after_build": { "ios": [] }
+    "pre_build": [],
+    "before_build": [],
+    "build": [],
+    "post_build": [],
+    "after_build": [],
+    "ios": {
+      "pre_build": [],
+      "before_build": [],
+      "build": [],
+      "post_build": [],
+      "after_build": []
+    }
   }
 }
