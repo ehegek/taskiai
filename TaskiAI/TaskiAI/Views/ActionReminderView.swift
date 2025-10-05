@@ -9,13 +9,15 @@ struct ActionReminderView: View {
     var body: some View {
         ZStack {
             Color(.systemBackground).ignoresSafeArea(.all)
-            List {
-                ForEach(reminderTasks) { task in
-                    TaskRow(task: task)
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: 12) {
+                    ForEach(reminderTasks) { task in
+                        TaskBubbleRow(task: task)
+                    }
                 }
+                .padding(.horizontal)
+                .padding(.top, 12)
             }
-            .listStyle(.plain)
-            .scrollContentBackground(.hidden)
         }
         .navigationTitle("Action Reminder")
     }

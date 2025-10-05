@@ -19,10 +19,10 @@ struct HomeView: View {
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 20) {
                     topBar
                     header
-                    streakAndProgress
+                    streakPill
                     grid
                 }
                 .padding()
@@ -33,6 +33,7 @@ struct HomeView: View {
                 Image(systemName: "plus").font(.system(size: 28)).foregroundStyle(.white)
                     .padding(24)
                     .background(Circle().fill(Color.black))
+                    .shadow(color: .black.opacity(0.2), radius: 10, y: 6)
             }
             .padding(24)
         }
@@ -55,43 +56,51 @@ struct HomeView: View {
     }
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(greeting())
-                .font(.title2).bold()
-            Text(appState.currentUserName ?? "There").font(.largeTitle).bold()
-            Text(Date.now.formatted(date: .complete, time: .omitted)).foregroundStyle(.secondary)
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(alignment: .center) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(greeting()).font(.title3).bold()
+                    Text(appState.currentUserName ?? "There").font(.title).bold()
+                    Text(Date.now.formatted(date: .complete, time: .omitted)).foregroundStyle(.secondary).font(.footnote)
+                }
+                Spacer()
+                HStack(spacing: 12) {
+                    NavigationLink(destination: SearchView()) {
+                        Image(systemName: "magnifyingglass").padding(10).background(Circle().fill(Color(.systemGray6)))
+                    }
+                    NavigationLink(destination: SettingsView()) {
+                        let initial = String((appState.currentUserName ?? "").prefix(1)).uppercased()
+                        ZStack { Circle().fill(Color.black); Text(initial.isEmpty ? "D" : initial).foregroundStyle(.white).bold() }.frame(width: 28, height: 28)
+                    }
+                }
+            }
         }
     }
 
-    private var streakAndProgress: some View {
-        VStack(spacing: 12) {
-            HStack {
-                Image(systemName: "flame.fill").foregroundStyle(.orange)
-                Text("Streak")
-                Spacer()
-                Text("\(appState.streakDays) Days")
+    private var streakPill: some View {
+        HStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 2) {
+                HStack { Image(systemName: "flame.fill").foregroundStyle(.orange); Text("Streak").foregroundStyle(.white) }
+                Text("\(appState.streakDays) Days").foregroundStyle(.white).font(.headline).bold()
             }
-            .padding()
-            .background(RoundedRectangle(cornerRadius: 16).fill(Color.black.opacity(0.9)))
-            .foregroundStyle(.white)
-            VStack(alignment: .leading) {
-                HStack { Image(systemName: "checkmark.seal.fill"); Text("Completion") ; Spacer(); Text("\(completionPercent(), specifier: "%.0f")%") }
+            Spacer()
+            VStack(spacing: 4) {
+                Text("TASKI AI").foregroundStyle(.white).font(.footnote).bold()
                 ProgressView(value: completionRatio())
-                    .tint(.black)
-                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.black.opacity(0.1)))
+                    .tint(.white)
+                    .frame(width: 80)
             }
-            .padding()
-            .background(RoundedRectangle(cornerRadius: 16).fill(Color.white))
-            .shadow(color: .black.opacity(0.05), radius: 8, y: 4)
         }
+        .padding()
+        .background(RoundedRectangle(cornerRadius: 16).fill(Color.black))
     }
 
     private var grid: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-            NavigationLink { TaskListView(date: .now) } label: { card(title: "Task", subtitle: "Quick access to tasks") }
+            NavigationLink { TaskListView(date: .now) } label: { card(title: "Task", subtitle: "") }
             NavigationLink { ChatView() } label: { card(title: "Taski Bot", subtitle: "What can I help with?") }
-            NavigationLink { ActionReminderView(selectedDate: .now) } label: { card(title: "Action Reminder", subtitle: "Only tasks with reminders") }
-            NavigationLink { CalendarView() } label: { card(title: "Calendar", subtitle: "Monthly overview") }
+            NavigationLink { ActionReminderView(selectedDate: .now) } label: { card(title: "Action Reminder", subtitle: "") }
+            NavigationLink { CalendarView() } label: { card(title: "Calendar", subtitle: "") }
         }
     }
 
@@ -101,11 +110,9 @@ struct HomeView: View {
             Text(subtitle).font(.footnote).foregroundStyle(.secondary)
             Spacer()
         }
-        .frame(height: 140)
+        .frame(height: 160)
         .padding()
-        .background {
-            RoundedRectangle(cornerRadius: 16).fill(.ultraThickMaterial)
-        }
+        .background(RoundedRectangle(cornerRadius: 16).fill(Color(.systemGray6)))
     }
 
     private func completionRatio() -> Double {

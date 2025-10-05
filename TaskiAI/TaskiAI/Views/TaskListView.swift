@@ -26,20 +26,19 @@ struct TaskListView: View {
             VStack(spacing: 0) {
                 header
                 addBar
-                List {
-                    ForEach(filteredTasks) { task in
-                        TaskRow(task: task)
-                            .swipeActions(edge: .trailing) {
-                                Button(role: .destructive) { context.delete(task); try? context.save() } label: { Label("Delete", systemImage: "trash") }
-                            }
-                            .onTapGesture {
-                                pendingOpenTask = task
-                                showOpenConfirm = true
-                            }
+                ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 12) {
+                        ForEach(filteredTasks) { task in
+                            TaskBubbleRow(task: task)
+                                .onTapGesture {
+                                    pendingOpenTask = task
+                                    showOpenConfirm = true
+                                }
+                        }
                     }
+                    .padding(.horizontal)
+                    .padding(.top, 12)
                 }
-                .listStyle(.plain)
-                .scrollContentBackground(.hidden)
             }
         }
         .toolbar(.hidden, for: .navigationBar)
