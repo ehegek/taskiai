@@ -5,6 +5,7 @@ options:
     base:
       CURRENT_PROJECT_VERSION: 1
       MARKETING_VERSION: 1.0.0
+  createIntermediateGroups: true
 packages:
   RevenueCat:
     url: https://github.com/RevenueCat/purchases-ios
@@ -41,4 +42,12 @@ targets:
         CODE_SIGNING_ALLOWED: NO
         CURRENT_PROJECT_VERSION: 1
         MARKETING_VERSION: 1.0.0
-schemes: {}
+schemes:
+  TaskiAI:
+    build:
+      targets:
+        TaskiAI: all
+    test:
+      targets:
+        - name: TaskiAITests
+      gatherCoverageData: false
