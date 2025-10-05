@@ -7,16 +7,19 @@ struct CalendarView: View {
     @Environment(\.modelContext) private var context
 
     var body: some View {
-        VStack(spacing: 12) {
-            MonthHeader(monthOffset: $monthOffset)
-            MonthGrid(monthOffset: monthOffset, selectedDate: $selectedDate)
-            DaySections(date: selectedDate)
-            Spacer()
-            NavigationLink { NewTaskView(defaultDate: selectedDate) } label: {
-                Image(systemName: "plus.circle.fill").font(.system(size: 44))
+        ZStack {
+            Color(.systemBackground).ignoresSafeArea(.all)
+            VStack(spacing: 12) {
+                MonthHeader(monthOffset: $monthOffset)
+                MonthGrid(monthOffset: monthOffset, selectedDate: $selectedDate)
+                DaySections(date: selectedDate)
+                Spacer()
+                NavigationLink { NewTaskView(defaultDate: selectedDate) } label: {
+                    Image(systemName: "plus.circle.fill").font(.system(size: 44))
+                }
             }
+            .padding()
         }
-        .padding()
         .navigationTitle("Calendar")
     }
 }

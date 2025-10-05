@@ -7,10 +7,15 @@ struct ActionReminderView: View {
     var selectedDate: Date
 
     var body: some View {
-        List {
-            ForEach(reminderTasks) { task in
-                TaskRow(task: task)
+        ZStack {
+            Color(.systemBackground).ignoresSafeArea(.all)
+            List {
+                ForEach(reminderTasks) { task in
+                    TaskRow(task: task)
+                }
             }
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
         }
         .navigationTitle("Action Reminder")
     }

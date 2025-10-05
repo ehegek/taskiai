@@ -20,7 +20,7 @@ struct NewTaskView: View {
 
     var body: some View {
         ZStack {
-            Color.black.opacity(0.02).ignoresSafeArea(.all)
+            Color(.systemBackground).ignoresSafeArea(.all)
             Form {
                 Section { TextField("Enter task name", text: $title) }
                 DatePicker("Date", selection: $date, displayedComponents: [.date, .hourAndMinute])
@@ -57,6 +57,7 @@ struct NewTaskView: View {
                 ToolbarItem(placement: .topBarTrailing) { Button { create() } label: { Image(systemName: "checkmark.circle") } }
             }
             .onAppear { date = defaultDate }
+            .scrollContentBackground(.hidden)
         }
     }
 

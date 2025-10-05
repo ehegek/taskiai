@@ -27,7 +27,7 @@ struct HomeView: View {
                 }
                 .padding()
             }
-            .background(Color.black.opacity(0.02).ignoresSafeArea(.all))
+            .background(Color(.systemBackground).ignoresSafeArea(.all))
 
             Button { showCreate = true } label: {
                 Image(systemName: "plus").font(.system(size: 28)).foregroundStyle(.white)

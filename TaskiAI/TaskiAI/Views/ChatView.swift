@@ -10,16 +10,19 @@ struct ChatView: View {
     @State private var isRecording = false
 
     var body: some View {
-        VStack {
-            ScrollViewReader { proxy in
-                ScrollView { LazyVStack(alignment: .leading, spacing: 12) { ForEach(messages) { msg in bubble(for: msg) } } }
-                    .onChange(of: messages.count) { _ in
-                        if let last = messages.last { withAnimation { proxy.scrollTo(last.id, anchor: .bottom) } }
-                    }
+        ZStack {
+            Color(.systemBackground).ignoresSafeArea(.all)
+            VStack {
+                ScrollViewReader { proxy in
+                    ScrollView { LazyVStack(alignment: .leading, spacing: 12) { ForEach(messages) { msg in bubble(for: msg) } } }
+                        .onChange(of: messages.count) { _ in
+                            if let last = messages.last { withAnimation { proxy.scrollTo(last.id, anchor: .bottom) } }
+                        }
+                }
+                inputBar
             }
-            inputBar
+            .padding()
         }
-        .padding()
         .navigationTitle("Taski AI Chat")
     }
 
