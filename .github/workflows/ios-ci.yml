@@ -78,7 +78,7 @@ jobs:
           echo "Using scheme: $scheme"
           echo "scheme=$scheme" >> "$GITHUB_OUTPUT"
 
-      - name: Build and test (iOS Simulator)
+      - name: Build for testing (iOS Simulator)
         env:
           NSUnbufferedIO: "YES"
         run: |
@@ -89,7 +89,22 @@ jobs:
             -destination "id=${{ steps.sim.outputs.id }}" \
             -sdk iphonesimulator \
             -configuration Debug \
-            clean build test \
+            clean build-for-testing \
+            CODE_SIGNING_ALLOWED=NO
+        shell: bash
+
+      - name: Test without building (iOS Simulator)
+        env:
+          NSUnbufferedIO: "YES"
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -project TaskiAI.xcodeproj \
+            -scheme "${{ steps.resolve.outputs.scheme }}" \
+            -destination "id=${{ steps.sim.outputs.id }}" \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            test-without-building \
             CODE_SIGNING_ALLOWED=NO
         shell: bash
 
@@ -139,3 +154,13 @@ jobs:
         with:
           name: TaskiAI-unsigned-ipa
           path: build/TaskiAI-unsigned.ipa
+
+      - name: Upload Xcode build logs (always)
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcode-logs
+          path: |
+            ~/Library/Logs/DiagnosticReports/*.crash
+            ~/Library/Developer/Xcode/DerivedData/**/Logs/**/*.xcactivitylog
+            ~/Library/Developer/Xcode/DerivedData/**/Logs/Test/*.log

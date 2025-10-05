@@ -1,5 +1,7 @@
 import Foundation
 import Combine
+
+#if canImport(RevenueCat)
 import RevenueCat
 
 /// Thin wrapper around RevenueCat Purchases SDK.
@@ -68,8 +70,26 @@ final class RevenueCatManager: ObservableObject {
 
 extension RevenueCatManager: PurchasesDelegate {
     func purchases(_ purchases: Purchases, receivedUpdated customerInfo: CustomerInfo) {
-        // AppState must be supplied for routing. Use current flag to avoid retain cycles.
-        // We can't access appState here directly, so subscription status is updated on explicit calls.
         self.customerInfo = customerInfo
     }
 }
+
+#else
+
+/// Fallback no-op manager used when RevenueCat module is unavailable (e.g., certain CI/test configs).
+final class RevenueCatManager: ObservableObject {
+    static let shared = RevenueCatManager()
+
+    @Published private(set) var isConfigured = false
+
+    private init() {}
+
+    func configure(apiKey: String, entitlementID: String, appState: AppState) {
+        isConfigured = true
+        // Do nothing; leave subscription state unchanged.
+    }
+
+    func refreshOfferings() {}
+}
+
+#endif
