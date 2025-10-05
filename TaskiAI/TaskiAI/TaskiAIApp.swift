@@ -3,6 +3,7 @@ import SwiftData
 
 @main
 struct TaskiAIApp: App {
+    @StateObject private var appState = AppState()
     var sharedModelContainer: ModelContainer = {
         do {
             return try ModelContainer(for: Task.self, Category.self)
@@ -13,7 +14,8 @@ struct TaskiAIApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView()
+            ContentRouterView()
+                .environmentObject(appState)
         }
         .modelContainer(sharedModelContainer)
     }

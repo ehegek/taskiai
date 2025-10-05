@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @EnvironmentObject var appState: AppState
     var body: some View {
         List {
             Section { NavigationLink("Account") { Text("Account") }
@@ -11,6 +12,10 @@ struct SettingsView: View {
             Section { Button("Rate 5 Stars") {} ; Button("Share with a Friend") {} ; Button("Contact Support") {} }
             Section { NavigationLink("Privacy Policy") { Text("Privacy Policy") }
                      NavigationLink("Terms of Use") { Text("Terms of Use") } }
+            Section("Developer") {
+                Button("Sign Out") { appState.signOut() }
+                Button("Reset Onboarding & Subscription") { appState.resetAll() }
+            }
         }
         .navigationTitle("Settings")
     }

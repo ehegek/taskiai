@@ -10,6 +10,7 @@ struct RootView: View {
 }
 
 struct HomeView: View {
+    @EnvironmentObject var appState: AppState
     @Environment(\.modelContext) private var context
     @Query(sort: \Task.date) private var tasks: [Task]
     @State private var showCreate = false
@@ -38,7 +39,7 @@ struct HomeView: View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Good Afternoon,")
                 .font(.title2).bold()
-            Text("Dakota Johnson").font(.largeTitle).bold()
+            Text(appState.currentUserName ?? "There").font(.largeTitle).bold()
             Text(Date.now.formatted(date: .complete, time: .omitted)).foregroundStyle(.secondary)
         }
     }
