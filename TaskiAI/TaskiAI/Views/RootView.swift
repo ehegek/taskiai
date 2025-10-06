@@ -12,7 +12,7 @@ struct RootView: View {
 struct HomeView: View {
     @EnvironmentObject var appState: AppState
     @Environment(\.modelContext) private var context
-    @Query(sort: \.date) private var tasks: [Task]
+    @Query(sort: \Task.date) private var tasks: [Task]
     @State private var showCreate = false
 
     var body: some View {

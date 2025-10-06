@@ -27,7 +27,7 @@ struct ChatView: View {
                             .padding(.horizontal, 20)
                             .padding(.vertical, 16)
                         }
-                        .onChange(of: messages.count) { _ in
+                        .onChange(of: messages.count) {
                             if let last = messages.last {
                                 withAnimation {
                                     proxy.scrollTo(last.id, anchor: .bottom)
@@ -135,7 +135,7 @@ struct ChatView: View {
             Button { send() } label: {
                 Image(systemName: "arrow.up.circle.fill")
                     .font(.system(size: 32))
-                    .foregroundStyle(input.isEmpty ? .secondary : .blue)
+                    .foregroundStyle(input.isEmpty ? Color.secondary : Color.blue)
             }
             .disabled(input.isEmpty)
         }
