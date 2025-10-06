@@ -17,7 +17,7 @@ struct TaskListView: View {
         self.date = date
         let start = Calendar.current.startOfDay(for: date)
         let end = Calendar.current.date(byAdding: .day, value: 1, to: start)!
-    _tasks = Query(filter: #Predicate<Task> { $0.date >= start && $0.date < end }, sort: \Task.date)
+    _tasks = Query(filter: #Predicate<Task> { $0.date >= start && $0.date < end }, sort: \.date)
     }
 
     var body: some View {

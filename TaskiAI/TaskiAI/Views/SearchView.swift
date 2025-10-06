@@ -7,7 +7,7 @@ struct SearchView: View {
     @State private var showCreate = false
 
     init() {
-        _tasks = Query(sort: \Task.date)
+        _tasks = Query(sort: \.date)
     }
 
     var results: [Task] {

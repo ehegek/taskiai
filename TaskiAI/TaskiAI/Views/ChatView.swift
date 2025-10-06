@@ -177,3 +177,4 @@ struct ChatView: View {
         input = ""
     }
 }
+
