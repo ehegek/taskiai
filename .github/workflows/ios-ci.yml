@@ -1,0 +1,162 @@
+name: iOS CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-test:
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select latest installed Xcode
+        run: |
+          set -euo pipefail
+          echo "Available Xcodes:" && ls -1 /Applications | grep -E '^Xcode_.*\.app' || true
+          XCODE_PATH=$(ls -d /Applications/Xcode_*.app | sort -V | tail -n1)
+          echo "Selecting $XCODE_PATH"
+          sudo xcode-select -s "$XCODE_PATH"
+          xcodebuild -version
+
+      - name: Install XcodeGen (pinned)
+        run: |
+          brew update
+          brew install xcodegen@2.41 || brew install xcodegen
+
+      - name: Verify repository paths
+        run: |
+          set -euo pipefail
+          pwd
+          ls -la
+          ls -la TaskiAI
+          ls -la TaskiAI/TaskiAI
+          test -d TaskiAI/TaskiAI
+
+      - name: Regenerate Xcode project for Xcode 15.4
+        run: |
+          rm -rf TaskiAI.xcodeproj
+          xcodegen generate --spec Project.yml --project-root .
+
+      - name: Cache SwiftPM artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Developer/Xcode/DerivedData
+            ~/Library/Caches/org.swift.swiftpm
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved', 'Project.yml') }}
+
+      - name: Show schemes
+        run: |
+          ls -la
+          test -d TaskiAI.xcodeproj
+          xcodebuild -list -project TaskiAI.xcodeproj
+
+      - name: Resolve available iOS Simulator (by UDID)
+        id: sim
+        shell: bash
+        run: |
+          set -euo pipefail
+          json=$(xcrun simctl list devices available -j)
+          # Prefer iPhone 16 Pro/Pro Max/16/15 Pro etc., else any iPhone
+          udid=$(ruby -r json -e "j=JSON.parse(STDIN.read); d=j['devices'].values.flatten.select{|x| x['isAvailable']}.select{|x| x['name'] =~ /iPhone/}; pri=%w[iPhone\ 16\ Pro\ Max iPhone\ 16\ Pro iPhone\ 16 iPhone\ 15\ Pro\ Max iPhone\ 15\ Pro iPhone\ 15]; c=(pri.map{|p| d.find{|x| x['name']==p}} + d).compact; puts(c.first && c.first['udid'])" <<< "$json")
+          name=$(ruby -r json -e "j=JSON.parse(STDIN.read); d=j['devices'].values.flatten.select{|x| x['isAvailable']}.select{|x| x['name'] =~ /iPhone/}; puts(d.first && d.first['name'])" <<< "$json")
+          if [ -z "$udid" ]; then echo 'No available iPhone simulators found' >&2; exit 1; fi
+          echo "Using simulator: $name ($udid)"
+          echo "id=$udid" >> "$GITHUB_OUTPUT"
+
+      - name: Set scheme
+        id: resolve
+        shell: bash
+        run: |
+          echo "scheme=TaskiAI" >> "$GITHUB_OUTPUT"
+
+      - name: Build for testing (iOS Simulator)
+        env:
+          NSUnbufferedIO: "YES"
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -project TaskiAI.xcodeproj \
+            -scheme "TaskiAI" \
+            -destination "id=${{ steps.sim.outputs.id }}" \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            clean build-for-testing \
+            CODE_SIGNING_ALLOWED=NO
+        shell: bash
+
+      - name: Test without building (iOS Simulator)
+        env:
+          NSUnbufferedIO: "YES"
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -project TaskiAI.xcodeproj \
+            -scheme "TaskiAI" \
+            -destination "id=${{ steps.sim.outputs.id }}" \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            test-without-building \
+            CODE_SIGNING_ALLOWED=NO
+        shell: bash
+
+      - name: Build Release simulator .app (zip)
+        shell: bash
+        run: |
+          set -euo pipefail
+          DERIVED=build/DerivedData
+          xcodebuild \
+            -project TaskiAI.xcodeproj \
+            -scheme "TaskiAI" \
+            -sdk iphonesimulator \
+            -configuration Release \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$DERIVED" \
+            CODE_SIGNING_ALLOWED=NO \
+            clean build
+          APP_DIR="$DERIVED/Build/Products/Release-iphonesimulator"
+          APP_PATH="$APP_DIR/TaskiAI.app"
+          test -d "$APP_PATH"
+          (cd "$APP_DIR" && zip -r "../../../TaskiAI-Release-sim.app.zip" "$(basename "$APP_PATH")")
+
+      - name: Try to create unsigned .ipa (best-effort)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! xcodebuild -project TaskiAI.xcodeproj -scheme "${{ steps.resolve.outputs.scheme }}" -configuration Release -sdk iphoneos -archivePath build/TaskiAI.xcarchive CODE_SIGNING_ALLOWED=NO SKIP_INSTALL=NO archive; then
+            echo "Archive failed (likely due to signing). Skipping unsigned .ipa creation."
+            exit 0
+          fi
+          APP_PATH="build/TaskiAI.xcarchive/Products/Applications/TaskiAI.app"
+          if [ -d "$APP_PATH" ]; then
+            mkdir -p build/Payload
+            cp -R "$APP_PATH" build/Payload/
+            (cd build && zip -r TaskiAI-unsigned.ipa Payload)
+          fi
+
+      - name: Upload simulator .app zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: TaskiAI-Release-sim-app
+          path: build/DerivedData/TaskiAI-Release-sim.app.zip
+
+      - name: Upload unsigned .ipa (if present)
+        if: ${{ hashFiles('build/TaskiAI-unsigned.ipa') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: TaskiAI-unsigned-ipa
+          path: build/TaskiAI-unsigned.ipa
+
+      - name: Upload Xcode build logs (always)
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: xcode-logs
+          path: |
+            ~/Library/Logs/DiagnosticReports/*.crash
+            ~/Library/Developer/Xcode/DerivedData/**/Logs/**/*.xcactivitylog
+            ~/Library/Developer/Xcode/DerivedData/**/Logs/Test/*.log

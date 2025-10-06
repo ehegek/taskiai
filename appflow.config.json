@@ -1,0 +1,20 @@
+{
+  "iosPath": ".",
+  "ios": {
+    "iosPath": "."
+  },
+  "hooks": {
+    "pre_build": [],
+    "before_build": [],
+    "build": [],
+    "post_build": [],
+    "after_build": [],
+    "ios": {
+      "pre_build": [],
+      "before_build": [],
+      "build": [],
+      "post_build": [],
+      "after_build": []
+    }
+  }
+}
