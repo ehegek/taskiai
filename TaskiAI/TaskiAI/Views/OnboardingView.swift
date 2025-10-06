@@ -17,8 +17,8 @@ struct OnboardingView: View {
             socialProof.tag(8)
             referral.tag(9)
         }
-        .tabViewStyle(.page(indexDisplayMode: .always))
-        .ignoresSafeArea(edges: .all)
+        .tabViewStyle(.page(indexDisplayMode: .never))
+        .ignoresSafeArea()
     }
 
     // MARK: - Pages
@@ -26,7 +26,7 @@ struct OnboardingView: View {
         ZStack {
             Color.black.ignoresSafeArea()
             VStack(spacing: 16) {
-                Spacer()
+                Spacer(minLength: 40)
                 Image("Orange_Minimalist_Travel_App_Business_Logo-removebg-preview 2")
                     .resizable().scaledToFit().frame(width: 120)
                 Text("Welcome To TASKI AI").font(.largeTitle).bold().foregroundStyle(.white)
@@ -36,7 +36,7 @@ struct OnboardingView: View {
                     Image("Rectangle 89").resizable().scaledToFit().frame(height: 160)
                     Image("Rectangle 89").resizable().scaledToFit().frame(height: 160)
                 }.padding(.horizontal)
-                Spacer()
+                Spacer(minLength: 40)
                 VStack(spacing: 12) {
                     Button { next() } label: { Text("Start Now").bold().frame(maxWidth: .infinity).padding().background(Color.white, in: RoundedRectangle(cornerRadius: 12)).foregroundStyle(.black) }
                     Button { appState.hasCompletedOnboarding = true; appState.isAuthenticated = false } label: { Text("Already have an account? Sign In") }
@@ -52,12 +52,12 @@ struct OnboardingView: View {
     private func painPoint(icon: String, title: String, desc: String) -> some View {
         ZStack { Color(red: 0.98, green: 0.25, blue: 0.24).ignoresSafeArea()
             VStack(spacing: 16) {
-                Spacer()
+                Spacer(minLength: 40)
                 Image("\(title)") // files named exactly like provided headings
                     .resizable().scaledToFit().frame(height: 180)
                 Text(title).font(.title).bold().foregroundStyle(.white).multilineTextAlignment(.center).padding(.horizontal)
                 Text(desc).foregroundStyle(.white.opacity(0.9)).multilineTextAlignment(.center).padding(.horizontal)
-                Spacer()
+                Spacer(minLength: 40)
                 Button { next() } label: { Text("Continue").bold().frame(maxWidth: .infinity).padding().background(Color.white, in: RoundedRectangle(cornerRadius: 12)).foregroundStyle(.black) }
                 .padding(.horizontal)
                 .padding(.bottom)
@@ -120,11 +120,11 @@ struct OnboardingView: View {
                 Text("You can skip this step").foregroundStyle(.white.opacity(0.8))
                 TextField("Referral code", text: Binding(get: { appState.referralCode ?? "" }, set: { appState.referralCode = $0 }))
                     .padding()
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
+                    .background(Color.white.opacity(0.12), in: RoundedRectangle(cornerRadius: 12))
                     .foregroundStyle(.white)
                     .textInputAutocapitalization(.none)
                 Rectangle().fill(.white.opacity(0.15)).frame(height: 180).overlay(Text("[Paywall Placeholder]").foregroundStyle(.white.opacity(0.8)))
-                Spacer()
+                Spacer(minLength: 40)
                 Button { appState.hasCompletedOnboarding = true } label: { Text("Finish").bold().frame(maxWidth: .infinity).padding().background(Color.white, in: RoundedRectangle(cornerRadius: 12)).foregroundStyle(.black) }
                 .padding(.horizontal)
                 .padding(.bottom)

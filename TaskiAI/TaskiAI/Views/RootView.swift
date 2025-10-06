@@ -18,6 +18,8 @@ struct HomeView: View {
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
+            // Base background to ensure true edge-to-edge on all devices
+            Color(.systemBackground).ignoresSafeArea()
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     topBar
@@ -27,7 +29,7 @@ struct HomeView: View {
                 }
                 .padding()
             }
-            .background(Color(.systemBackground).ignoresSafeArea(.all))
+            .scrollIndicators(.hidden)
 
             Button { showCreate = true } label: {
                 Image(systemName: "plus").font(.system(size: 28)).foregroundStyle(.white)
