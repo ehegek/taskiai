@@ -7,19 +7,31 @@ struct ActionReminderView: View {
     var selectedDate: Date
 
     var body: some View {
-        ZStack {
-            Color(.systemBackground).ignoresSafeArea(.all)
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 12) {
-                    ForEach(reminderTasks) { task in
-                        TaskBubbleRow(task: task)
+        GeometryReader { geo in
+            ZStack {
+                Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
+                
+                VStack(spacing: 0) {
+                    Text("Action Reminder")
+                        .font(.system(size: 28, weight: .bold))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, 20)
+                        .padding(.top, geo.safeAreaInsets.top + 12)
+                        .padding(.bottom, 16)
+                    
+                    ScrollView {
+                        LazyVStack(alignment: .leading, spacing: 12) {
+                            ForEach(reminderTasks) { task in
+                                TaskBubbleRow(task: task)
+                            }
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, geo.safeAreaInsets.bottom + 20)
                     }
                 }
-                .padding(.horizontal)
-                .padding(.top, 12)
             }
+            .navigationTitle("Action Reminder")
+            .toolbar(.hidden, for: .navigationBar)
         }
-        .navigationTitle("Action Reminder")
-        .toolbar(.hidden, for: .navigationBar)
     }
 }
