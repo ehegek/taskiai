@@ -67,7 +67,7 @@ struct TaskDetailView: View, Identifiable {
                             Label("Add Photos", systemImage: "photo.on.rectangle")
                         }
                         .onChange(of: photoItems) { _ in
-                            Task { await importPhotos() }
+                            Swift.Task { await importPhotos() }
                         }
                     }
                 }
