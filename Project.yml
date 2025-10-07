@@ -13,9 +13,6 @@ targets:
     deploymentTarget: "17.0"
     sources:
       - path: TaskiAI/TaskiAI
-      - path: assets
-        type: folder
-        buildPhase: resources
     dependencies: []
     settings:
       base:
