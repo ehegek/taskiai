@@ -7,39 +7,15 @@ struct OnboardingView: View {
 
     var body: some View {
         TabView(selection: $page) {
-            welcome.tag(0)
-            painPoint(
-                icon: "person.crop.circle.badge.exclamationmark",
-                title: "Disorganization is a silent killer",
-                desc: "Every missed task, forgotten call, or untracked goal chips away at your future. Without structure, small slips turn into big failures."
-            ).tag(1)
-            painPoint(
-                icon: "brain.head.profile",
-                title: "Without accountability, goals die",
-                desc: "Your brain craves shortcuts. When no one's watching, you let yourself off the hook. Dreams fade when discipline isn't enforced."
-            ).tag(2)
-            painPoint(
-                icon: "chart.line.downtrend.xyaxis",
-                title: "Unfinished tasks kill potential",
-                desc: "Success isn't lost overnight—it's lost one unchecked box at a time. Each missed step compounds into regret."
-            ).tag(3)
-            justification.tag(4)
-            value(
-                icon: "lock.fill",
-                title: "Avoid setbacks",
-                desc: "Stay protected from slippage with smart guardrails."
-            ).tag(5)
-            value(
-                icon: "flag.checkered",
-                title: "Conquer yourself",
-                desc: "Strengthen discipline, focus, and completion every day."
-            ).tag(6)
-            value(
-                icon: "brain.filled.head.profile",
-                title: "Rewire your brain",
-                desc: "Turn small wins into lasting motivation, turning intention into action."
-            ).tag(7)
-            socialProof.tag(8)
+            onboardingPage(imageName: "onboarding_welcome", isFirst: true).tag(0)
+            onboardingPage(imageName: "onboarding_1").tag(1)
+            onboardingPage(imageName: "onboarding_2").tag(2)
+            onboardingPage(imageName: "onboarding_3").tag(3)
+            onboardingPage(imageName: "onboarding_4").tag(4)
+            onboardingPage(imageName: "onboarding_5").tag(5)
+            onboardingPage(imageName: "onboarding_6").tag(6)
+            onboardingPage(imageName: "onboarding_7").tag(7)
+            onboardingPage(imageName: "onboarding_8").tag(8)
             referral.tag(9)
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
@@ -48,289 +24,44 @@ struct OnboardingView: View {
     }
 
     // MARK: - Pages
-    private var welcome: some View {
+    private func onboardingPage(imageName: String, isFirst: Bool = false) -> some View {
         GeometryReader { geo in
             ZStack {
-                Color.black.ignoresSafeArea(.all, edges: .all)
-                VStack(spacing: 20) {
-                    Spacer(minLength: geo.safeAreaInsets.top + 8)
-
-                    Text("Welcome To")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundStyle(.white.opacity(0.9))
-
-                    Text("TASKI AI")
-                        .font(.system(size: 52, weight: .heavy))
-                        .tracking(1.2)
-                        .foregroundStyle(.white)
-                    
-                    logoMark
-                        .frame(width: 235, height: 182)
-                        .padding(.top, 4)
-
-                    notificationRow
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 6)
-
-                    Text("Never Miss a Task")
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundStyle(.white.opacity(0.9))
-                        .padding(.top, 6)
-
-                    Spacer(minLength: 0)
-
-                    VStack(spacing: 12) {
-                        Button { next() } label: {
-                            Text("Start Now")
-                                .font(.system(size: 20, weight: .semibold))
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 18)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 18)
-                                        .fill(Color.white)
-                                        .shadow(color: .white.opacity(0.15), radius: 14, y: 4)
-                                )
-                                .foregroundStyle(.black)
-                        }
-
-                        Button { appState.hasCompletedOnboarding = true; appState.isAuthenticated = false } label: {
-                            Text("Already have an account? Sign In")
-                                .font(.system(size: 15))
-                                .foregroundStyle(.white.opacity(0.9))
-                        }
-                        
-                        Text("By continuing, you agree to our Terms of Use and Privacy Policy")
-                            .font(.system(size: 11))
-                            .multilineTextAlignment(.center)
-                            .foregroundStyle(.white.opacity(0.6))
-                    }
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, geo.safeAreaInsets.bottom + 18)
+                // Background image - full screen
+                if let uiImage = UIImage(named: imageName) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: geo.size.width, height: geo.size.height)
+                        .clipped()
+                } else {
+                    Color.black
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            }
-        }
-    }
-
-    private func painPoint(icon: String, title: String, desc: String) -> some View {
-        GeometryReader { geo in
-            ZStack {
-                Color(red: 0.98, green: 0.25, blue: 0.24).ignoresSafeArea(.all, edges: .all)
-                VStack(spacing: 18) {
-                    Spacer(minLength: geo.safeAreaInsets.top + 18)
-
-                    HStack(spacing: 8) {
-                        Image(systemName: "checkmark.circle")
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundStyle(.white)
-                        Text("TASKI AI")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundStyle(.white)
-                        Spacer()
-                    }
-                    .padding(.horizontal, 24)
-
-                    Spacer(minLength: 8)
-
-                    Group {
-                        if UIImage(named: title) != nil {
-                            Image(title).resizable().scaledToFit()
-                        } else {
-                            Image(systemName: icon).resizable().scaledToFit().padding(40)
-                        }
-                    }
-                    .frame(height: 200)
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 20)
-
-                    Text(title)
-                        .font(.system(size: 22, weight: .bold))
-                        .foregroundStyle(.white)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 28)
-
-                    Text(desc)
-                        .font(.system(size: 15))
-                        .foregroundStyle(.white.opacity(0.9))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 28)
-
+                
+                // Next button overlay at bottom
+                VStack {
                     Spacer()
-
-                    HStack(spacing: 6) { Circle().fill(Color.white).frame(width: 6, height: 6); Circle().fill(Color.white.opacity(0.6)).frame(width: 6, height: 6); Circle().fill(Color.white.opacity(0.6)).frame(width: 6, height: 6) }
-                        .opacity(0) // placeholder for page dots alignment
-
-                    Button { next() } label: {
-                        Text("Next >")
+                    
+                    Button {
+                        withAnimation {
+                            page += 1
+                        }
+                    } label: {
+                        Text("Next")
                             .font(.system(size: 18, weight: .semibold))
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
-                            .background(RoundedRectangle(cornerRadius: 18).fill(.white))
-                            .foregroundStyle(.black)
-                    }
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, geo.safeAreaInsets.bottom + 18)
-                }
-            }
-        }
-    }
-
-    private var justification: some View {
-        GeometryReader { geo in
-            ZStack {
-                Color(red: 0.12, green: 0.44, blue: 0.84).ignoresSafeArea(.all, edges: .all)
-                VStack(spacing: 20) {
-                    Spacer(minLength: geo.safeAreaInsets.top + 40)
-                    
-                    Image("Path to Completion")
-                        .resizable().scaledToFit()
-                        .frame(height: 170)
-                        .padding(.horizontal, 20)
-                    
-                    Text("Path to Completion")
-                        .font(.system(size: 22, weight: .bold))
-                        .foregroundStyle(.white)
-                        .padding(.top, 4)
-
-                    Text("Your brain can be retrained, habits rebuilt, and focus sharpened. Writing down tasks and checking them off creates small wins that release dopamine, fueling motivation and momentum.")
-                        .font(.system(size: 15))
-                        .foregroundStyle(.white.opacity(0.95))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 24)
-                    
-                    Text("where we help >>>")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundStyle(.white)
-                        .padding(.top, 8)
-                    
-                    Spacer()
-                    
-                    Button { next() } label: {
-                        Text("Next >")
-                            .font(.system(size: 18, weight: .semibold))
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 16)
-                            .background(Color.white)
-                            .foregroundStyle(.black)
-                            .cornerRadius(18)
-                    }
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, geo.safeAreaInsets.bottom + 20)
-                }
-            }
-        }
-    }
-
-    private func value(icon: String, title: String, desc: String) -> some View {
-        GeometryReader { geo in
-            ZStack {
-                Color.black.ignoresSafeArea(.all, edges: .all)
-                VStack(spacing: 20) {
-                    Spacer(minLength: geo.safeAreaInsets.top + 40)
-                    
-                    Group {
-                        if UIImage(named: title) != nil {
-                            Image(title).resizable().scaledToFit()
-                        } else {
-                            Image(systemName: icon).resizable().scaledToFit().padding(40)
-                        }
-                    }
-                    .frame(height: 160)
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 20)
-                    
-                    Text(title)
-                        .font(.system(size: 28, weight: .bold))
-                        .foregroundStyle(.white)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 24)
-                    
-                    Text(desc)
-                        .font(.system(size: 16))
-                        .foregroundStyle(.white.opacity(0.9))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 24)
-                    
-                    Spacer()
-                    
-                    Button { next() } label: {
-                        Text("Next >")
-                            .font(.system(size: 18, weight: .semibold))
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 16)
-                            .background(Color.white)
-                            .foregroundStyle(.black)
-                            .cornerRadius(18)
-                    }
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, geo.safeAreaInsets.bottom + 20)
-                }
-            }
-        }
-    }
-
-    private var socialProof: some View {
-        GeometryReader { geo in
-            ZStack {
-                Color.black.ignoresSafeArea(.all, edges: .all)
-                ScrollView {
-                    VStack(spacing: 16) {
-                        Spacer(minLength: geo.safeAreaInsets.top + 20)
-                        
-                        Text("What others have to say about us...")
-                            .font(.system(size: 24, weight: .bold))
-                            .foregroundStyle(.white)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 24)
-                            .padding(.top, 20)
-                        
-                        ForEach(0..<4) { idx in
-                            HStack(alignment: .top, spacing: 12) {
-                                Image(systemName: "person.circle.fill")
-                                    .font(.system(size: 40))
-                                    .foregroundStyle(.white)
-                                
-                                VStack(alignment: .leading, spacing: 6) {
-                                    HStack(spacing: 4) {
-                                        ForEach(0..<5) { _ in
-                                            Image(systemName: "star.fill")
-                                                .font(.system(size: 12))
-                                                .foregroundStyle(.yellow)
-                                        }
-                                    }
-                                    Text("Taski AI keeps me consistent and on track. My completion rate is up.")
-                                        .font(.system(size: 14))
-                                        .foregroundStyle(.white)
-                                    Text(["Emma Johnson","Alex Carter","Mia Davis","Jack Costel"][idx % 4])
-                                        .font(.system(size: 12))
-                                        .foregroundStyle(.white.opacity(0.7))
-                                }
-                                Spacer()
-                            }
-                            .padding(16)
                             .background(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .strokeBorder(Color.white.opacity(0.15))
-                                    .background(RoundedRectangle(cornerRadius: 16).fill(Color.white.opacity(0.04)))
+                                RoundedRectangle(cornerRadius: 18)
+                                    .fill(Color.white)
                             )
-                        }
-                        
-                        Spacer(minLength: 20)
-                        
-                        Button { next() } label: {
-                            Text("Next >")
-                                .font(.system(size: 18, weight: .semibold))
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 16)
-                                .background(Color.white)
-                                .foregroundStyle(.black)
-                                .cornerRadius(18)
-                        }
-                        .padding(.bottom, geo.safeAreaInsets.bottom + 20)
+                            .foregroundStyle(.black)
                     }
                     .padding(.horizontal, 24)
+                    .padding(.bottom, max(20, geo.safeAreaInsets.bottom + 8))
                 }
             }
+            .ignoresSafeArea(.all, edges: .all)
         }
     }
 
@@ -409,107 +140,4 @@ struct OnboardingView: View {
         }
     }
 
-    // MARK: - Nav
-    private func next() { withAnimation { page += 1 } }
-
-    // MARK: - Helpers
-    private func firstExistingImageName(_ candidates: [String]) -> String? {
-        for name in candidates { if UIImage(named: name) != nil { return name } }
-        return nil
-    }
-
-    private var logoMark: some View {
-        Group {
-            if let name = firstExistingImageName(["taski_logo", "TaskiLogo", "TaskiAI", "TaskiCheck", "TaskiMark"]) {
-                Image(name)
-                    .resizable()
-                    .renderingMode(.original)
-                    .scaledToFit()
-            } else {
-                ZStack {
-                    Circle().stroke(lineWidth: 8).foregroundStyle(.white)
-                    Image(systemName: "checkmark")
-                        .font(.system(size: 54, weight: .bold))
-                        .foregroundStyle(.white)
-                }
-            }
-        }
-    }
-
-    // Three notification mockups built with SwiftUI
-    private var notificationRow: some View {
-        GeometryReader { geo in
-            let cardH: CGFloat = 160
-            let gap: CGFloat = 12
-            let totalGaps = gap * 2
-            let cardW = (geo.size.width - 40 - totalGaps) / 3 // 40 = outer horizontal padding in parent
-            HStack(spacing: gap) {
-                banner(
-                    title: "TaskiAI",
-                    right: "Due at 4:00pm",
-                    headline: Text("2 Hours").foregroundStyle(.green) + Text(" until meeting with John").foregroundStyle(.white),
-                    sub: Text("Task Due Soon!").foregroundStyle(.white.opacity(0.9)),
-                    progress: 0.35
-                )
-                .frame(width: cardW, height: cardH)
-
-                banner(
-                    title: "TASKI AI",
-                    right: "now",
-                    headline: Text("Reminder For Math Homework").foregroundStyle(.white),
-                    sub: Text("Due at 11:59 PM").foregroundStyle(.white.opacity(0.9)),
-                    progress: nil
-                )
-                .frame(width: cardW, height: cardH)
-
-                banner(
-                    title: "TASKI AI",
-                    right: "now",
-                    headline: Text("Reminder For Homework Due at 11:59 Calc\nThis is your reminder for your homework due at 11:59PM for Calc. Best of luck completing …").foregroundStyle(.white),
-                    sub: nil,
-                    progress: nil
-                )
-                .frame(width: cardW, height: cardH)
-            }
-        }
-        .frame(height: 160)
-    }
-
-    private func banner(title: String, right: String?, headline: Text, sub: Text?, progress: CGFloat?) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
-                logoMark
-                    .frame(width: 20, height: 20)
-                Text(title)
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(.white)
-                Spacer()
-                if let right { Text(right).font(.system(size: 11)).foregroundStyle(.white.opacity(0.8)) }
-            }
-            headline.font(.system(size: 14, weight: .regular))
-            if let sub { sub.font(.system(size: 13, weight: .bold)) }
-            if let progress {
-                ZStack(alignment: .leading) {
-                    Capsule().fill(Color.white.opacity(0.8)).frame(height: 6)
-                    Capsule().fill(Color.green).frame(width: 180 * max(0, min(1, progress)), height: 6)
-                    Circle()
-                        .strokeBorder(Color.white, lineWidth: 2)
-                        .background(Circle().fill(Color.black))
-                        .frame(width: 16, height: 16)
-                        .offset(x: 180 * max(0, min(1, progress)) - 8)
-                }
-            }
-            Spacer(minLength: 0)
-        }
-        .padding(12)
-        .background(
-            RoundedRectangle(cornerRadius: 18)
-                .fill(Color.black.opacity(0.85))
-                .shadow(color: .black.opacity(0.35), radius: 10, y: 4)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 18)
-                .stroke(Color.white.opacity(0.12), lineWidth: 1)
-        )
-    }
 }
