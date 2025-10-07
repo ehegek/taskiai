@@ -5,6 +5,7 @@ struct ActionReminderView: View {
     @Environment(\.modelContext) private var context
     @Query(filter: #Predicate<Task> { $0.reminderEnabled == true }, sort: \.date) private var reminderTasks: [Task]
     var selectedDate: Date
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         GeometryReader { geo in
@@ -12,12 +13,24 @@ struct ActionReminderView: View {
                 Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
                 
                 VStack(spacing: 0) {
-                    Text("Action Reminder")
-                        .font(.system(size: 28, weight: .bold))
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 20)
-                        .padding(.top, geo.safeAreaInsets.top + 12)
-                        .padding(.bottom, 16)
+                    HStack(spacing: 8) {
+                        Button { dismiss() } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundStyle(.primary)
+                        }
+                        Spacer()
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, geo.safeAreaInsets.top + 8)
+
+                    HStack {
+                        Text("Action Reminder")
+                            .font(.system(size: 28, weight: .bold))
+                        Spacer()
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 12)
                     
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: 12) {
@@ -35,3 +48,4 @@ struct ActionReminderView: View {
         }
     }
 }
+

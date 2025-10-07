@@ -9,28 +9,18 @@ struct AuthView: View {
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                LinearGradient(
-                    colors: [Color(red: 0.05, green: 0.05, blue: 0.15), Color.black],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .ignoresSafeArea(.all, edges: .all)
+                Color.black.ignoresSafeArea(.all, edges: .all)
                 
                 VStack(spacing: 28) {
                     Spacer(minLength: geo.safeAreaInsets.top + 40)
                     
                     VStack(spacing: 12) {
-                        Image(systemName: "person.circle.fill")
-                            .font(.system(size: 70))
-                            .foregroundStyle(.white)
-                        
                         Text("Sign In")
                             .font(.system(size: 34, weight: .bold))
                             .foregroundStyle(.white)
-                        
                         Text("Use your account to continue")
-                            .font(.system(size: 16))
-                            .foregroundStyle(.white.opacity(0.8))
+                            .font(.system(size: 15))
+                            .foregroundStyle(.white.opacity(0.7))
                     }
                     .padding(.bottom, 20)
                     
@@ -41,16 +31,16 @@ struct AuthView: View {
                             .keyboardType(.emailAddress)
                             .font(.system(size: 17))
                             .padding(16)
-                            .background(.ultraThinMaterial)
-                            .cornerRadius(12)
+                            .background(Color.white.opacity(0.1))
+                            .cornerRadius(18)
                             .foregroundStyle(.white)
                         
                         SecureField("Password", text: $password)
                             .textContentType(.password)
                             .font(.system(size: 17))
                             .padding(16)
-                            .background(.ultraThinMaterial)
-                            .cornerRadius(12)
+                            .background(Color.white.opacity(0.1))
+                            .cornerRadius(18)
                             .foregroundStyle(.white)
                     }
                     .padding(.horizontal, 24)
@@ -70,7 +60,7 @@ struct AuthView: View {
                                 .padding(.vertical, 16)
                                 .background(Color.white)
                                 .foregroundStyle(.black)
-                                .cornerRadius(14)
+                                .cornerRadius(18)
                         }
                         
                         Button("Use admin (dev)") { adminBypass() }

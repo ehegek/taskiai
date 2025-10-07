@@ -10,8 +10,6 @@ struct TaskListView: View {
 
     @Query private var tasks: [Task]
     @State private var selectedTask: Task? = nil
-    @State private var pendingOpenTask: Task? = nil
-    @State private var showOpenConfirm = false
 
     init(date: Date) {
         self.date = date
@@ -32,10 +30,7 @@ struct TaskListView: View {
                         LazyVStack(alignment: .leading, spacing: 12) {
                             ForEach(filteredTasks) { task in
                                 TaskBubbleRow(task: task)
-                                    .onTapGesture {
-                                        pendingOpenTask = task
-                                        showOpenConfirm = true
-                                    }
+                                    .onTapGesture { selectedTask = task }
                             }
                         }
                         .padding(.horizontal, 20)
@@ -45,10 +40,6 @@ struct TaskListView: View {
                 }
             }
             .toolbar(.hidden, for: .navigationBar)
-            .alert("Open task?", isPresented: $showOpenConfirm) {
-                Button("No", role: .cancel) {}
-                Button("Yes") { selectedTask = pendingOpenTask }
-            }
             .navigationDestination(item: $selectedTask) { task in
                 TaskDetailView(task: task)
             }
@@ -78,7 +69,7 @@ struct TaskListView: View {
             }
             
             VStack(spacing: 4) {
-                Text("Tasks")
+                Text("Task")
                     .font(.system(size: 28, weight: .bold))
                 Text(date.formatted(date: .abbreviated, time: .omitted))
                     .font(.system(size: 14))
@@ -90,29 +81,40 @@ struct TaskListView: View {
     }
 
     private var addBar: some View {
-        HStack(spacing: 10) {
-            TextField("Add a new task...", text: $newTaskTitle)
-                .font(.system(size: 16))
-                .padding(.vertical, 12)
-                .padding(.horizontal, 16)
-                .background(
-                    RoundedRectangle(cornerRadius: 14)
-                        .fill(Color(.systemGray6))
-                )
-            
-            Button(action: addQuick) {
-                Text("Add")
-                    .font(.system(size: 16, weight: .semibold))
+        VStack(spacing: 10) {
+            HStack(spacing: 10) {
+                TextField("Add a new task...", text: $newTaskTitle)
+                    .font(.system(size: 16))
                     .padding(.vertical, 12)
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, 16)
                     .background(
                         RoundedRectangle(cornerRadius: 14)
-                            .fill(Color.black)
+                            .fill(Color(.systemGray6))
                     )
-                    .foregroundStyle(.white)
+                
+                Button(action: addQuick) {
+                    Text("Add")
+                        .font(.system(size: 16, weight: .semibold))
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 20)
+                        .background(
+                            RoundedRectangle(cornerRadius: 14)
+                                .fill(Color.black)
+                        )
+                        .foregroundStyle(.white)
+                }
+                .disabled(newTaskTitle.isEmpty)
+                .opacity(newTaskTitle.isEmpty ? 0.5 : 1)
             }
-            .disabled(newTaskTitle.isEmpty)
-            .opacity(newTaskTitle.isEmpty ? 0.5 : 1)
+            // Quick actions row
+            HStack(spacing: 16) {
+                quickIcon("arrow.triangle.2.circlepath")
+                quickIcon("phone.fill")
+                quickIcon("message.fill")
+                quickIcon("envelope.fill")
+                quickIcon("bubble.left.and.bubble.right.fill")
+            }
+            .padding(.leading, 2)
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 14)
@@ -139,4 +141,12 @@ struct TaskListView: View {
         if let cat = store.filterCategory { return tasks.filter { $0.category?.id == cat.id } }
         return tasks
     }
+
+    private func quickIcon(_ name: String) -> some View {
+        Image(systemName: name)
+            .font(.system(size: 16, weight: .bold))
+            .frame(width: 34, height: 34)
+            .background(Circle().fill(Color(.systemGray6)))
+    }
 }
+

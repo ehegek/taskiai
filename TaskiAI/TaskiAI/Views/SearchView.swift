@@ -5,6 +5,7 @@ struct SearchView: View {
     @State private var query = ""
     @Query private var tasks: [Task]
     @State private var showCreate = false
+    @Environment(\.dismiss) private var dismiss
 
     init() {
         _tasks = Query(sort: \.date)
@@ -21,37 +22,48 @@ struct SearchView: View {
                 Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
                 
                 VStack(spacing: 0) {
-                    VStack(spacing: 16) {
+                    // Top bar: Back
+                    HStack(spacing: 8) {
+                        Button { dismiss() } label: {
+                            HStack(spacing: 6) {
+                                Image(systemName: "chevron.left")
+                                    .font(.system(size: 18, weight: .semibold))
+                                Text("Back")
+                                    .font(.system(size: 14, weight: .medium))
+                            }
+                            .foregroundStyle(.primary)
+                        }
+                        Spacer()
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, geo.safeAreaInsets.top + 8)
+
+                    VStack(spacing: 14) {
                         Text("Search")
-                            .font(.system(size: 28, weight: .bold))
+                            .font(.system(size: 32, weight: .bold))
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        
+
                         HStack(spacing: 12) {
                             Image(systemName: "magnifyingglass")
                                 .font(.system(size: 18))
                                 .foregroundStyle(.secondary)
-                            
-                            TextField("Search for tasks...", text: $query)
+                            TextField("Search For Task", text: $query)
                                 .font(.system(size: 17))
-                            
                             if !query.isEmpty {
-                                Button {
-                                    query = ""
-                                } label: {
+                                Button { query = "" } label: {
                                     Image(systemName: "xmark.circle.fill")
                                         .font(.system(size: 18))
                                         .foregroundStyle(.secondary)
                                 }
                             }
                         }
-                        .padding(14)
+                        .padding(16)
                         .background(
-                            RoundedRectangle(cornerRadius: 14)
+                            RoundedRectangle(cornerRadius: 22)
                                 .fill(Color(.systemGray6))
                         )
                     }
                     .padding(.horizontal, 20)
-                    .padding(.top, geo.safeAreaInsets.top + 12)
                     .padding(.bottom, 12)
                     
                     if query.isEmpty {
@@ -113,3 +125,4 @@ struct SearchView: View {
         }
     }
 }
+

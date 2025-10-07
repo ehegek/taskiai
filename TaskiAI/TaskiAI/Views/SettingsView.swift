@@ -2,11 +2,35 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject var appState: AppState
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
         GeometryReader { geo in
             ZStack {
                 Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
-                List {
+                VStack(spacing: 0) {
+                    // Back + Title
+                    HStack(spacing: 8) {
+                        Button { dismiss() } label: {
+                            HStack(spacing: 6) {
+                                Image(systemName: "chevron.left")
+                                    .font(.system(size: 18, weight: .semibold))
+                                Text("Back")
+                                    .font(.system(size: 14, weight: .medium))
+                            }
+                            .foregroundStyle(.primary)
+                        }
+                        Spacer()
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, geo.safeAreaInsets.top + 8)
+
+                    Text("Settings")
+                        .font(.system(size: 28, weight: .bold))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 8)
+
+                    List {
                     Section(header: Text("Account").font(.system(size: 14, weight: .semibold))) {
                         NavigationLink("Account") { Text("Account") }
                         NavigationLink("General") { Text("General") }
@@ -59,11 +83,14 @@ struct SettingsView: View {
                         }
                         .foregroundStyle(.orange)
                     }
+                    }
+                    .listStyle(.insetGrouped)
+                    .scrollContentBackground(.hidden)
                 }
-                .listStyle(.insetGrouped)
-                .scrollContentBackground(.hidden)
             }
             .navigationTitle("Settings")
+            .toolbar(.hidden, for: .navigationBar)
         }
     }
 }
+

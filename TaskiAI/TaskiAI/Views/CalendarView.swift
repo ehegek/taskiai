@@ -5,6 +5,7 @@ struct CalendarView: View {
     @State private var monthOffset: Int = 0
     @State private var selectedDate: Date = .now
     @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         GeometryReader { geo in
@@ -12,7 +13,17 @@ struct CalendarView: View {
                 Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
                 
                 VStack(spacing: 16) {
-                    Spacer(minLength: geo.safeAreaInsets.top)
+                    // Custom back bar
+                    HStack(spacing: 8) {
+                        Button { dismiss() } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundStyle(.primary)
+                        }
+                        Spacer()
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, geo.safeAreaInsets.top + 4)
                     
                     Text("Calendar")
                         .font(.system(size: 28, weight: .bold))
@@ -55,27 +66,28 @@ struct CalendarView: View {
 private struct MonthHeader: View {
     @Binding var monthOffset: Int
     var body: some View {
-        HStack {
+        HStack(spacing: 8) {
             Button { monthOffset -= 1 } label: {
                 Image(systemName: "chevron.left")
-                    .font(.system(size: 18, weight: .semibold))
+                    .font(.system(size: 16, weight: .semibold))
                     .foregroundStyle(.primary)
-                    .frame(width: 40, height: 40)
+                    .frame(width: 36, height: 36)
                     .background(Circle().fill(Color(.systemGray6)))
             }
             
-            Spacer()
-            
             Text(currentMonthString)
-                .font(.system(size: 20, weight: .bold))
-            
-            Spacer()
+                .font(.system(size: 18, weight: .bold))
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 10)
+                .background(
+                    Capsule().fill(Color(.systemGray6))
+                )
             
             Button { monthOffset += 1 } label: {
                 Image(systemName: "chevron.right")
-                    .font(.system(size: 18, weight: .semibold))
+                    .font(.system(size: 16, weight: .semibold))
                     .foregroundStyle(.primary)
-                    .frame(width: 40, height: 40)
+                    .frame(width: 36, height: 36)
                     .background(Circle().fill(Color(.systemGray6)))
             }
         }

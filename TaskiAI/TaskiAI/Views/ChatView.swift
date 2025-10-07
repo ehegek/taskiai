@@ -8,6 +8,8 @@ struct ChatView: View {
     @State private var messages: [ChatMessage] = [ChatMessage(text: "What task can I help you with?", isUser: false)]
     @State private var input = ""
     @State private var isRecording = false
+    @State private var showAttachLabel = false
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         GeometryReader { geo in
@@ -47,26 +49,15 @@ struct ChatView: View {
     
     private var header: some View {
         HStack {
-            Button {
-                // Navigate back
-            } label: {
+            Button { dismiss() } label: {
                 Image(systemName: "chevron.left")
                     .font(.system(size: 18, weight: .semibold))
                     .foregroundStyle(.primary)
             }
-            
             Spacer()
-            
-            VStack(spacing: 2) {
-                Text("Taski AI")
-                    .font(.system(size: 18, weight: .bold))
-                Text("Always here to help")
-                    .font(.system(size: 12))
-                    .foregroundStyle(.secondary)
-            }
-            
+            Text("Taski AI Chat")
+                .font(.system(size: 18, weight: .bold))
             Spacer()
-            
             Image(systemName: "ellipsis")
                 .font(.system(size: 18, weight: .semibold))
                 .foregroundStyle(.primary)
@@ -109,18 +100,26 @@ struct ChatView: View {
 
     private var inputBar: some View {
         HStack(spacing: 12) {
-            Button { /* add attachment */ } label: {
-                Image(systemName: "paperclip")
-                    .font(.system(size: 20, weight: .medium))
-                    .foregroundStyle(.secondary)
+            // Attachment chip toggle
+            Button { withAnimation { showAttachLabel.toggle() } } label: {
+                HStack(spacing: 6) {
+                    if showAttachLabel {
+                        Text("Add Photo & Files")
+                            .font(.system(size: 12, weight: .semibold))
+                    }
+                    Image(systemName: "plus")
+                        .font(.system(size: 16, weight: .bold))
+                }
+                .padding(.horizontal, 14)
+                .padding(.vertical, 10)
+                .background(RoundedRectangle(cornerRadius: 18).fill(Color(.systemGray6)))
             }
-            
+
             HStack(spacing: 8) {
-                TextField("Ask me anything...", text: $input)
+                TextField("Task me anything...", text: $input)
                     .font(.system(size: 16))
                     .padding(.vertical, 10)
                     .padding(.horizontal, 12)
-                
                 Button { toggleMic() } label: {
                     Image(systemName: isRecording ? "mic.circle.fill" : "mic")
                         .font(.system(size: 20, weight: .medium))
@@ -131,11 +130,11 @@ struct ChatView: View {
                 RoundedRectangle(cornerRadius: 24)
                     .fill(Color(.systemGray6))
             )
-            
+
             Button { send() } label: {
                 Image(systemName: "arrow.up.circle.fill")
                     .font(.system(size: 32))
-                    .foregroundStyle(input.isEmpty ? Color.secondary : Color.blue)
+                    .foregroundStyle(input.isEmpty ? Color.secondary : Color.black)
             }
             .disabled(input.isEmpty)
         }
