@@ -25,7 +25,6 @@ struct TaskListView: View {
                 VStack(spacing: 0) {
                     header
                         .padding(.top, geo.safeAreaInsets.top)
-                    addBar
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: 12) {
                             ForEach(filteredTasks) { task in
@@ -35,7 +34,7 @@ struct TaskListView: View {
                         }
                         .padding(.horizontal, 20)
                         .padding(.top, 12)
-                        .padding(.bottom, geo.safeAreaInsets.bottom + 20)
+                        .padding(.bottom, geo.safeAreaInsets.bottom + 100)
                     }
                 }
             }
@@ -43,6 +42,11 @@ struct TaskListView: View {
             .navigationDestination(item: $selectedTask) { task in
                 TaskDetailView(task: task)
             }
+            .safeAreaInset(edge: .bottom) {
+                addBar
+                    .padding(.bottom, max(0, geo.safeAreaInsets.bottom))
+            }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
         }
     }
 

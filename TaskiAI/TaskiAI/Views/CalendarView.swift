@@ -12,37 +12,38 @@ struct CalendarView: View {
             ZStack(alignment: .bottomTrailing) {
                 Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
                 
-                VStack(spacing: 16) {
-                    // Custom back bar
-                    HStack(spacing: 8) {
-                        Button { dismiss() } label: {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 18, weight: .semibold))
-                                .foregroundStyle(.primary)
+                ScrollView {
+                    VStack(spacing: 14) {
+                        // Custom back bar
+                        HStack(spacing: 8) {
+                            Button { dismiss() } label: {
+                                Image(systemName: "chevron.left")
+                                    .font(.system(size: 18, weight: .semibold))
+                                    .foregroundStyle(.primary)
+                            }
+                            Spacer()
                         }
-                        Spacer()
+                        .padding(.horizontal, 20)
+                        .padding(.top, geo.safeAreaInsets.top + 4)
+
+                        Text("Calendar")
+                            .font(.system(size: 28, weight: .bold))
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal, 20)
+
+                        MonthHeader(monthOffset: $monthOffset)
+                            .padding(.horizontal, 20)
+
+                        MonthGrid(monthOffset: monthOffset, selectedDate: $selectedDate)
+                            .padding(.horizontal, 16)
+
+                        DaySections(date: selectedDate)
+                            .padding(.horizontal, 20)
+                            .padding(.bottom, 12)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, geo.safeAreaInsets.top + 4)
-                    
-                    Text("Calendar")
-                        .font(.system(size: 28, weight: .bold))
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal, 20)
-                    
-                    MonthHeader(monthOffset: $monthOffset)
-                        .padding(.horizontal, 20)
-                    
-                    MonthGrid(monthOffset: monthOffset, selectedDate: $selectedDate)
-                        .padding(.horizontal, 20)
-                    
-                    DaySections(date: selectedDate)
-                        .padding(.horizontal, 20)
-                    
-                    Spacer()
+                    .padding(.bottom, geo.safeAreaInsets.bottom + 12)
                 }
-                .padding(.bottom, geo.safeAreaInsets.bottom + 80)
-                
+
                 NavigationLink { NewTaskView(defaultDate: selectedDate) } label: {
                     Image(systemName: "plus")
                         .font(.system(size: 24, weight: .semibold))
