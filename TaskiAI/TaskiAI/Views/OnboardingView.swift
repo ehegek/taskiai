@@ -6,65 +6,66 @@ struct OnboardingView: View {
     @State private var page = 0
 
     var body: some View {
-        TabView(selection: $page) {
-            onboardingPage(imageName: "onboarding_welcome", isFirst: true).tag(0)
-            onboardingPage(imageName: "onboarding_1").tag(1)
-            onboardingPage(imageName: "onboarding_2").tag(2)
-            onboardingPage(imageName: "onboarding_3").tag(3)
-            onboardingPage(imageName: "onboarding_4").tag(4)
-            onboardingPage(imageName: "onboarding_5").tag(5)
-            onboardingPage(imageName: "onboarding_6").tag(6)
-            onboardingPage(imageName: "onboarding_7").tag(7)
-            onboardingPage(imageName: "onboarding_8").tag(8)
-            referral.tag(9)
+        ZStack {
+            TabView(selection: $page) {
+                onboardingPage(imageName: "onboarding_welcome").tag(0)
+                onboardingPage(imageName: "onboarding_1").tag(1)
+                onboardingPage(imageName: "onboarding_2").tag(2)
+                onboardingPage(imageName: "onboarding_3").tag(3)
+                onboardingPage(imageName: "onboarding_4").tag(4)
+                onboardingPage(imageName: "onboarding_5").tag(5)
+                onboardingPage(imageName: "onboarding_6").tag(6)
+                onboardingPage(imageName: "onboarding_7").tag(7)
+                onboardingPage(imageName: "onboarding_8").tag(8)
+                referral.tag(9)
+            }
+            .tabViewStyle(.page(indexDisplayMode: .never))
         }
-        .tabViewStyle(.page(indexDisplayMode: .never))
-        .ignoresSafeArea(.all, edges: .all)
+        .ignoresSafeArea()
         .statusBar(hidden: true)
     }
 
     // MARK: - Pages
-    private func onboardingPage(imageName: String, isFirst: Bool = false) -> some View {
-        ZStack {
-            // Background image - full screen with proper scaling
-            if let uiImage = UIImage(named: imageName) {
-                GeometryReader { geo in
+    private func onboardingPage(imageName: String) -> some View {
+        GeometryReader { geometry in
+            ZStack {
+                // Full screen background image
+                if let uiImage = UIImage(named: imageName) {
                     Image(uiImage: uiImage)
                         .resizable()
-                        .scaledToFill()
-                        .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
-                        .clipped()
-                        .edgesIgnoringSafeArea(.all)
-                }
-            } else {
-                Color.black.edgesIgnoringSafeArea(.all)
-            }
-            
-            // Next button overlay at bottom
-            VStack {
-                Spacer()
-                
-                Button {
-                    withAnimation {
-                        page += 1
-                    }
-                } label: {
-                    Text("Next")
-                        .font(.system(size: 18, weight: .semibold))
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 16)
-                        .background(
-                            RoundedRectangle(cornerRadius: 18)
-                                .fill(Color.white)
+                        .aspectRatio(contentMode: .fill)
+                        .frame(
+                            minWidth: geometry.size.width,
+                            minHeight: geometry.size.height
                         )
-                        .foregroundStyle(.black)
+                        .clipped()
+                        .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                } else {
+                    Color.black
                 }
-                .padding(.horizontal, 24)
-                .padding(.bottom, 20)
+                
+                // Next button at bottom
+                VStack {
+                    Spacer()
+                    Button {
+                        withAnimation {
+                            page += 1
+                        }
+                    } label: {
+                        Text("Next")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(.black)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(Color.white)
+                            .cornerRadius(18)
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.bottom, 40)
+                }
             }
-            .padding(.bottom, 20)
         }
-        .edgesIgnoringSafeArea(.all)
+        .ignoresSafeArea()
     }
 
     private var referral: some View {
