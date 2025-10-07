@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 import PhotosUI
+import UIKit
 
 struct TaskDetailView: View, Identifiable {
     var id: UUID { task.id }
