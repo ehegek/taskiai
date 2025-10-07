@@ -22,5 +22,9 @@
 	<string>__SET_RC_PUBLIC_API_KEY__</string>
 	<key>REVENUECAT_ENTITLEMENT_ID</key>
 	<string>premium</string>
+	<key>UIStatusBarHidden</key>
+	<true/>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>

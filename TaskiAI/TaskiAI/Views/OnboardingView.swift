@@ -25,44 +25,46 @@ struct OnboardingView: View {
 
     // MARK: - Pages
     private func onboardingPage(imageName: String, isFirst: Bool = false) -> some View {
-        GeometryReader { geo in
-            ZStack {
-                // Background image - full screen
-                if let uiImage = UIImage(named: imageName) {
+        ZStack {
+            // Background image - full screen with proper scaling
+            if let uiImage = UIImage(named: imageName) {
+                GeometryReader { geo in
                     Image(uiImage: uiImage)
                         .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: geo.size.width, height: geo.size.height)
+                        .scaledToFill()
+                        .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
                         .clipped()
-                } else {
-                    Color.black
+                        .edgesIgnoringSafeArea(.all)
                 }
-                
-                // Next button overlay at bottom
-                VStack {
-                    Spacer()
-                    
-                    Button {
-                        withAnimation {
-                            page += 1
-                        }
-                    } label: {
-                        Text("Next")
-                            .font(.system(size: 18, weight: .semibold))
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 16)
-                            .background(
-                                RoundedRectangle(cornerRadius: 18)
-                                    .fill(Color.white)
-                            )
-                            .foregroundStyle(.black)
-                    }
-                    .padding(.horizontal, 24)
-                    .padding(.bottom, max(20, geo.safeAreaInsets.bottom + 8))
-                }
+            } else {
+                Color.black.edgesIgnoringSafeArea(.all)
             }
-            .ignoresSafeArea(.all, edges: .all)
+            
+            // Next button overlay at bottom
+            VStack {
+                Spacer()
+                
+                Button {
+                    withAnimation {
+                        page += 1
+                    }
+                } label: {
+                    Text("Next")
+                        .font(.system(size: 18, weight: .semibold))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(
+                            RoundedRectangle(cornerRadius: 18)
+                                .fill(Color.white)
+                        )
+                        .foregroundStyle(.black)
+                }
+                .padding(.horizontal, 24)
+                .padding(.bottom, 20)
+            }
+            .padding(.bottom, 20)
         }
+        .edgesIgnoringSafeArea(.all)
     }
 
     private var referral: some View {
