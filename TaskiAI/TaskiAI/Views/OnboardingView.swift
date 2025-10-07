@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct OnboardingView: View {
     @EnvironmentObject var appState: AppState
@@ -43,6 +44,7 @@ struct OnboardingView: View {
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
         .ignoresSafeArea(.all, edges: .all)
+        .statusBar(hidden: true)
     }
 
     // MARK: - Pages
@@ -57,26 +59,18 @@ struct OnboardingView: View {
                         .font(.system(size: 18, weight: .semibold))
                         .foregroundStyle(.white.opacity(0.9))
 
-                    Text("TASKI  AI")
+                    Text("TASKI AI")
                         .font(.system(size: 52, weight: .heavy))
                         .tracking(1.2)
                         .foregroundStyle(.white)
+                    
+                    logoMark
+                        .frame(width: 235, height: 182)
+                        .padding(.top, 4)
 
-                    ZStack {
-                        Circle().stroke(lineWidth: 8).foregroundStyle(.white).frame(width: 112, height: 112)
-                        Image(systemName: "checkmark")
-                            .font(.system(size: 54, weight: .bold))
-                            .foregroundStyle(.white)
-                    }
-                    .padding(.top, 4)
-
-                    HStack(spacing: 12) {
-                        Image("Rectangle 89").resizable().scaledToFit().frame(height: 160)
-                        Image("Rectangle 89").resizable().scaledToFit().frame(height: 160)
-                        Image("Rectangle 89").resizable().scaledToFit().frame(height: 160)
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 6)
+                    notificationRow
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 6)
 
                     Text("Never Miss a Task")
                         .font(.system(size: 15, weight: .medium))
@@ -104,7 +98,7 @@ struct OnboardingView: View {
                                 .font(.system(size: 15))
                                 .foregroundStyle(.white.opacity(0.9))
                         }
-
+                        
                         Text("By continuing, you agree to our Terms of Use and Privacy Policy")
                             .font(.system(size: 11))
                             .multilineTextAlignment(.center)
@@ -113,6 +107,7 @@ struct OnboardingView: View {
                     .padding(.horizontal, 24)
                     .padding(.bottom, geo.safeAreaInsets.bottom + 18)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             }
         }
     }
@@ -416,5 +411,104 @@ struct OnboardingView: View {
 
     // MARK: - Nav
     private func next() { withAnimation { page += 1 } }
-}
 
+    // MARK: - Helpers
+    private func firstExistingImageName(_ candidates: [String]) -> String? {
+        for name in candidates { if UIImage(named: name) != nil { return name } }
+        return nil
+    }
+
+    private var logoMark: some View {
+        Group {
+            if let name = firstExistingImageName(["taski_logo", "TaskiLogo", "TaskiAI", "TaskiCheck", "TaskiMark"]) {
+                Image(name)
+                    .resizable()
+                    .renderingMode(.original)
+                    .scaledToFit()
+            } else {
+                ZStack {
+                    Circle().stroke(lineWidth: 8).foregroundStyle(.white)
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 54, weight: .bold))
+                        .foregroundStyle(.white)
+                }
+            }
+        }
+    }
+
+    // Three notification mockups built with SwiftUI
+    private var notificationRow: some View {
+        GeometryReader { geo in
+            let cardH: CGFloat = 160
+            let gap: CGFloat = 12
+            let totalGaps = gap * 2
+            let cardW = (geo.size.width - 40 - totalGaps) / 3 // 40 = outer horizontal padding in parent
+            HStack(spacing: gap) {
+                banner(
+                    title: "TaskiAI",
+                    right: "Due at 4:00pm",
+                    headline: Text("2 Hours").foregroundStyle(.green) + Text(" until meeting with John").foregroundStyle(.white),
+                    sub: Text("Task Due Soon!").foregroundStyle(.white.opacity(0.9)),
+                    progress: 0.35
+                )
+                .frame(width: cardW, height: cardH)
+
+                banner(
+                    title: "TASKI AI",
+                    right: "now",
+                    headline: Text("Reminder For Math Homework").foregroundStyle(.white),
+                    sub: Text("Due at 11:59 PM").foregroundStyle(.white.opacity(0.9)),
+                    progress: nil
+                )
+                .frame(width: cardW, height: cardH)
+
+                banner(
+                    title: "TASKI AI",
+                    right: "now",
+                    headline: Text("Reminder For Homework Due at 11:59 Calc\nThis is your reminder for your homework due at 11:59PM for Calc. Best of luck completing …").foregroundStyle(.white),
+                    sub: nil,
+                    progress: nil
+                )
+                .frame(width: cardW, height: cardH)
+            }
+        }
+        .frame(height: 160)
+    }
+
+    private func banner(title: String, right: String?, headline: Text, sub: Text?, progress: CGFloat?) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 8) {
+                logoMark
+                    .frame(width: 20, height: 20)
+                Text(title)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(.white)
+                Spacer()
+                if let right { Text(right).font(.system(size: 11)).foregroundStyle(.white.opacity(0.8)) }
+            }
+            headline.font(.system(size: 14, weight: .regular))
+            if let sub { sub.font(.system(size: 13, weight: .bold)) }
+            if let progress {
+                ZStack(alignment: .leading) {
+                    Capsule().fill(Color.white.opacity(0.8)).frame(height: 6)
+                    Capsule().fill(Color.green).frame(width: 180 * max(0, min(1, progress)), height: 6)
+                    Circle()
+                        .strokeBorder(Color.white, lineWidth: 2)
+                        .background(Circle().fill(Color.black))
+                        .frame(width: 16, height: 16)
+                        .offset(x: 180 * max(0, min(1, progress)) - 8)
+                }
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(12)
+        .background(
+            RoundedRectangle(cornerRadius: 18)
+                .fill(Color.black.opacity(0.85))
+                .shadow(color: .black.opacity(0.35), radius: 10, y: 4)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 18)
+                .stroke(Color.white.opacity(0.12), lineWidth: 1)
+        )
+    }
