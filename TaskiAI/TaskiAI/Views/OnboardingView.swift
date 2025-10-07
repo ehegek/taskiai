@@ -70,6 +70,7 @@ struct OnboardingView: View {
             icon: "chart.line.uptrend.xyaxis",
             topAccent: Color(red: 0.10, green: 0.10, blue: 0.10),
             bottomAccent: Color.black
+        )
     ]
 
     var body: some View {
