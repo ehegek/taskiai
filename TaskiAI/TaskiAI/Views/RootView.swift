@@ -23,8 +23,8 @@ struct HomeView: View {
                 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
-                        Spacer(minLength: geo.safeAreaInsets.top)
                         header
+                            .padding(.top, geo.safeAreaInsets.top + 8)
                         streakPill
                         grid
                     }

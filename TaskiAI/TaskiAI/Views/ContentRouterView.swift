@@ -18,5 +18,6 @@ struct ContentRouterView: View {
         .animation(.easeInOut, value: appState.hasCompletedOnboarding)
         .animation(.easeInOut, value: appState.isAuthenticated)
         .animation(.easeInOut, value: appState.hasActiveSubscription)
+        .ignoresSafeArea(.all)
     }
 }
