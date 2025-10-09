@@ -1,6 +1,32 @@
 import SwiftUI
 import UIKit
 
+extension Color {
+    init(hex: String) {
+        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
+        var int: UInt64 = 0
+        Scanner(string: hex).scanHexInt64(&int)
+        let a, r, g, b: UInt64
+        switch hex.count {
+        case 3: // RGB (12-bit)
+            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
+        case 6: // RGB (24-bit)
+            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
+        case 8: // ARGB (32-bit)
+            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
+        default:
+            (a, r, g, b) = (255, 0, 0, 0)
+        }
+        self.init(
+            .sRGB,
+            red: Double(r) / 255,
+            green: Double(g) / 255,
+            blue: Double(b) / 255,
+            opacity: Double(a) / 255
+        )
+    }
+}
+
 struct OnboardingView: View {
     @EnvironmentObject var appState: AppState
     @State private var page = 0
@@ -15,6 +41,7 @@ struct OnboardingView: View {
     }
 
     private var slides: [Slide] = [
+        // Welcome
         .init(
             title: "Welcome to Taski AI",
             subtitle: "Smart reminders that actually get done.",
@@ -22,52 +49,67 @@ struct OnboardingView: View {
             topAccent: Color.black,
             bottomAccent: Color.black
         ),
+        // Pain Point 1 - Red
         .init(
-            title: "Avoid setbacks",
-            subtitle: "Protect progress with guardrails and timely nudges.",
-            icon: "lock.fill",
-            topAccent: Color(red: 0.10, green: 0.10, blue: 0.10),
-            bottomAccent: Color(red: 0.00, green: 0.00, blue: 0.00)
+            title: "Overwhelmed by tasks?",
+            subtitle: "Too many to-dos, not enough time to manage them all.",
+            icon: "exclamationmark.triangle.fill",
+            topAccent: Color(hex: "FF4545"),
+            bottomAccent: Color(hex: "FF4545")
         ),
+        // Pain Point 2 - Red
         .init(
-            title: "Conquer yourself",
-            subtitle: "Build discipline, focus, and momentum every day.",
-            icon: "flag.checkered",
-            topAccent: Color(red: 0.10, green: 0.10, blue: 0.10),
-            bottomAccent: Color.black
-        ),
-        .init(
-            title: "Rewire your brain",
-            subtitle: "Small wins release dopamine and fuel motivation.",
+            title: "Forget important things?",
+            subtitle: "Critical tasks slip through the cracks every day.",
             icon: "brain.head.profile",
-            topAccent: Color(red: 0.10, green: 0.10, blue: 0.10),
-            bottomAccent: Color.black
+            topAccent: Color(hex: "FF4545"),
+            bottomAccent: Color(hex: "FF4545")
         ),
+        // Pain Point 3 - Red
         .init(
-            title: "Stay on track",
-            subtitle: "Gentle, context-aware reminders keep you moving.",
+            title: "Lose motivation fast?",
+            subtitle: "Start strong but can't keep the momentum going.",
+            icon: "battery.0",
+            topAccent: Color(hex: "FF4545"),
+            bottomAccent: Color(hex: "FF4545")
+        ),
+        // Justification - Blue
+        .init(
+            title: "You need a system",
+            subtitle: "Not another app—a partner that keeps you accountable.",
+            icon: "shield.checkered",
+            topAccent: Color(hex: "0E64AF"),
+            bottomAccent: Color(hex: "0E64AF")
+        ),
+        // Value Add 1 - Green (solution to pain 1)
+        .init(
+            title: "Smart prioritization",
+            subtitle: "We organize your tasks so you focus on what matters most.",
+            icon: "list.bullet.clipboard.fill",
+            topAccent: Color(hex: "34C759"),
+            bottomAccent: Color(hex: "34C759")
+        ),
+        // Value Add 2 - Green (solution to pain 2)
+        .init(
+            title: "Never miss a deadline",
+            subtitle: "Intelligent reminders that adapt to your schedule.",
             icon: "bell.badge.fill",
-            topAccent: Color(red: 0.10, green: 0.10, blue: 0.10),
-            bottomAccent: Color.black
+            topAccent: Color(hex: "34C759"),
+            bottomAccent: Color(hex: "34C759")
         ),
+        // Value Add 3 - Green (solution to pain 3)
         .init(
-            title: "Plan once",
-            subtitle: "We handle the follow-ups and accountability.",
-            icon: "calendar.badge.clock",
-            topAccent: Color(red: 0.10, green: 0.10, blue: 0.10),
-            bottomAccent: Color.black
-        ),
-        .init(
-            title: "Focus mode",
-            subtitle: "One clear next step—no overwhelm.",
-            icon: "target",
-            topAccent: Color(red: 0.10, green: 0.10, blue: 0.10),
-            bottomAccent: Color.black
-        ),
-        .init(
-            title: "Progress you can feel",
-            subtitle: "See streaks, trends, and completions grow.",
+            title: "Build lasting habits",
+            subtitle: "Track streaks and celebrate wins to stay motivated.",
             icon: "chart.line.uptrend.xyaxis",
+            topAccent: Color(hex: "34C759"),
+            bottomAccent: Color(hex: "34C759")
+        ),
+        // Social Proof
+        .init(
+            title: "Join 10,000+ users",
+            subtitle: "People like you are crushing their goals with Taski AI.",
+            icon: "person.3.fill",
             topAccent: Color(red: 0.10, green: 0.10, blue: 0.10),
             bottomAccent: Color.black
         )
