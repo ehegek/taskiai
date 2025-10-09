@@ -32,7 +32,7 @@ struct TaskDetailView: View, Identifiable {
                     Section("Details (optional)") {
                         TextField("Notes", text: Binding(get: { task.notes ?? "" }, set: { task.notes = $0 }), axis: .vertical)
                     }
-                    Section {
+                    Section(header: Text("Attachments")) {
                         if task.imageIDs.isEmpty {
                             Text("No photos added yet.")
                                 .foregroundStyle(.secondary)
@@ -69,8 +69,6 @@ struct TaskDetailView: View, Identifiable {
                         .onChange(of: photoItems) { _ in
                             Swift.Task { await importPhotos() }
                         }
-                    } header: {
-                        Text("Attachments")
                     }
                 }
                 .scrollContentBackground(.hidden)
