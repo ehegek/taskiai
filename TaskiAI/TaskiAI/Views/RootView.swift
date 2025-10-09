@@ -24,12 +24,12 @@ struct HomeView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
                         header
-                            .padding(.top, geo.safeAreaInsets.top + 8)
+                            .padding(.top, geo.safeAreaInsets.top)
                         streakPill
                         grid
                     }
                     .padding(.horizontal, 20)
-                    .padding(.bottom, 100)
+                    .padding(.bottom, max(geo.safeAreaInsets.bottom + 80, 80))
                 }
                 .scrollIndicators(.hidden)
                 
@@ -50,6 +50,7 @@ struct HomeView: View {
             .navigationTitle("")
             .navigationBarHidden(true)
             .navigationDestination(isPresented: $showCreate) { NewTaskView(defaultDate: .now) }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
         }
     }
 
@@ -92,7 +93,6 @@ struct HomeView: View {
                 }
             }
         }
-        .padding(.top, 8)
     }
 
     private var streakPill: some View {

@@ -34,7 +34,7 @@ struct TaskListView: View {
                         }
                         .padding(.horizontal, 20)
                         .padding(.top, 12)
-                        .padding(.bottom, geo.safeAreaInsets.bottom + 100)
+                        .padding(.bottom, 20)
                     }
                 }
             }
@@ -44,7 +44,6 @@ struct TaskListView: View {
             }
             .safeAreaInset(edge: .bottom) {
                 addBar
-                    .padding(.bottom, max(0, geo.safeAreaInsets.bottom))
             }
             .ignoresSafeArea(.keyboard, edges: .bottom)
         }
@@ -81,7 +80,8 @@ struct TaskListView: View {
             }
         }
         .padding(.horizontal, 20)
-        .padding(.vertical, 12)
+        .padding(.top, 12)
+        .padding(.bottom, 8)
     }
 
     private var addBar: some View {

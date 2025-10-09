@@ -24,7 +24,7 @@ struct CalendarView: View {
                             Spacer()
                         }
                         .padding(.horizontal, 20)
-                        .padding(.top, geo.safeAreaInsets.top + 4)
+                        .padding(.top, geo.safeAreaInsets.top)
 
                         Text("Calendar")
                             .font(.system(size: 28, weight: .bold))
@@ -41,7 +41,7 @@ struct CalendarView: View {
                             .padding(.horizontal, 20)
                             .padding(.bottom, 12)
                     }
-                    .padding(.bottom, geo.safeAreaInsets.bottom + 12)
+                    .padding(.bottom, 20)
                 }
 
                 NavigationLink { NewTaskView(defaultDate: selectedDate) } label: {
@@ -56,7 +56,7 @@ struct CalendarView: View {
                         )
                 }
                 .padding(.trailing, 20)
-                .padding(.bottom, geo.safeAreaInsets.bottom + 20)
+                .padding(.bottom, max(geo.safeAreaInsets.bottom + 12, 20))
             }
             .navigationTitle("Calendar")
             .toolbar(.hidden, for: .navigationBar)

@@ -25,7 +25,7 @@ struct ActionReminderView: View {
                         Spacer()
                     }
                     .padding(.horizontal, 20)
-                    .padding(.top, geo.safeAreaInsets.top + 8)
+                    .padding(.top, geo.safeAreaInsets.top)
 
                     HStack {
                         Text("Action Reminder")
@@ -91,6 +91,7 @@ struct ActionReminderView: View {
             }
             .navigationTitle("Action Reminder")
             .toolbar(.hidden, for: .navigationBar)
+            .ignoresSafeArea(.keyboard, edges: .bottom)
             .onAppear {
                 if newTitle.isEmpty { reminderDate = selectedDate }
             }
