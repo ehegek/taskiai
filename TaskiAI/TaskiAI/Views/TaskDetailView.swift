@@ -110,6 +110,7 @@ struct TaskDetailView: View, Identifiable {
     }
 
     // MARK: - Import
+    
     private func importPhotos() async {
         for item in photoItems {
             if let data = try? await item.loadTransferable(type: Data.self), let img = UIImage(data: data) {
