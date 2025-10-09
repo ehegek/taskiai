@@ -20,7 +20,7 @@ struct TaskDetailView: View, Identifiable {
             ZStack {
                 Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
                 Form {
-                    Section { TextField("Enter task name", text: $task.title) }
+                    TextField("Enter task name", text: $task.title)
                     DatePicker("Date", selection: $task.date, displayedComponents: [.date, .hourAndMinute])
                     Toggle("Repeat", isOn: Binding(get: { repeatOn }, set: { repeatOn = $0; task.repeatRule.frequency = $0 ? .daily : .none }))
                     Toggle("Reminder", isOn: Binding(get: { reminderOn }, set: { reminderOn = $0; task.reminderEnabled = $0 }))
