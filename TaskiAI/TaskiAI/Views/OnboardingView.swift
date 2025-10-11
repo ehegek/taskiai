@@ -126,8 +126,10 @@ struct OnboardingView: View {
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .edgesIgnoringSafeArea(.all)
         }
-        .ignoresSafeArea(.all)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .edgesIgnoringSafeArea(.all)
         .statusBar(hidden: true)
     }
 
@@ -136,8 +138,8 @@ struct OnboardingView: View {
         GeometryReader { geo in
             ZStack {
                 LinearGradient(colors: [slide.topAccent, slide.bottomAccent], startPoint: .top, endPoint: .bottom)
-                    .frame(width: geo.size.width, height: geo.size.height)
-                    .ignoresSafeArea(.all)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .edgesIgnoringSafeArea(.all)
 
                 VStack(spacing: 20) {
                     Spacer(minLength: geo.safeAreaInsets.top + 24)
@@ -184,15 +186,18 @@ struct OnboardingView: View {
                     .padding(.bottom, geo.safeAreaInsets.bottom + 12)
                 }
             }
-            .frame(width: geo.size.width, height: geo.size.height)
-            .ignoresSafeArea(.all)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .edgesIgnoringSafeArea(.all)
         }
+        .edgesIgnoringSafeArea(.all)
     }
 
     private var referral: some View {
         GeometryReader { geo in
             ZStack {
-                Color.black.ignoresSafeArea(.all, edges: .all)
+                Color.black
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .edgesIgnoringSafeArea(.all)
 
                 VStack(spacing: 18) {
                     Spacer(minLength: geo.safeAreaInsets.top + 18)
@@ -261,7 +266,10 @@ struct OnboardingView: View {
                     .padding(.bottom, geo.safeAreaInsets.bottom + 16)
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .edgesIgnoringSafeArea(.all)
         }
+        .edgesIgnoringSafeArea(.all)
     }
 
 }

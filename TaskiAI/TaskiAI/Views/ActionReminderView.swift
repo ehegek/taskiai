@@ -12,7 +12,9 @@ struct ActionReminderView: View {
 
     var body: some View {
         ZStack {
-            Color(.systemBackground).ignoresSafeArea()
+            Color(.systemBackground)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.all)
             
             GeometryReader { geo in
                 VStack(spacing: 0) {

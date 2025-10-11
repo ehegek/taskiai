@@ -9,7 +9,9 @@ struct CalendarView: View {
 
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
-            Color(.systemBackground).ignoresSafeArea()
+            Color(.systemBackground)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.all)
             
             GeometryReader { geo in
                 ScrollView {
