@@ -143,7 +143,8 @@ struct OnboardingView: View {
                     .edgesIgnoringSafeArea(.all)
 
                 VStack(spacing: 20) {
-                    Spacer(minLength: geo.safeAreaInsets.top + 24)
+                    Spacer()
+                        .frame(height: max(geo.safeAreaInsets.top + 40, 80))
 
                     ZStack {
                         Circle()
@@ -184,7 +185,9 @@ struct OnboardingView: View {
                             )
                     }
                     .padding(.horizontal, 24)
-                    .padding(.bottom, geo.safeAreaInsets.bottom + 12)
+                    
+                    Spacer()
+                        .frame(height: max(geo.safeAreaInsets.bottom + 24, 40))
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -202,7 +205,8 @@ struct OnboardingView: View {
                     .edgesIgnoringSafeArea(.all)
 
                 VStack(spacing: 18) {
-                    Spacer(minLength: geo.safeAreaInsets.top + 18)
+                    Spacer()
+                        .frame(height: max(geo.safeAreaInsets.top + 30, 70))
 
                     HStack {
                         Button { withAnimation { page = max(0, page-1) } } label: {
@@ -265,7 +269,9 @@ struct OnboardingView: View {
                             .font(.system(size: 16, weight: .medium))
                             .foregroundStyle(.white.opacity(0.8))
                     }
-                    .padding(.bottom, geo.safeAreaInsets.bottom + 16)
+                    
+                    Spacer()
+                        .frame(height: max(geo.safeAreaInsets.bottom + 20, 40))
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

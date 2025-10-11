@@ -18,7 +18,7 @@ struct CalendarView: View {
                 ScrollView {
                     VStack(spacing: 14) {
                         Spacer()
-                            .frame(height: geo.safeAreaInsets.top)
+                            .frame(height: max(geo.safeAreaInsets.top + 10, 50))
                         // Custom back bar
                         HStack(spacing: 8) {
                             Button { dismiss() } label: {
@@ -46,7 +46,7 @@ struct CalendarView: View {
                             .padding(.bottom, 12)
                         
                         Spacer()
-                            .frame(height: max(geo.safeAreaInsets.bottom + 80, 80))
+                            .frame(height: max(geo.safeAreaInsets.bottom + 100, 120))
                     }
                 }
 
@@ -66,7 +66,7 @@ struct CalendarView: View {
                                 )
                         }
                         .padding(.trailing, 20)
-                        .padding(.bottom, geo.safeAreaInsets.bottom + 20)
+                        .padding(.bottom, max(geo.safeAreaInsets.bottom + 20, 30))
                     }
                 }
             }

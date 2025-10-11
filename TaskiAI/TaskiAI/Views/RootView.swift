@@ -29,12 +29,12 @@ struct HomeView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
                         Spacer()
-                            .frame(height: max(geo.safeAreaInsets.top, 0))
+                            .frame(height: max(geo.safeAreaInsets.top + 20, 60))
                         header
                         streakPill
                         grid
                         Spacer()
-                            .frame(height: max(geo.safeAreaInsets.bottom + 80, 80))
+                            .frame(height: max(geo.safeAreaInsets.bottom + 100, 120))
                     }
                     .padding(.horizontal, 20)
                 }
@@ -57,7 +57,7 @@ struct HomeView: View {
                                 )
                         }
                         .padding(.trailing, 20)
-                        .padding(.bottom, geo.safeAreaInsets.bottom + 20)
+                        .padding(.bottom, max(geo.safeAreaInsets.bottom + 20, 30))
                     }
                 }
             }

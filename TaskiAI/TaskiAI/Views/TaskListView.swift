@@ -28,7 +28,7 @@ struct TaskListView: View {
             GeometryReader { geo in
                 VStack(spacing: 0) {
                     Spacer()
-                        .frame(height: geo.safeAreaInsets.top)
+                        .frame(height: max(geo.safeAreaInsets.top + 10, 50))
                     header
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: 12) {
@@ -42,7 +42,7 @@ struct TaskListView: View {
                         .padding(.bottom, 20)
                     }
                     addBar
-                        .padding(.bottom, geo.safeAreaInsets.bottom)
+                        .padding(.bottom, max(geo.safeAreaInsets.bottom + 10, 20))
                 }
             }
         }

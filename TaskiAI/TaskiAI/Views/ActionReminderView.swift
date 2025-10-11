@@ -20,7 +20,7 @@ struct ActionReminderView: View {
             GeometryReader { geo in
                 VStack(spacing: 0) {
                     Spacer()
-                        .frame(height: geo.safeAreaInsets.top)
+                        .frame(height: max(geo.safeAreaInsets.top + 10, 50))
                     HStack(spacing: 8) {
                         Button { dismiss() } label: {
                             Image(systemName: "chevron.left")
@@ -92,7 +92,7 @@ struct ActionReminderView: View {
                         .padding(.bottom, 20)
                     }
                     Spacer()
-                        .frame(height: geo.safeAreaInsets.bottom)
+                        .frame(height: max(geo.safeAreaInsets.bottom + 10, 20))
                 }
             }
         }
