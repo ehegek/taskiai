@@ -47,22 +47,29 @@ struct CalendarView: View {
                     }
                 }
 
-                NavigationLink { NewTaskView(defaultDate: selectedDate) } label: {
-                    Image(systemName: "plus")
-                        .font(.system(size: 24, weight: .semibold))
-                        .foregroundStyle(.white)
-                        .frame(width: 60, height: 60)
-                        .background(
-                            Circle()
-                                .fill(Color.black)
-                                .shadow(color: .black.opacity(0.3), radius: 12, y: 6)
-                        )
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        NavigationLink { NewTaskView(defaultDate: selectedDate) } label: {
+                            Image(systemName: "plus")
+                                .font(.system(size: 24, weight: .semibold))
+                                .foregroundStyle(.white)
+                                .frame(width: 60, height: 60)
+                                .background(
+                                    Circle()
+                                        .fill(Color.black)
+                                        .shadow(color: .black.opacity(0.3), radius: 12, y: 6)
+                                )
+                        }
+                        .padding(.trailing, 20)
+                        .padding(.bottom, geo.safeAreaInsets.bottom + 20)
+                    }
                 }
-                .position(x: UIScreen.main.bounds.width - 40, y: UIScreen.main.bounds.height - geo.safeAreaInsets.bottom - 40)
             }
         }
         .navigationTitle("Calendar")
-        .toolbar(.hidden, for: .navigationBar)
+        .navigationBarHidden(true)
     }
 }
 

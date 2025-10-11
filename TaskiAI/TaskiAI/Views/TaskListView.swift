@@ -43,7 +43,7 @@ struct TaskListView: View {
                 }
             }
         }
-        .toolbar(.hidden, for: .navigationBar)
+        .navigationBarHidden(true)
         .navigationDestination(item: $selectedTask) { task in
             TaskDetailView(task: task)
         }

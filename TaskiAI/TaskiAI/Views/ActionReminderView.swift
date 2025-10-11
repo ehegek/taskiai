@@ -94,7 +94,7 @@ struct ActionReminderView: View {
             }
         }
         .navigationTitle("Action Reminder")
-        .toolbar(.hidden, for: .navigationBar)
+        .navigationBarHidden(true)
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .onAppear {
             if newTitle.isEmpty { reminderDate = selectedDate }
