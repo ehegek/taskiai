@@ -11,11 +11,13 @@ struct ActionReminderView: View {
     @State private var selectedChannel: ReminderChannel = .appPush
 
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
-                
+        ZStack {
+            Color(.systemBackground).ignoresSafeArea()
+            
+            GeometryReader { geo in
                 VStack(spacing: 0) {
+                    Spacer()
+                        .frame(height: geo.safeAreaInsets.top)
                     HStack(spacing: 8) {
                         Button { dismiss() } label: {
                             Image(systemName: "chevron.left")
@@ -25,7 +27,6 @@ struct ActionReminderView: View {
                         Spacer()
                     }
                     .padding(.horizontal, 20)
-                    .padding(.top, geo.safeAreaInsets.top)
 
                     HStack {
                         Text("Action Reminder")
@@ -85,16 +86,18 @@ struct ActionReminderView: View {
                             }
                         }
                         .padding(.horizontal, 20)
-                        .padding(.bottom, geo.safeAreaInsets.bottom + 20)
+                        .padding(.bottom, 20)
                     }
+                    Spacer()
+                        .frame(height: geo.safeAreaInsets.bottom)
                 }
             }
-            .navigationTitle("Action Reminder")
-            .toolbar(.hidden, for: .navigationBar)
-            .ignoresSafeArea(.keyboard, edges: .bottom)
-            .onAppear {
-                if newTitle.isEmpty { reminderDate = selectedDate }
-            }
+        }
+        .navigationTitle("Action Reminder")
+        .toolbar(.hidden, for: .navigationBar)
+        .ignoresSafeArea(.keyboard, edges: .bottom)
+        .onAppear {
+            if newTitle.isEmpty { reminderDate = selectedDate }
         }
     }
 }

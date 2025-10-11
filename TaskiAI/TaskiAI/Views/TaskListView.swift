@@ -19,12 +19,14 @@ struct TaskListView: View {
     }
 
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
+        ZStack {
+            Color(.systemBackground).ignoresSafeArea()
+            
+            GeometryReader { geo in
                 VStack(spacing: 0) {
+                    Spacer()
+                        .frame(height: geo.safeAreaInsets.top)
                     header
-                        .padding(.top, geo.safeAreaInsets.top)
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: 12) {
                             ForEach(filteredTasks) { task in
@@ -36,17 +38,16 @@ struct TaskListView: View {
                         .padding(.top, 12)
                         .padding(.bottom, 20)
                     }
+                    addBar
+                        .padding(.bottom, geo.safeAreaInsets.bottom)
                 }
             }
-            .toolbar(.hidden, for: .navigationBar)
-            .navigationDestination(item: $selectedTask) { task in
-                TaskDetailView(task: task)
-            }
-            .safeAreaInset(edge: .bottom) {
-                addBar
-            }
-            .ignoresSafeArea(.keyboard, edges: .bottom)
         }
+        .toolbar(.hidden, for: .navigationBar)
+        .navigationDestination(item: $selectedTask) { task in
+            TaskDetailView(task: task)
+        }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 
     private var header: some View {

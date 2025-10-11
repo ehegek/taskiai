@@ -8,12 +8,14 @@ struct CalendarView: View {
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        GeometryReader { geo in
-            ZStack(alignment: .bottomTrailing) {
-                Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
-                
+        ZStack(alignment: .bottomTrailing) {
+            Color(.systemBackground).ignoresSafeArea()
+            
+            GeometryReader { geo in
                 ScrollView {
                     VStack(spacing: 14) {
+                        Spacer()
+                            .frame(height: geo.safeAreaInsets.top)
                         // Custom back bar
                         HStack(spacing: 8) {
                             Button { dismiss() } label: {
@@ -24,7 +26,6 @@ struct CalendarView: View {
                             Spacer()
                         }
                         .padding(.horizontal, 20)
-                        .padding(.top, geo.safeAreaInsets.top)
 
                         Text("Calendar")
                             .font(.system(size: 28, weight: .bold))
@@ -40,8 +41,10 @@ struct CalendarView: View {
                         DaySections(date: selectedDate)
                             .padding(.horizontal, 20)
                             .padding(.bottom, 12)
+                        
+                        Spacer()
+                            .frame(height: max(geo.safeAreaInsets.bottom + 80, 80))
                     }
-                    .padding(.bottom, 20)
                 }
 
                 NavigationLink { NewTaskView(defaultDate: selectedDate) } label: {
@@ -55,12 +58,11 @@ struct CalendarView: View {
                                 .shadow(color: .black.opacity(0.3), radius: 12, y: 6)
                         )
                 }
-                .padding(.trailing, 20)
-                .padding(.bottom, max(geo.safeAreaInsets.bottom + 12, 20))
+                .position(x: UIScreen.main.bounds.width - 40, y: UIScreen.main.bounds.height - geo.safeAreaInsets.bottom - 40)
             }
-            .navigationTitle("Calendar")
-            .toolbar(.hidden, for: .navigationBar)
         }
+        .navigationTitle("Calendar")
+        .toolbar(.hidden, for: .navigationBar)
     }
 }
 

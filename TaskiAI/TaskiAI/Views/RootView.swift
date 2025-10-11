@@ -16,20 +16,22 @@ struct HomeView: View {
     @State private var showCreate = false
 
     var body: some View {
-        GeometryReader { geo in
-            ZStack(alignment: .bottomTrailing) {
-                Color(.systemBackground)
-                    .ignoresSafeArea(.all, edges: .all)
-                
+        ZStack(alignment: .bottomTrailing) {
+            Color(.systemBackground)
+                .ignoresSafeArea()
+            
+            GeometryReader { geo in
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
+                        Spacer()
+                            .frame(height: geo.safeAreaInsets.top)
                         header
-                            .padding(.top, geo.safeAreaInsets.top)
                         streakPill
                         grid
+                        Spacer()
+                            .frame(height: max(geo.safeAreaInsets.bottom + 80, 80))
                     }
                     .padding(.horizontal, 20)
-                    .padding(.bottom, max(geo.safeAreaInsets.bottom + 80, 80))
                 }
                 .scrollIndicators(.hidden)
                 
@@ -44,14 +46,13 @@ struct HomeView: View {
                                 .shadow(color: .black.opacity(0.3), radius: 12, y: 6)
                         )
                 }
-                .padding(.trailing, 20)
-                .padding(.bottom, geo.safeAreaInsets.bottom + 20)
+                .position(x: UIScreen.main.bounds.width - 40, y: UIScreen.main.bounds.height - geo.safeAreaInsets.bottom - 40)
             }
-            .navigationTitle("")
-            .navigationBarHidden(true)
-            .navigationDestination(isPresented: $showCreate) { NewTaskView(defaultDate: .now) }
-            .ignoresSafeArea(.keyboard, edges: .bottom)
         }
+        .navigationTitle("")
+        .navigationBarHidden(true)
+        .navigationDestination(isPresented: $showCreate) { NewTaskView(defaultDate: .now) }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 
 
