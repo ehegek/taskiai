@@ -6,8 +6,9 @@ struct RootView: View {
         NavigationStack {
             HomeView()
                 .navigationBarHidden(true)
+                .edgesIgnoringSafeArea(.all)
         }
-        .ignoresSafeArea()
+        .edgesIgnoringSafeArea(.all)
     }
 }
 
@@ -20,13 +21,14 @@ struct HomeView: View {
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
             Color(.systemBackground)
-                .ignoresSafeArea()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.all)
             
             GeometryReader { geo in
                 ScrollView {
                     VStack(alignment: .leading, spacing: 24) {
                         Spacer()
-                            .frame(height: geo.safeAreaInsets.top)
+                            .frame(height: max(geo.safeAreaInsets.top, 0))
                         header
                         streakPill
                         grid
@@ -36,6 +38,7 @@ struct HomeView: View {
                     .padding(.horizontal, 20)
                 }
                 .scrollIndicators(.hidden)
+                .edgesIgnoringSafeArea(.all)
                 
                 VStack {
                     Spacer()

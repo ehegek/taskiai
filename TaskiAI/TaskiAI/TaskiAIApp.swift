@@ -16,6 +16,7 @@ struct TaskiAIApp: App {
         WindowGroup {
             ContentRouterView()
                 .environmentObject(appState)
+                .preferredColorScheme(.dark)
                 .onAppear {
                     configureRevenueCat()
                 }
