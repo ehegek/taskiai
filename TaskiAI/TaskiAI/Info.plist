@@ -26,5 +26,12 @@
 	<true/>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIRequiresFullScreen</key>
+	<true/>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIImageRespectsSafeAreaInsets</key>
+		<false/>
+	</dict>
 </dict>
 </plist>

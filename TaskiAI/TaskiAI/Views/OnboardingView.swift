@@ -137,8 +137,9 @@ struct OnboardingView: View {
     private func onboardingSlide(_ slide: Slide) -> some View {
         GeometryReader { geo in
             ZStack {
-                LinearGradient(colors: [slide.topAccent, slide.bottomAccent], startPoint: .top, endPoint: .bottom)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                Rectangle()
+                    .fill(LinearGradient(colors: [slide.topAccent, slide.bottomAccent], startPoint: .top, endPoint: .bottom))
+                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                     .edgesIgnoringSafeArea(.all)
 
                 VStack(spacing: 20) {
@@ -195,8 +196,9 @@ struct OnboardingView: View {
     private var referral: some View {
         GeometryReader { geo in
             ZStack {
-                Color.black
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                Rectangle()
+                    .fill(Color.black)
+                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                     .edgesIgnoringSafeArea(.all)
 
                 VStack(spacing: 18) {
