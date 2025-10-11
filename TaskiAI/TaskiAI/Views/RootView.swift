@@ -27,16 +27,16 @@ struct HomeView: View {
             
             GeometryReader { geo in
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 24) {
+                    VStack(alignment: .leading, spacing: 20) {
                         Spacer()
-                            .frame(height: max(geo.safeAreaInsets.top + 20, 60))
+                            .frame(height: max(geo.safeAreaInsets.top + 10, 50))
                         header
                         streakPill
                         grid
                         Spacer()
                             .frame(height: max(geo.safeAreaInsets.bottom + 100, 120))
                     }
-                    .padding(.horizontal, 20)
+                    .padding(.horizontal, 16)
                 }
                 .scrollIndicators(.hidden)
                 .edgesIgnoringSafeArea(.all)
@@ -174,26 +174,26 @@ struct HomeView: View {
     }
 
     private func card(title: String, subtitle: String, icon: String, color: Color) -> some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 16) {
             Image(systemName: icon)
-                .font(.system(size: 32, weight: .medium))
+                .font(.system(size: 44, weight: .medium))
                 .foregroundStyle(color)
             
             Spacer()
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
-                    .font(.system(size: 18, weight: .bold))
+                    .font(.system(size: 19, weight: .bold))
                     .foregroundStyle(.primary)
                 
                 Text(subtitle)
-                    .font(.system(size: 13))
+                    .font(.system(size: 14))
                     .foregroundStyle(.secondary)
             }
         }
-        .frame(height: 160)
+        .frame(height: 190)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(18)
+        .padding(20)
         .background(
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color(.systemBackground))

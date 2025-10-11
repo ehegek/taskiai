@@ -142,32 +142,33 @@ struct OnboardingView: View {
                     .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                     .edgesIgnoringSafeArea(.all)
 
-                VStack(spacing: 20) {
+                VStack(spacing: 28) {
                     Spacer()
-                        .frame(height: max(geo.safeAreaInsets.top + 40, 80))
+                        .frame(height: max(geo.safeAreaInsets.top + 60, 100))
 
                     ZStack {
                         Circle()
                             .fill(Color.white.opacity(0.08))
-                            .frame(width: min(220, geo.size.width * 0.45), height: min(220, geo.size.width * 0.45))
+                            .frame(width: 200, height: 200)
                         Image(systemName: slide.icon)
                             .symbolRenderingMode(.palette)
                             .foregroundStyle(Color.white)
-                            .font(.system(size: min(110, geo.size.width * 0.22), weight: .bold))
+                            .font(.system(size: 100, weight: .bold))
                     }
-                    .padding(.top, 10)
 
                     Text(slide.title)
-                        .font(.system(size: min(36, geo.size.width * 0.09), weight: .heavy))
+                        .font(.system(size: 32, weight: .bold))
                         .foregroundStyle(.white)
                         .multilineTextAlignment(.center)
-                        .padding(.horizontal, 24)
+                        .padding(.horizontal, 32)
+                        .fixedSize(horizontal: false, vertical: true)
 
                     Text(slide.subtitle)
-                        .font(.system(size: min(17, geo.size.width * 0.045), weight: .medium))
+                        .font(.system(size: 17, weight: .regular))
                         .foregroundStyle(.white.opacity(0.9))
                         .multilineTextAlignment(.center)
-                        .padding(.horizontal, 28)
+                        .lineSpacing(4)
+                        .padding(.horizontal, 40)
 
                     Spacer()
 
@@ -178,13 +179,13 @@ struct OnboardingView: View {
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundStyle(.black)
                             .frame(maxWidth: .infinity)
-                            .padding(.vertical, 16)
+                            .padding(.vertical, 18)
                             .background(
-                                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
                                     .fill(Color.white)
                             )
                     }
-                    .padding(.horizontal, 24)
+                    .padding(.horizontal, 32)
                     
                     Spacer()
                         .frame(height: max(geo.safeAreaInsets.bottom + 24, 40))
@@ -204,9 +205,9 @@ struct OnboardingView: View {
                     .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
                     .edgesIgnoringSafeArea(.all)
 
-                VStack(spacing: 18) {
+                VStack(spacing: 20) {
                     Spacer()
-                        .frame(height: max(geo.safeAreaInsets.top + 30, 70))
+                        .frame(height: max(geo.safeAreaInsets.top + 20, 60))
 
                     HStack {
                         Button { withAnimation { page = max(0, page-1) } } label: {
@@ -254,11 +255,11 @@ struct OnboardingView: View {
                         Text("Next >")
                             .font(.system(size: 18, weight: .semibold))
                             .frame(maxWidth: .infinity)
-                            .padding(.vertical, 16)
-                            .background(RoundedRectangle(cornerRadius: 18).fill(.white))
+                            .padding(.vertical, 18)
+                            .background(RoundedRectangle(cornerRadius: 16).fill(.white))
                             .foregroundStyle(.black)
                     }
-                    .padding(.horizontal, 24)
+                    .padding(.horizontal, 32)
 
                     Button {
                         appState.referralCode = nil
