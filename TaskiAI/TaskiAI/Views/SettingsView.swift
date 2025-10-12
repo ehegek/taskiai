@@ -32,18 +32,18 @@ struct SettingsView: View {
 
                     List {
                     Section(header: Text("Account").font(.system(size: 14, weight: .semibold))) {
-                        NavigationLink("Account") { Text("Account") }
-                        NavigationLink("General") { Text("General") }
-                        NavigationLink("Calendar") { Text("Calendar") }
+                        NavigationLink("Account") { AccountSettingsView() }
+                        NavigationLink("General") { GeneralSettingsView() }
+                        NavigationLink("Calendar") { CalendarSettingsView() }
                     }
                     
                     Section(header: Text("Preferences").font(.system(size: 14, weight: .semibold))) {
-                        NavigationLink("Categories") { Text("Categories") }
-                        NavigationLink("Subscriptions") { Text("Subscriptions") }
+                        NavigationLink("Categories") { CategoriesView() }
+                        NavigationLink("Subscriptions") { SubscriptionSettingsView() }
                     }
                     
                     Section(header: Text("Support").font(.system(size: 14, weight: .semibold))) {
-                        Button(action: {}) {
+                        Button(action: { rateApp() }) {
                             HStack {
                                 Text("Rate 5 Stars")
                                 Spacer()
@@ -51,14 +51,14 @@ struct SettingsView: View {
                                     .foregroundStyle(.yellow)
                             }
                         }
-                        Button(action: {}) {
+                        Button(action: { shareApp() }) {
                             HStack {
                                 Text("Share with a Friend")
                                 Spacer()
                                 Image(systemName: "square.and.arrow.up")
                             }
                         }
-                        Button(action: {}) {
+                        Button(action: { contactSupport() }) {
                             HStack {
                                 Text("Contact Support")
                                 Spacer()
@@ -68,8 +68,8 @@ struct SettingsView: View {
                     }
                     
                     Section(header: Text("Legal").font(.system(size: 14, weight: .semibold))) {
-                        NavigationLink("Privacy Policy") { Text("Privacy Policy") }
-                        NavigationLink("Terms of Use") { Text("Terms of Use") }
+                        NavigationLink("Privacy Policy") { PlaceholderView(title: "Privacy Policy") }
+                        NavigationLink("Terms of Use") { PlaceholderView(title: "Terms of Use") }
                     }
                     
                     Section(header: Text("Developer").font(.system(size: 14, weight: .semibold))) {
@@ -91,6 +91,77 @@ struct SettingsView: View {
             .navigationTitle("Settings")
             .toolbar(.hidden, for: .navigationBar)
         }
+    }
+    
+    private func rateApp() {
+        if let url = URL(string: "https://apps.apple.com/app/id123456789") {
+            UIApplication.shared.open(url)
+        }
+    }
+    
+    private func shareApp() {
+        let text = "Check out Taski AI - The smartest task manager!"
+        let url = URL(string: "https://apps.apple.com/app/id123456789")!
+        let activityVC = UIActivityViewController(activityItems: [text, url], applicationActivities: nil)
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first,
+           let rootVC = window.rootViewController {
+            rootVC.present(activityVC, animated: true)
+        }
+    }
+    
+    private func contactSupport() {
+        if let url = URL(string: "mailto:support@taskiai.app") {
+            UIApplication.shared.open(url)
+        }
+    }
+}
+
+struct PlaceholderView: View {
+    let title: String
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        GeometryReader { geo in
+            ZStack {
+                Color(.systemBackground).ignoresSafeArea()
+                
+                VStack(spacing: 0) {
+                    // Header
+                    HStack {
+                        Button { dismiss() } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundStyle(.primary)
+                        }
+                        Spacer()
+                        Text(title)
+                            .font(.system(size: 20, weight: .bold))
+                        Spacer()
+                        Color.clear.frame(width: 20)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, max(geo.safeAreaInsets.top + 10, 50))
+                    .padding(.bottom, 16)
+                    
+                    Spacer()
+                    
+                    VStack(spacing: 16) {
+                        Image(systemName: "doc.text")
+                            .font(.system(size: 60))
+                            .foregroundStyle(.secondary)
+                        Text("Coming Soon")
+                            .font(.system(size: 24, weight: .bold))
+                        Text("This page is under construction")
+                            .font(.system(size: 16))
+                            .foregroundStyle(.secondary)
+                    }
+                    
+                    Spacer()
+                }
+            }
+        }
+        .navigationBarHidden(true)
     }
 }
 
