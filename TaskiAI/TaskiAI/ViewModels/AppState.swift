@@ -3,6 +3,9 @@ import Combine
 
 /// Global application state for high-level routing and flags.
 final class AppState: ObservableObject {
+    @Published var hasSeenWelcome: Bool {
+        didSet { UserDefaults.standard.set(hasSeenWelcome, forKey: Keys.welcome) }
+    }
     @Published var hasCompletedOnboarding: Bool {
         didSet { UserDefaults.standard.set(hasCompletedOnboarding, forKey: Keys.onboarding) }
     }
@@ -26,6 +29,7 @@ final class AppState: ObservableObject {
     }
 
     struct Keys {
+        static let welcome = "app.welcome.seen"
         static let onboarding = "app.onboarding.done"
         static let authenticated = "app.auth.authenticated"
         static let subscription = "app.sub.active"
@@ -41,6 +45,7 @@ final class AppState: ObservableObject {
 
     init() {
         let d = UserDefaults.standard
+        self.hasSeenWelcome = d.bool(forKey: Keys.welcome)
         self.hasCompletedOnboarding = d.bool(forKey: Keys.onboarding)
         self.isAuthenticated = d.bool(forKey: Keys.authenticated)
         self.hasActiveSubscription = d.bool(forKey: Keys.subscription)
@@ -57,6 +62,7 @@ final class AppState: ObservableObject {
     }
 
     func resetAll() {
+        hasSeenWelcome = false
         hasCompletedOnboarding = false
         signOut()
         streakDays = 0

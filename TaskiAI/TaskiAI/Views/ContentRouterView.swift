@@ -5,7 +5,9 @@ struct ContentRouterView: View {
 
     var body: some View {
         Group {
-            if !appState.hasCompletedOnboarding {
+            if !appState.hasSeenWelcome {
+                WelcomeView()
+            } else if !appState.hasCompletedOnboarding {
                 OnboardingView()
             } else if !appState.isAuthenticated {
                 AuthView()
@@ -15,6 +17,7 @@ struct ContentRouterView: View {
                 RootView()
             }
         }
+        .animation(.easeInOut, value: appState.hasSeenWelcome)
         .animation(.easeInOut, value: appState.hasCompletedOnboarding)
         .animation(.easeInOut, value: appState.isAuthenticated)
         .animation(.easeInOut, value: appState.hasActiveSubscription)
