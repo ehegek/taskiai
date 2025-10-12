@@ -87,6 +87,14 @@ struct HomeView: View {
             Spacer()
             
             HStack(spacing: 14) {
+                NavigationLink(destination: CategoriesView()) {
+                    Image(systemName: "folder.fill")
+                        .font(.system(size: 18, weight: .medium))
+                        .foregroundStyle(.primary)
+                        .frame(width: 40, height: 40)
+                        .background(Circle().fill(Color(.systemGray6)))
+                }
+                
                 NavigationLink(destination: SearchView()) {
                     Image(systemName: "magnifyingglass")
                         .font(.system(size: 18, weight: .medium))

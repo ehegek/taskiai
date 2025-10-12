@@ -8,6 +8,7 @@ struct TaskDetailView: View, Identifiable {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
     @Bindable var task: Task
+    @Query private var categories: [Category]
 
     @State private var repeatOn: Bool = false
     @State private var reminderOn: Bool = false
@@ -22,11 +23,22 @@ struct TaskDetailView: View, Identifiable {
                 Form {
                     TextField("Enter task name", text: $task.title)
                     DatePicker("Date", selection: $task.date, displayedComponents: [.date, .hourAndMinute])
+                    
+                    Picker("Category", selection: Binding(
+                        get: { task.category?.id ?? UUID() },
+                        set: { id in task.category = categories.first(where: { $0.id == id }); try? context.save() }
+                    )) {
+                        Text("None").tag(UUID())
+                        ForEach(categories) { cat in
+                            Label(cat.name, systemImage: cat.icon ?? "folder.fill").tag(cat.id)
+                        }
+                    }
+                    
                     Toggle("Repeat", isOn: Binding(get: { repeatOn }, set: { repeatOn = $0; task.repeatRule.frequency = $0 ? .daily : .none }))
                     Toggle("Reminder", isOn: Binding(get: { reminderOn }, set: { reminderOn = $0; task.reminderEnabled = $0 }))
                     if reminderOn {
                         Picker("Channels", selection: Binding(get: { task.reminderChannels.first ?? .appPush }, set: { task.reminderChannels = [$0]; try? context.save() })) {
-                            ForEach(ReminderChannel.allCases) { ch in Text(String(describing: ch.rawValue)).tag(ch) }
+                            ForEach(ReminderChannel.allCases) { ch in Text(ch.displayName).tag(ch) }
                         }
                     }
                     Section("Details (optional)") {

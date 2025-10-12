@@ -13,7 +13,6 @@ struct NewTaskView: View {
     @State private var repeatFreq: RepeatFrequency = .none
     @State private var repeatInterval: Int = 1
     @State private var repeatEnd: Date? = nil
-    @State private var channels: Set<ReminderChannel> = []
     @State private var reminderTime: Date = Date()
     @State private var notes = ""
     let defaultDate: Date
@@ -70,14 +69,11 @@ struct NewTaskView: View {
             }
             Toggle("Reminder", isOn: $reminderOn)
             if reminderOn {
-                HStack(spacing: 16) {
-                    iconToggle(.appPush, "arrow.triangle.2.circlepath")
-                    iconToggle(.phoneCall, "phone.fill")
-                    iconToggle(.sms, "message.fill")
-                    iconToggle(.email, "envelope.fill")
-                    iconToggle(.chat, "bubble.left.and.bubble.right.fill")
-                }
                 DatePicker("Time", selection: $reminderTime, displayedComponents: .hourAndMinute)
+                Text("Tap the pencil icon after creation to choose reminder channels")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 12)
             }
                 Section("Details (optional)") { TextField("Notes", text: $notes, axis: .vertical) }
                 }
@@ -123,23 +119,12 @@ struct NewTaskView: View {
     private func create() {
         guard !title.isEmpty else { return }
         let rule = RepeatRule(frequency: repeatOn ? repeatFreq : .none, interval: repeatInterval, endDate: repeatEnd)
-        let task = Task(title: title, notes: notes, date: date, isCompleted: false, category: category, reminderEnabled: reminderOn, reminderChannels: Array(channels), reminderTime: reminderOn ? reminderTime : nil, repeatRule: rule)
+        // Default to appPush if reminder is enabled
+        let defaultChannels = reminderOn ? [ReminderChannel.appPush] : []
+        let task = Task(title: title, notes: notes, date: date, isCompleted: false, category: category, reminderEnabled: reminderOn, reminderChannels: defaultChannels, reminderTime: reminderOn ? reminderTime : nil, repeatRule: rule)
         context.insert(task)
         try? context.save()
         appState.recordTaskAdded(on: Date())
         dismiss()
     }
-
-    private func iconToggle(_ ch: ReminderChannel, _ sf: String) -> some View {
-        Button(action: { toggle(ch) }) {
-            Image(systemName: sf)
-                .font(.system(size: 18, weight: .bold))
-                .frame(width: 34, height: 34)
-                .background(
-                    Circle().fill(channels.contains(ch) ? Color.green.opacity(0.2) : Color.clear)
-                )
-                .foregroundStyle(channels.contains(ch) ? .green : .secondary)
-        }
-    }
-    private func toggle(_ ch: ReminderChannel) { if channels.contains(ch) { channels.remove(ch) } else { channels.insert(ch) } }
 }
