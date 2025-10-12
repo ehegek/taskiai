@@ -52,7 +52,7 @@ struct ActionReminderView: View {
                                 .labelsHidden()
                             Picker("Channel", selection: $selectedChannel) {
                                 ForEach(ReminderChannel.allCases) { ch in
-                                    Text(ch.rawValue.capitalized).tag(ch)
+                                    Text(ch.displayName).tag(ch)
                                 }
                             }
                             .pickerStyle(.menu)

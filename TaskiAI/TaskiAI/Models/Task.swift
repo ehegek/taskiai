@@ -4,6 +4,16 @@ import SwiftData
 enum ReminderChannel: String, Codable, CaseIterable, Identifiable {
     case appPush, phoneCall, sms, chat, email
     var id: String { rawValue }
+    
+    var displayName: String {
+        switch self {
+        case .appPush: return "App Notification"
+        case .phoneCall: return "Phone Call"
+        case .sms: return "SMS"
+        case .chat: return "Chat"
+        case .email: return "Email"
+        }
+    }
 }
 
 enum RepeatFrequency: String, Codable, CaseIterable, Identifiable {

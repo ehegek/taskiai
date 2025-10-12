@@ -41,14 +41,6 @@ struct OnboardingView: View {
     }
 
     private var slides: [Slide] = [
-        // Welcome
-        .init(
-            title: "Welcome to Taski AI",
-            subtitle: "Smart reminders that actually get done.",
-            icon: "checkmark.seal.fill",
-            topAccent: Color.black,
-            bottomAccent: Color.black
-        ),
         // Pain Point 1 - Red
         .init(
             title: "Overwhelmed by tasks?",
@@ -104,14 +96,6 @@ struct OnboardingView: View {
             icon: "chart.line.uptrend.xyaxis",
             topAccent: Color(hex: "34C759"),
             bottomAccent: Color(hex: "34C759")
-        ),
-        // Social Proof
-        .init(
-            title: "Join 10,000+ users",
-            subtitle: "People like you are crushing their goals with Taski AI.",
-            icon: "person.3.fill",
-            topAccent: Color(red: 0.10, green: 0.10, blue: 0.10),
-            bottomAccent: Color.black
         )
     ]
 
@@ -218,34 +202,47 @@ struct OnboardingView: View {
                         Spacer()
                     }
                     .padding(.horizontal, 20)
+                    
+                    Spacer()
 
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("Enter referral code\n(optional)")
-                            .font(.system(size: 28, weight: .bold))
-                            .foregroundStyle(.white)
+                    VStack(spacing: 32) {
+                        // Icon
+                        ZStack {
+                            Circle()
+                                .fill(Color.white.opacity(0.1))
+                                .frame(width: 120, height: 120)
+                            Image(systemName: "gift.fill")
+                                .font(.system(size: 60))
+                                .foregroundStyle(.white)
+                        }
+                        
+                        VStack(alignment: .center, spacing: 8) {
+                            Text("Enter referral code")
+                                .font(.system(size: 32, weight: .bold))
+                                .foregroundStyle(.white)
+                                .multilineTextAlignment(.center)
+                            
+                            Text("Got a code from a friend? Enter it here to unlock exclusive benefits!")
+                                .font(.system(size: 16))
+                                .foregroundStyle(.white.opacity(0.8))
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 20)
+                        }
 
-                        Text("You can skip this step")
-                            .font(.system(size: 15))
-                            .foregroundStyle(.white.opacity(0.7))
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 24)
-
-                    HStack {
                         TextField("Referral Code", text: Binding(
                             get: { appState.referralCode ?? "" },
                             set: { appState.referralCode = $0 }
                         ))
                         .textInputAutocapitalization(.none)
                         .autocorrectionDisabled()
-                        .font(.system(size: 16))
-                        .padding(.vertical, 14)
-                        .padding(.horizontal, 16)
+                        .font(.system(size: 18))
+                        .padding(.vertical, 18)
+                        .padding(.horizontal, 20)
                         .background(RoundedRectangle(cornerRadius: 18).fill(Color.white.opacity(0.15)))
                         .foregroundStyle(.white)
+                        .padding(.horizontal, 32)
                     }
-                    .padding(.horizontal, 24)
-
+                    
                     Spacer()
 
                     Button {

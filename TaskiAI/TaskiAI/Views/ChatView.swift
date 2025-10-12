@@ -9,6 +9,7 @@ struct ChatView: View {
     @State private var input = ""
     @State private var isRecording = false
     @State private var showAttachLabel = false
+    @State private var isVoiceChatActive = false
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -16,8 +17,9 @@ struct ChatView: View {
             ZStack {
                 Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
                 VStack(spacing: 0) {
+                    Spacer()
+                        .frame(height: max(geo.safeAreaInsets.top + 10, 50))
                     header
-                        .padding(.top, geo.safeAreaInsets.top)
                     
                     ScrollViewReader { proxy in
                         ScrollView {
@@ -58,9 +60,11 @@ struct ChatView: View {
             Text("Taski AI Chat")
                 .font(.system(size: 18, weight: .bold))
             Spacer()
-            Image(systemName: "ellipsis")
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundStyle(.primary)
+            Button { startVoiceChat() } label: {
+                Image(systemName: "phone.circle.fill")
+                    .font(.system(size: 28))
+                    .foregroundStyle(isVoiceChatActive ? .green : .primary)
+            }
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 12)
@@ -150,6 +154,12 @@ struct ChatView: View {
     private func toggleMic() {
         isRecording.toggle()
         // Wire to SpeechService later
+    }
+    
+    private func startVoiceChat() {
+        isVoiceChatActive.toggle()
+        // TODO: Implement voice chat with AI
+        // This will start a real-time voice conversation with AI
     }
 
     private func send() {
