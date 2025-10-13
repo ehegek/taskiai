@@ -24,6 +24,8 @@ struct CategoriesView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack(spacing: 0) {
+                    Spacer()
+                        .frame(height: 50)
                     // Header with proper spacing
                     HStack {
                             Button { dismiss() } label: {
@@ -43,7 +45,6 @@ struct CategoriesView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 12)
-                    .padding(.top, 50)
                     .background(Color(.systemBackground))
                     
                     // Categories List

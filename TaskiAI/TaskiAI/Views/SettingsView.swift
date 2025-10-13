@@ -8,6 +8,8 @@ struct SettingsView: View {
             ZStack {
                 Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
                 VStack(spacing: 0) {
+                    Spacer()
+                        .frame(height: 50)
                     // Header with proper spacing
                     HStack {
                         Button { dismiss() } label: {
@@ -23,7 +25,6 @@ struct SettingsView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 12)
-                    .padding(.top, 50)
                     .background(Color(.systemBackground))
 
                     List {
@@ -123,6 +124,8 @@ struct PlaceholderView: View {
                 Color(.systemBackground).ignoresSafeArea()
                 
                 VStack(spacing: 0) {
+                    Spacer()
+                        .frame(height: 50)
                     // Header with proper spacing
                     HStack {
                         Button { dismiss() } label: {
@@ -138,7 +141,6 @@ struct PlaceholderView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 12)
-                    .padding(.top, 50)
                     .background(Color(.systemBackground))
                     
                     Spacer()
