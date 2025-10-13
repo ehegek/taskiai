@@ -125,21 +125,20 @@ struct WelcomeView: View {
                     .padding(.top, 16)
                     
                     // Terms and Privacy text
-                    Text("By continuing, you agree to our ")
-                        .font(.system(size: 11))
+                    (Text("By continuing, you agree to our ")
                         .foregroundStyle(.white.opacity(0.5))
                     +
                     Text("Terms of Service")
-                        .font(.system(size: 11, weight: .semibold))
                         .foregroundStyle(.blue)
+                        .fontWeight(.semibold)
                     +
                     Text(" and ")
-                        .font(.system(size: 11))
                         .foregroundStyle(.white.opacity(0.5))
                     +
                     Text("Privacy Policy")
-                        .font(.system(size: 11, weight: .semibold))
                         .foregroundStyle(.blue)
+                        .fontWeight(.semibold))
+                    .font(.system(size: 11))
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
                     .padding(.top, 24)
