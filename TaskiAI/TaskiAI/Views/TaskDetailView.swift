@@ -24,7 +24,7 @@ struct TaskDetailView: View, Identifiable {
                     // Custom Header
                     VStack(spacing: 0) {
                         Spacer()
-                            .frame(height: max(geo.safeAreaInsets.top + 10, 50))
+                            .frame(height: geo.safeAreaInsets.top)
                         
                         HStack {
                             Button { dismiss() } label: {

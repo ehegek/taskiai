@@ -2,38 +2,30 @@ import SwiftUI
 
 struct WelcomeView: View {
     @EnvironmentObject var appState: AppState
+    @State private var showSignIn = false
+    @State private var showPrivacyPolicy = false
+    @State private var showTermsOfService = false
     
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                // Modern gradient background
-                LinearGradient(
-                    colors: [
-                        Color(red: 0.1, green: 0.1, blue: 0.15),
-                        Color.black
-                    ],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-                .ignoresSafeArea()
+        NavigationStack {
+            GeometryReader { geo in
+                ZStack {
+                    // Black background
+                    Color.black
+                        .ignoresSafeArea()
                 
                 // Content
                 VStack(spacing: 0) {
                     Spacer()
-                        .frame(height: max(geo.safeAreaInsets.top + 10, 50))
+                        .frame(height: geo.safeAreaInsets.top)
                     
                     // App logo/title
                     VStack(spacing: 12) {
-                        Image(systemName: "checkmark.seal.fill")
-                            .font(.system(size: 70))
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [.blue, .cyan],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .shadow(color: .blue.opacity(0.5), radius: 20)
+                        Image("2")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 100, height: 100)
+                            .shadow(color: .white.opacity(0.3), radius: 15)
                         
                         Text("TASKI AI")
                             .font(.system(size: 42, weight: .black, design: .rounded))
@@ -94,30 +86,24 @@ struct WelcomeView: View {
                             Image(systemName: "arrow.right")
                                 .font(.system(size: 16, weight: .bold))
                         }
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.black)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 18)
-                        .background(
-                            LinearGradient(
-                                colors: [.blue, .cyan],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
+                        .background(Color.white)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
-                        .shadow(color: .blue.opacity(0.5), radius: 15, y: 8)
+                        .shadow(color: .white.opacity(0.3), radius: 15, y: 8)
                     }
                     .padding(.horizontal, 32)
                     
                     // Already have account text
                     Button {
-                        // Sign in action (placeholder)
+                        showSignIn = true
                     } label: {
                         HStack(spacing: 4) {
                             Text("Already have an account?")
                                 .foregroundStyle(.white.opacity(0.7))
                             Text("Sign In")
-                                .foregroundStyle(.blue)
+                                .foregroundStyle(.white)
                                 .fontWeight(.semibold)
                         }
                         .font(.system(size: 14))
@@ -125,31 +111,54 @@ struct WelcomeView: View {
                     .padding(.top, 16)
                     
                     // Terms and Privacy text
-                    (Text("By continuing, you agree to our ")
-                        .foregroundStyle(.white.opacity(0.5))
-                    +
-                    Text("Terms of Service")
-                        .foregroundStyle(.blue)
-                        .fontWeight(.semibold)
-                    +
-                    Text(" and ")
-                        .foregroundStyle(.white.opacity(0.5))
-                    +
-                    Text("Privacy Policy")
-                        .foregroundStyle(.blue)
-                        .fontWeight(.semibold))
-                    .font(.system(size: 11))
+                    HStack(spacing: 4) {
+                        Text("By continuing, you agree to our")
+                            .foregroundStyle(.white.opacity(0.5))
+                            .font(.system(size: 11))
+                        
+                        Button {
+                            showTermsOfService = true
+                        } label: {
+                            Text("Terms of Service")
+                                .foregroundStyle(.white)
+                                .fontWeight(.semibold)
+                                .font(.system(size: 11))
+                        }
+                        
+                        Text("and")
+                            .foregroundStyle(.white.opacity(0.5))
+                            .font(.system(size: 11))
+                        
+                        Button {
+                            showPrivacyPolicy = true
+                        } label: {
+                            Text("Privacy Policy")
+                                .foregroundStyle(.white)
+                                .fontWeight(.semibold)
+                                .font(.system(size: 11))
+                        }
+                    }
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
                     .padding(.top, 24)
                     
                     Spacer()
-                        .frame(height: max(geo.safeAreaInsets.bottom + 20, 40))
+                        .frame(height: geo.safeAreaInsets.bottom + 20)
                 }
+            }
+            .navigationDestination(isPresented: $showSignIn) {
+                AuthView()
+            }
+            .navigationDestination(isPresented: $showPrivacyPolicy) {
+                PrivacyPolicyView()
+            }
+            .navigationDestination(isPresented: $showTermsOfService) {
+                TermsOfServiceView()
             }
         }
         .edgesIgnoringSafeArea(.all)
         .statusBar(hidden: true)
+        }
     }
     
     private func notificationCard(

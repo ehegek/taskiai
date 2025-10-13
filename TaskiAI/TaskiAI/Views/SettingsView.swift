@@ -11,7 +11,7 @@ struct SettingsView: View {
                     // Header with proper spacing
                     VStack(spacing: 0) {
                         Spacer()
-                            .frame(height: max(geo.safeAreaInsets.top + 10, 50))
+                            .frame(height: geo.safeAreaInsets.top)
                         
                         HStack {
                             Button { dismiss() } label: {
@@ -130,7 +130,7 @@ struct PlaceholderView: View {
                     // Header with proper spacing
                     VStack(spacing: 0) {
                         Spacer()
-                            .frame(height: max(geo.safeAreaInsets.top + 10, 50))
+                            .frame(height: geo.safeAreaInsets.top)
                         
                         HStack {
                             Button { dismiss() } label: {
