@@ -40,7 +40,7 @@ struct TaskDetailView: View, Identifiable {
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 12)
-                    .padding(.top, geo.safeAreaInsets.top)
+                    .padding(.top, 50)
                     .background(Color(.systemBackground))
                     
                 Form {

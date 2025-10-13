@@ -27,7 +27,7 @@ struct CalendarView: View {
                             Spacer()
                         }
                         .padding(.horizontal, 20)
-                        .padding(.top, geo.safeAreaInsets.top)
+                        .padding(.top, 50)
 
                         Text("Calendar")
                             .font(.system(size: 28, weight: .bold))

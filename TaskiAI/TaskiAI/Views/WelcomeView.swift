@@ -40,7 +40,7 @@ struct WelcomeView: View {
                             .font(.system(size: 18, weight: .regular))
                             .foregroundStyle(.white.opacity(0.6))
                     }
-                    .padding(.bottom, 35)
+                    .padding(.bottom, 25)
                     
                     // 3 Notification Cards
                     VStack(spacing: 12) {
