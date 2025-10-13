@@ -6,23 +6,45 @@ struct WelcomeView: View {
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                // Background image covering entire screen
-                Image("welcome_tab")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-                    .clipped()
-                    .edgesIgnoringSafeArea(.all)
+                // Modern gradient background
+                LinearGradient(
+                    colors: [
+                        Color(red: 0.1, green: 0.1, blue: 0.15),
+                        Color.black
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
                 
-                // Dark overlay for better text contrast
-                Rectangle()
-                    .fill(Color.black.opacity(0.4))
-                    .edgesIgnoringSafeArea(.all)
-                
-                // Overlay content (notifications + button + text)
+                // Content
                 VStack(spacing: 0) {
                     Spacer()
-                        .frame(height: geo.safeAreaInsets.top + 60)
+                        .frame(height: geo.safeAreaInsets.top + 40)
+                    
+                    // App logo/title
+                    VStack(spacing: 12) {
+                        Image(systemName: "checkmark.seal.fill")
+                            .font(.system(size: 70))
+                            .foregroundStyle(
+                                LinearGradient(
+                                    colors: [.blue, .cyan],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
+                            )
+                            .shadow(color: .blue.opacity(0.5), radius: 20)
+                        
+                        Text("TASKI AI")
+                            .font(.system(size: 42, weight: .black, design: .rounded))
+                            .foregroundStyle(.white)
+                            .tracking(3)
+                        
+                        Text("Never Miss a Task")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundStyle(.white.opacity(0.7))
+                    }
+                    .padding(.bottom, 50)
                     
                     // 3 Notification Cards
                     VStack(spacing: 12) {
@@ -60,54 +82,70 @@ struct WelcomeView: View {
                     
                     Spacer()
                     
-                    // "Never Miss a Task" text
-                    Text("Never Miss a Task")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundStyle(.white)
-                        .shadow(color: .black.opacity(0.5), radius: 8)
-                        .padding(.top, 8)
-                    
                     // Start Now button
                     Button {
                         withAnimation(.easeInOut) {
                             appState.hasSeenWelcome = true
                         }
                     } label: {
-                        Text("Start Now")
-                            .font(.system(size: 20, weight: .bold))
-                            .foregroundStyle(.black)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 18)
-                            .background(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .fill(Color.white)
-                                    .shadow(color: .black.opacity(0.4), radius: 10, y: 5)
+                        HStack {
+                            Text("Get Started")
+                                .font(.system(size: 18, weight: .bold))
+                            Image(systemName: "arrow.right")
+                                .font(.system(size: 16, weight: .bold))
+                        }
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 18)
+                        .background(
+                            LinearGradient(
+                                colors: [.blue, .cyan],
+                                startPoint: .leading,
+                                endPoint: .trailing
                             )
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                        .shadow(color: .blue.opacity(0.5), radius: 15, y: 8)
                     }
-                    .padding(.horizontal, 40)
+                    .padding(.horizontal, 32)
                     
                     // Already have account text
                     Button {
                         // Sign in action (placeholder)
                     } label: {
-                        Text("Already have an account? Sign In")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundStyle(.white)
-                            .shadow(color: .black.opacity(0.5), radius: 6)
+                        HStack(spacing: 4) {
+                            Text("Already have an account?")
+                                .foregroundStyle(.white.opacity(0.7))
+                            Text("Sign In")
+                                .foregroundStyle(.blue)
+                                .fontWeight(.semibold)
+                        }
+                        .font(.system(size: 14))
                     }
-                    .padding(.top, 12)
+                    .padding(.top, 16)
                     
                     // Terms and Privacy text
-                    Text("By continuing, you agree to our Terms of Use and\nHave read and agreed to our Privacy Policy")
-                        .font(.system(size: 12, weight: .regular))
-                        .foregroundStyle(.white.opacity(0.9))
-                        .multilineTextAlignment(.center)
-                        .lineSpacing(3)
-                        .shadow(color: .black.opacity(0.5), radius: 6)
-                        .padding(.top, 8)
+                    Text("By continuing, you agree to our ")
+                        .font(.system(size: 11))
+                        .foregroundStyle(.white.opacity(0.5))
+                    +
+                    Text("Terms of Service")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(.blue)
+                    +
+                    Text(" and ")
+                        .font(.system(size: 11))
+                        .foregroundStyle(.white.opacity(0.5))
+                    +
+                    Text("Privacy Policy")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(.blue)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
+                    .padding(.top, 24)
                     
                     Spacer()
-                        .frame(height: max(geo.safeAreaInsets.bottom + 20, 40))
+                        .frame(height: geo.safeAreaInsets.bottom + 30)
                 }
             }
         }
