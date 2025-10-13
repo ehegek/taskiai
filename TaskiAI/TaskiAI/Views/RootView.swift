@@ -172,8 +172,8 @@ struct HomeView: View {
             NavigationLink { ChatView() } label: {
                 card(title: "Taski Bot", subtitle: "AI Assistant", icon: "message.fill", color: .purple)
             }
-            NavigationLink { ActionReminderView(selectedDate: .now) } label: {
-                card(title: "Reminders", subtitle: "Set reminders", icon: "bell.fill", color: .orange)
+            NavigationLink { RemindersView() } label: {
+                card(title: "Reminders", subtitle: "Your active reminders", icon: "bell.fill", color: .orange)
             }
             NavigationLink { CalendarView() } label: {
                 card(title: "Calendar", subtitle: "View schedule", icon: "calendar", color: .green)

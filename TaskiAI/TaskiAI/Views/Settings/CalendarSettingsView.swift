@@ -11,22 +11,27 @@ struct CalendarSettingsView: View {
                 Color(.systemBackground).ignoresSafeArea()
                 
                 VStack(spacing: 0) {
-                    // Header
-                    HStack {
-                        Button { dismiss() } label: {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 18, weight: .semibold))
-                                .foregroundStyle(.primary)
+                    // Header with proper spacing
+                    VStack(spacing: 0) {
+                        Spacer()
+                            .frame(height: max(geo.safeAreaInsets.top, 44))
+                        
+                        HStack {
+                            Button { dismiss() } label: {
+                                Image(systemName: "chevron.left")
+                                    .font(.system(size: 20, weight: .semibold))
+                                    .foregroundStyle(.primary)
+                            }
+                            Spacer()
+                            Text("Calendar")
+                                .font(.system(size: 20, weight: .bold))
+                            Spacer()
+                            Color.clear.frame(width: 20)
                         }
-                        Spacer()
-                        Text("Calendar")
-                            .font(.system(size: 20, weight: .bold))
-                        Spacer()
-                        Color.clear.frame(width: 20)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 12)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, max(geo.safeAreaInsets.top + 10, 50))
-                    .padding(.bottom, 16)
+                    .background(Color(.systemBackground))
                     
                     Form {
                         Section("Week Settings") {

@@ -28,7 +28,7 @@ struct TaskListView: View {
             GeometryReader { geo in
                 VStack(spacing: 0) {
                     Spacer()
-                        .frame(height: max(geo.safeAreaInsets.top + 10, 50))
+                        .frame(height: max(geo.safeAreaInsets.top, 44))
                     header
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: 12) {
