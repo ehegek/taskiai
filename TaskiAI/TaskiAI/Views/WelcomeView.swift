@@ -14,10 +14,27 @@ struct WelcomeView: View {
                     .clipped()
                     .edgesIgnoringSafeArea(.all)
                 
+                // Dark overlay for better text contrast
+                Rectangle()
+                    .fill(Color.black.opacity(0.4))
+                    .edgesIgnoringSafeArea(.all)
+                
                 // Overlay content (notifications + button + text)
-                VStack(spacing: 16) {
+                VStack(spacing: 20) {
                     Spacer()
-                        .frame(height: max(geo.safeAreaInsets.top + 200, 240))
+                        .frame(height: max(geo.safeAreaInsets.top + 140, 180))
+                    
+                    // Welcome text
+                    VStack(spacing: 8) {
+                        Text("Welcome To")
+                            .font(.system(size: 24, weight: .semibold))
+                            .foregroundStyle(.white)
+                        Text("TASKI AI")
+                            .font(.system(size: 48, weight: .black))
+                            .foregroundStyle(.white)
+                            .tracking(2)
+                    }
+                    .shadow(color: .black.opacity(0.5), radius: 10)
                     
                     // 3 Notification Cards
                     VStack(spacing: 12) {
@@ -55,6 +72,13 @@ struct WelcomeView: View {
                     
                     Spacer()
                     
+                    // "Never Miss a Task" text
+                    Text("Never Miss a Task")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .shadow(color: .black.opacity(0.5), radius: 8)
+                        .padding(.top, 8)
+                    
                     // Start Now button
                     Button {
                         withAnimation(.easeInOut) {
@@ -62,37 +86,37 @@ struct WelcomeView: View {
                         }
                     } label: {
                         Text("Start Now")
-                            .font(.system(size: 25, weight: .light))
+                            .font(.system(size: 20, weight: .bold))
                             .foregroundStyle(.black)
                             .frame(maxWidth: .infinity)
-                            .padding(.vertical, 20)
+                            .padding(.vertical, 18)
                             .background(
-                                RoundedRectangle(cornerRadius: 20)
+                                RoundedRectangle(cornerRadius: 16)
                                     .fill(Color.white)
-                                    .shadow(color: .black.opacity(0.25), radius: 4, y: 4)
+                                    .shadow(color: .black.opacity(0.4), radius: 10, y: 5)
                             )
                     }
-                    .padding(.horizontal, 60)
+                    .padding(.horizontal, 40)
                     
                     // Already have account text
                     Button {
                         // Sign in action (placeholder)
                     } label: {
                         Text("Already have an account? Sign In")
-                            .font(.system(size: 11, weight: .regular))
+                            .font(.system(size: 14, weight: .semibold))
                             .foregroundStyle(.white)
-                            .shadow(color: .black.opacity(0.25), radius: 4, y: 4)
+                            .shadow(color: .black.opacity(0.5), radius: 6)
                     }
-                    .padding(.top, 8)
+                    .padding(.top, 12)
                     
                     // Terms and Privacy text
-                    Text("By continuing, you agree to out Terms of Use and\nHave read and agreed to our Privacy Policy")
-                        .font(.system(size: 11, weight: .light))
-                        .foregroundStyle(.white)
+                    Text("By continuing, you agree to our Terms of Use and\nHave read and agreed to our Privacy Policy")
+                        .font(.system(size: 12, weight: .regular))
+                        .foregroundStyle(.white.opacity(0.9))
                         .multilineTextAlignment(.center)
-                        .lineSpacing(2)
-                        .shadow(color: .black.opacity(0.25), radius: 4, y: 4)
-                        .padding(.top, 12)
+                        .lineSpacing(3)
+                        .shadow(color: .black.opacity(0.5), radius: 6)
+                        .padding(.top, 8)
                     
                     Spacer()
                         .frame(height: max(geo.safeAreaInsets.bottom + 20, 40))
@@ -147,15 +171,15 @@ struct WelcomeView: View {
                     .lineLimit(2)
             }
         }
-        .padding(12)
+        .padding(14)
         .background(
-            RoundedRectangle(cornerRadius: 14)
-                .fill(Color.black.opacity(0.6))
-                .blur(radius: 20)
+            RoundedRectangle(cornerRadius: 16)
+                .fill(Color.black.opacity(0.75))
+                .shadow(color: .black.opacity(0.3), radius: 8, y: 4)
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 14)
-                .stroke(Color.white.opacity(0.2), lineWidth: 1)
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(Color.white.opacity(0.3), lineWidth: 1.5)
         )
     }
 }

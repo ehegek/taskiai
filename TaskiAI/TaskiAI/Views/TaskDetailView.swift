@@ -20,6 +20,33 @@ struct TaskDetailView: View, Identifiable {
         GeometryReader { geo in
             ZStack {
                 Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
+                VStack(spacing: 0) {
+                    // Custom Header
+                    VStack(spacing: 0) {
+                        Spacer()
+                            .frame(height: max(geo.safeAreaInsets.top, 44))
+                        
+                        HStack {
+                            Button { dismiss() } label: {
+                                Image(systemName: "chevron.left")
+                                    .font(.system(size: 20, weight: .semibold))
+                                    .foregroundStyle(.primary)
+                            }
+                            Spacer()
+                            Text("Details")
+                                .font(.system(size: 20, weight: .bold))
+                            Spacer()
+                            Button { try? context.save(); dismiss() } label: {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .font(.system(size: 28))
+                                    .foregroundStyle(.blue)
+                            }
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 12)
+                    }
+                    .background(Color(.systemBackground))
+                    
                 Form {
                     TextField("Enter task name", text: $task.title)
                     DatePicker("Date", selection: $task.date, displayedComponents: [.date, .hourAndMinute])
@@ -46,23 +73,10 @@ struct TaskDetailView: View, Identifiable {
                     }
                 }
                 .scrollContentBackground(.hidden)
-                .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button { dismiss() } label: {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 18, weight: .semibold))
-                        }
-                    }
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button { try? context.save(); dismiss() } label: {
-                            Image(systemName: "checkmark.circle.fill")
-                                .font(.system(size: 20, weight: .semibold))
-                        }
-                    }
-                }
-                .navigationTitle("Details")
                 .onDisappear { try? context.save() }
+                }
             }
+            .navigationBarHidden(true)
             .safeAreaInset(edge: .bottom) {
                 Button {
                     try? context.save();

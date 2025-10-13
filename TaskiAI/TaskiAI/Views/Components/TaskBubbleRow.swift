@@ -18,15 +18,10 @@ struct TaskBubbleRow: View {
             }
 
             HStack(spacing: 8) {
-                ForEach(ReminderChannel.allCases) { ch in
-                    let on = task.reminderChannels.contains(ch)
-                    Image(systemName: icon(for: ch))
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundStyle(on ? .primary : .secondary)
-                        .padding(6)
-                        .background(
-                            Circle().fill(Color(.systemGray6).opacity(on ? 1 : 0.6))
-                        )
+                if let category = task.category {
+                    Label(category.name, systemImage: category.icon ?? "folder.fill")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 }
                 let t = task.reminderTime ?? task.date
                 Text(timeString(t))
@@ -43,8 +38,5 @@ struct TaskBubbleRow: View {
     }
 
     private func toggleDone() { task.isCompleted.toggle(); try? context.save() }
-    private func icon(for ch: ReminderChannel) -> String {
-        switch ch { case .appPush: return "arrow.triangle.2.circlepath"; case .phoneCall: return "phone.fill"; case .sms: return "message.fill"; case .email: return "envelope.fill"; case .chat: return "bubble.left.and.bubble.right.fill" }
-    }
     private func timeString(_ d: Date) -> String { d.formatted(.dateTime.hour(.twoDigits(amPM: .abbreviated)).minute()) }
 }

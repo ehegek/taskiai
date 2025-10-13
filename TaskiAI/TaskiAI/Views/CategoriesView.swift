@@ -24,28 +24,31 @@ struct CategoriesView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack(spacing: 0) {
-                    Spacer()
-                        .frame(height: max(geo.safeAreaInsets.top + 10, 50))
-                    
-                    // Header
-                    HStack {
-                        Button { dismiss() } label: {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 18, weight: .semibold))
-                                .foregroundStyle(.primary)
-                        }
+                    // Header with proper spacing
+                    VStack(spacing: 0) {
                         Spacer()
-                        Text("Categories")
-                            .font(.system(size: 20, weight: .bold))
-                        Spacer()
-                        Button { showAddCategory = true } label: {
-                            Image(systemName: "plus.circle.fill")
-                                .font(.system(size: 28))
-                                .foregroundStyle(.blue)
+                            .frame(height: max(geo.safeAreaInsets.top, 44))
+                        
+                        HStack {
+                            Button { dismiss() } label: {
+                                Image(systemName: "chevron.left")
+                                    .font(.system(size: 20, weight: .semibold))
+                                    .foregroundStyle(.primary)
+                            }
+                            Spacer()
+                            Text("Categories")
+                                .font(.system(size: 20, weight: .bold))
+                            Spacer()
+                            Button { showAddCategory = true } label: {
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.system(size: 28))
+                                    .foregroundStyle(.blue)
+                            }
                         }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 12)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 16)
+                    .background(Color(.systemBackground))
                     
                     // Categories List
                     ScrollView {

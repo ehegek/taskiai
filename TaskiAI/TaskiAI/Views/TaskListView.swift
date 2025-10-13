@@ -114,15 +114,6 @@ struct TaskListView: View {
                 .disabled(newTaskTitle.isEmpty)
                 .opacity(newTaskTitle.isEmpty ? 0.5 : 1)
             }
-            // Quick actions row
-            HStack(spacing: 16) {
-                quickIcon("arrow.triangle.2.circlepath")
-                quickIcon("phone.fill")
-                quickIcon("message.fill")
-                quickIcon("envelope.fill")
-                quickIcon("bubble.left.and.bubble.right.fill")
-            }
-            .padding(.leading, 2)
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 14)

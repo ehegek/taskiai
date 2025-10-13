@@ -153,6 +153,19 @@ struct OnboardingView: View {
                         .multilineTextAlignment(.center)
                         .lineSpacing(4)
                         .padding(.horizontal, 40)
+                    
+                    Spacer()
+                        .frame(height: 40)
+                    
+                    // Progress indicator
+                    HStack(spacing: 8) {
+                        ForEach(0..<slides.count, id: \.self) { index in
+                            Circle()
+                                .fill(index == page ? Color.white : Color.white.opacity(0.3))
+                                .frame(width: index == page ? 10 : 8, height: index == page ? 10 : 8)
+                                .animation(.easeInOut, value: page)
+                        }
+                    }
 
                     Spacer()
 
