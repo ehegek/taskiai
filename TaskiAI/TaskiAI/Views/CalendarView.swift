@@ -18,7 +18,7 @@ struct CalendarView: View {
                 ScrollView {
                     VStack(spacing: 14) {
                         Spacer()
-                            .frame(height: geo.safeAreaInsets.top + 8)
+                            .frame(height: max(geo.safeAreaInsets.top + 10, 50))
                         // Custom back bar
                         HStack(spacing: 8) {
                             Button { dismiss() } label: {

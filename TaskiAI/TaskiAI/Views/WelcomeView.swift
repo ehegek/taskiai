@@ -20,7 +20,7 @@ struct WelcomeView: View {
                 // Content
                 VStack(spacing: 0) {
                     Spacer()
-                        .frame(height: geo.safeAreaInsets.top + 40)
+                        .frame(height: max(geo.safeAreaInsets.top + 10, 50))
                     
                     // App logo/title
                     VStack(spacing: 12) {
@@ -144,7 +144,7 @@ struct WelcomeView: View {
                     .padding(.top, 24)
                     
                     Spacer()
-                        .frame(height: geo.safeAreaInsets.bottom + 30)
+                        .frame(height: max(geo.safeAreaInsets.bottom + 20, 40))
                 }
             }
         }

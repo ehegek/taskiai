@@ -14,7 +14,7 @@ struct CalendarSettingsView: View {
                     // Header with proper spacing
                     VStack(spacing: 0) {
                         Spacer()
-                            .frame(height: geo.safeAreaInsets.top + 8)
+                            .frame(height: max(geo.safeAreaInsets.top + 10, 50))
                         
                         HStack {
                             Button { dismiss() } label: {
