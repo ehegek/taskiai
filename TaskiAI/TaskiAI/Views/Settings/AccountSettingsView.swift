@@ -27,7 +27,7 @@ struct AccountSettingsView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 12)
-                    .padding(.top, geo.safeAreaInsets.top)
+                    .padding(.top, 8)
                     .background(Color(.systemBackground))
                     
                     Form {
