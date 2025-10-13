@@ -17,7 +17,7 @@ struct WelcomeView: View {
                 // Content
                 VStack(spacing: 0) {
                     Spacer()
-                        .frame(height: geo.safeAreaInsets.top + 20)
+                        .frame(height: geo.safeAreaInsets.top + 60)
                     
                     // App logo/title
                     VStack(spacing: 20) {
@@ -51,17 +51,19 @@ struct WelcomeView: View {
                             title: "TaskiAI",
                             subtitle: "2 Hours until meeting with John",
                             detail: "Task Due Soon!",
-                            time: "Due at 4:00pm"
+                            time: "Due at 4:00pm",
+                            useAppLogo: true
                         )
                         
                         notificationCard(
-                            icon: "checkmark.circle.fill",
-                            iconColor: .white,
-                            backgroundColor: Color.green,
+                            icon: "message.fill",
+                            iconColor: .green,
+                            backgroundColor: Color.white,
                             title: "TASKI AI",
                             subtitle: "Reminder For Math Homework Due at 11:59 PM",
                             detail: nil,
-                            time: "now"
+                            time: "now",
+                            useAppLogo: false
                         )
                         
                         notificationCard(
@@ -71,7 +73,8 @@ struct WelcomeView: View {
                             title: "TASKI AI",
                             subtitle: "This is your reminder for your homework due at 11:59PM for Calc...",
                             detail: "Reminder For Homework Due at 11:59 Calc",
-                            time: "now"
+                            time: "now",
+                            useAppLogo: false
                         )
                     }
                     .padding(.horizontal, 20)
@@ -172,19 +175,34 @@ struct WelcomeView: View {
         title: String,
         subtitle: String,
         detail: String?,
-        time: String
+        time: String,
+        useAppLogo: Bool
     ) -> some View {
         HStack(spacing: 12) {
-            // Icon with app logo overlay
-            ZStack {
-                Circle()
-                    .fill(backgroundColor)
-                    .frame(width: 50, height: 50)
-                
-                Image("app_logo")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 32, height: 32)
+            // Icon
+            if useAppLogo {
+                // Use app logo for first card
+                ZStack {
+                    Circle()
+                        .fill(backgroundColor)
+                        .frame(width: 50, height: 50)
+                    
+                    Image("app_logo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                }
+            } else {
+                // Use system icon for other cards
+                ZStack {
+                    Circle()
+                        .fill(backgroundColor)
+                        .frame(width: 50, height: 50)
+                    
+                    Image(systemName: icon)
+                        .font(.system(size: 22))
+                        .foregroundStyle(iconColor)
+                }
             }
             
             // Content
