@@ -23,7 +23,7 @@ struct SettingsView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 12)
-                    .padding(.top, geo.safeAreaInsets.top + 8)
+                    .padding(.top, geo.safeAreaInsets.top)
                     .background(Color(.systemBackground))
 
                     List {
@@ -138,7 +138,7 @@ struct PlaceholderView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 12)
-                    .padding(.top, geo.safeAreaInsets.top + 8)
+                    .padding(.top, geo.safeAreaInsets.top)
                     .background(Color(.systemBackground))
                     
                     Spacer()

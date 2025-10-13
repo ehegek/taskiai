@@ -40,7 +40,7 @@ struct WelcomeView: View {
                             .font(.system(size: 18, weight: .regular))
                             .foregroundStyle(.white.opacity(0.6))
                     }
-                    .padding(.bottom, 50)
+                    .padding(.bottom, 35)
                     
                     // 3 Notification Cards
                     VStack(spacing: 12) {
@@ -118,36 +118,36 @@ struct WelcomeView: View {
                     .padding(.top, 16)
                     
                     // Terms and Privacy text
-                    HStack(spacing: 4) {
+                    VStack(spacing: 6) {
                         Text("By continuing, you agree to our")
-                            .foregroundStyle(.white.opacity(0.5))
-                            .font(.system(size: 11))
+                            .font(.system(size: 12))
+                            .foregroundStyle(.white.opacity(0.6))
                         
-                        Button {
-                            showTermsOfService = true
-                        } label: {
-                            Text("Terms of Service")
-                                .foregroundStyle(.white)
-                                .fontWeight(.semibold)
-                                .font(.system(size: 11))
-                        }
-                        
-                        Text("and")
-                            .foregroundStyle(.white.opacity(0.5))
-                            .font(.system(size: 11))
-                        
-                        Button {
-                            showPrivacyPolicy = true
-                        } label: {
-                            Text("Privacy Policy")
-                                .foregroundStyle(.white)
-                                .fontWeight(.semibold)
-                                .font(.system(size: 11))
+                        HStack(spacing: 6) {
+                            Button {
+                                showTermsOfService = true
+                            } label: {
+                                Text("Terms of Service")
+                                    .font(.system(size: 12, weight: .semibold))
+                                    .foregroundStyle(.white)
+                                    .underline()
+                            }
+                            
+                            Text("and")
+                                .font(.system(size: 12))
+                                .foregroundStyle(.white.opacity(0.6))
+                            
+                            Button {
+                                showPrivacyPolicy = true
+                            } label: {
+                                Text("Privacy Policy")
+                                    .font(.system(size: 12, weight: .semibold))
+                                    .foregroundStyle(.white)
+                                    .underline()
+                            }
                         }
                     }
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 40)
-                    .padding(.top, 24)
+                    .padding(.top, 20)
                     
                     Spacer()
                         .frame(height: geo.safeAreaInsets.bottom + 20)
@@ -229,16 +229,16 @@ struct WelcomeView: View {
                     .lineLimit(2)
             }
         }
-        .padding(14)
+        .padding(16)
         .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.black.opacity(0.75))
-                .shadow(color: .black.opacity(0.3), radius: 8, y: 4)
+            RoundedRectangle(cornerRadius: 18)
+                .fill(Color.black.opacity(0.8))
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(Color.white.opacity(0.3), lineWidth: 1.5)
+            RoundedRectangle(cornerRadius: 18)
+                .stroke(Color.white.opacity(0.15), lineWidth: 1)
         )
+        .shadow(color: .black.opacity(0.4), radius: 12, y: 6)
     }
 }
 
