@@ -20,27 +20,27 @@ struct WelcomeView: View {
                         .frame(height: geo.safeAreaInsets.top + 20)
                     
                     // App logo/title
-                    VStack(spacing: 16) {
-                        Image("2")
+                    VStack(spacing: 20) {
+                        Image("app_logo")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 100, height: 100)
-                            .shadow(color: .white.opacity(0.3), radius: 15)
+                            .frame(width: 120, height: 120)
+                            .shadow(color: .white.opacity(0.4), radius: 20)
                         
                         Text("Welcome to")
-                            .font(.system(size: 18, weight: .medium))
-                            .foregroundStyle(.white.opacity(0.8))
+                            .font(.system(size: 20, weight: .regular))
+                            .foregroundStyle(.white.opacity(0.7))
                         
                         Text("TASKI AI")
-                            .font(.system(size: 42, weight: .black, design: .rounded))
+                            .font(.system(size: 48, weight: .heavy, design: .rounded))
                             .foregroundStyle(.white)
-                            .tracking(3)
+                            .tracking(2)
                         
                         Text("Never Miss a Task")
-                            .font(.system(size: 16, weight: .medium))
-                            .foregroundStyle(.white.opacity(0.7))
+                            .font(.system(size: 18, weight: .regular))
+                            .foregroundStyle(.white.opacity(0.6))
                     }
-                    .padding(.bottom, 40)
+                    .padding(.bottom, 50)
                     
                     // 3 Notification Cards
                     VStack(spacing: 12) {
@@ -175,12 +175,17 @@ struct WelcomeView: View {
         time: String
     ) -> some View {
         HStack(spacing: 12) {
-            // Logo Icon
-            Image("2")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 40, height: 40)
-                .clipShape(Circle())
+            // Icon with app logo overlay
+            ZStack {
+                Circle()
+                    .fill(backgroundColor)
+                    .frame(width: 50, height: 50)
+                
+                Image("app_logo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 32, height: 32)
+            }
             
             // Content
             VStack(alignment: .leading, spacing: 4) {
