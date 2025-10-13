@@ -9,7 +9,6 @@ struct ChatView: View {
     @State private var input = ""
     @State private var isRecording = false
     @State private var showAttachLabel = false
-    @State private var isVoiceChatActive = false
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
@@ -60,10 +59,10 @@ struct ChatView: View {
             Text("Taski AI Chat")
                 .font(.system(size: 18, weight: .bold))
             Spacer()
-            Button { startVoiceChat() } label: {
+            NavigationLink { VoiceChatView() } label: {
                 Image(systemName: "phone.circle.fill")
                     .font(.system(size: 28))
-                    .foregroundStyle(isVoiceChatActive ? .green : .primary)
+                    .foregroundStyle(.green)
             }
         }
         .padding(.horizontal, 20)
@@ -154,12 +153,6 @@ struct ChatView: View {
     private func toggleMic() {
         isRecording.toggle()
         // Wire to SpeechService later
-    }
-    
-    private func startVoiceChat() {
-        isVoiceChatActive.toggle()
-        // TODO: Implement voice chat with AI
-        // This will start a real-time voice conversation with AI
     }
 
     private func send() {
