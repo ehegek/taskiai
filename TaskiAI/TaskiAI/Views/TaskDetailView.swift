@@ -21,8 +21,6 @@ struct TaskDetailView: View, Identifiable {
             ZStack {
                 Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
                 VStack(spacing: 0) {
-                    Spacer()
-                        .frame(height: 50)
                     // Custom Header
                     HStack {
                             Button { dismiss() } label: {
@@ -42,6 +40,7 @@ struct TaskDetailView: View, Identifiable {
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 12)
+                    .padding(.top, geo.safeAreaInsets.top)
                     .background(Color(.systemBackground))
                     
                 Form {

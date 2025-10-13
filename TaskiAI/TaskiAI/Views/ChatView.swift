@@ -16,9 +16,8 @@ struct ChatView: View {
             ZStack {
                 Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
                 VStack(spacing: 0) {
-                    Spacer()
-                        .frame(height: 50)
                     header
+                        .padding(.top, geo.safeAreaInsets.top)
                     
                     ScrollViewReader { proxy in
                         ScrollView {
