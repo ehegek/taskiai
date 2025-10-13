@@ -9,25 +9,21 @@ struct SettingsView: View {
                 Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
                 VStack(spacing: 0) {
                     // Header with proper spacing
-                    VStack(spacing: 0) {
-                        Spacer()
-                            .frame(height: geo.safeAreaInsets.top)
-                        
-                        HStack {
-                            Button { dismiss() } label: {
-                                Image(systemName: "chevron.left")
-                                    .font(.system(size: 20, weight: .semibold))
-                                    .foregroundStyle(.primary)
-                            }
-                            Spacer()
-                            Text("Settings")
-                                .font(.system(size: 20, weight: .bold))
-                            Spacer()
-                            Color.clear.frame(width: 20)
+                    HStack {
+                        Button { dismiss() } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundStyle(.primary)
                         }
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 12)
+                        Spacer()
+                        Text("Settings")
+                            .font(.system(size: 20, weight: .bold))
+                        Spacer()
+                        Color.clear.frame(width: 20)
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .padding(.top, geo.safeAreaInsets.top + 8)
                     .background(Color(.systemBackground))
 
                     List {
@@ -128,25 +124,21 @@ struct PlaceholderView: View {
                 
                 VStack(spacing: 0) {
                     // Header with proper spacing
-                    VStack(spacing: 0) {
-                        Spacer()
-                            .frame(height: geo.safeAreaInsets.top)
-                        
-                        HStack {
-                            Button { dismiss() } label: {
-                                Image(systemName: "chevron.left")
-                                    .font(.system(size: 20, weight: .semibold))
-                                    .foregroundStyle(.primary)
-                            }
-                            Spacer()
-                            Text(title)
-                                .font(.system(size: 20, weight: .bold))
-                            Spacer()
-                            Color.clear.frame(width: 20)
+                    HStack {
+                        Button { dismiss() } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundStyle(.primary)
                         }
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 12)
+                        Spacer()
+                        Text(title)
+                            .font(.system(size: 20, weight: .bold))
+                        Spacer()
+                        Color.clear.frame(width: 20)
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .padding(.top, geo.safeAreaInsets.top + 8)
                     .background(Color(.systemBackground))
                     
                     Spacer()

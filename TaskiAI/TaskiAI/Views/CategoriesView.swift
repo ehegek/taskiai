@@ -25,11 +25,7 @@ struct CategoriesView: View {
                 
                 VStack(spacing: 0) {
                     // Header with proper spacing
-                    VStack(spacing: 0) {
-                        Spacer()
-                            .frame(height: geo.safeAreaInsets.top)
-                        
-                        HStack {
+                    HStack {
                             Button { dismiss() } label: {
                                 Image(systemName: "chevron.left")
                                     .font(.system(size: 20, weight: .semibold))
@@ -44,10 +40,10 @@ struct CategoriesView: View {
                                     .font(.system(size: 28))
                                     .foregroundStyle(.blue)
                             }
-                        }
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 12)
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .padding(.top, geo.safeAreaInsets.top + 8)
                     .background(Color(.systemBackground))
                     
                     // Categories List

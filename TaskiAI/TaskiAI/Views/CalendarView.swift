@@ -17,8 +17,6 @@ struct CalendarView: View {
             GeometryReader { geo in
                 ScrollView {
                     VStack(spacing: 14) {
-                        Spacer()
-                            .frame(height: geo.safeAreaInsets.top)
                         // Custom back bar
                         HStack(spacing: 8) {
                             Button { dismiss() } label: {
@@ -29,6 +27,7 @@ struct CalendarView: View {
                             Spacer()
                         }
                         .padding(.horizontal, 20)
+                        .padding(.top, geo.safeAreaInsets.top + 8)
 
                         Text("Calendar")
                             .font(.system(size: 28, weight: .bold))

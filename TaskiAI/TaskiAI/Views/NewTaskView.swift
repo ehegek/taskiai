@@ -94,6 +94,7 @@ struct NewTaskView: View {
                 }
                 .onAppear { date = defaultDate }
                 .scrollContentBackground(.hidden)
+                .scrollDismissesKeyboard(.interactively)
             }
             // Persistent bottom CTA
             .safeAreaInset(edge: .bottom) {

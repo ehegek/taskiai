@@ -22,11 +22,7 @@ struct TaskDetailView: View, Identifiable {
                 Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
                 VStack(spacing: 0) {
                     // Custom Header
-                    VStack(spacing: 0) {
-                        Spacer()
-                            .frame(height: geo.safeAreaInsets.top)
-                        
-                        HStack {
+                    HStack {
                             Button { dismiss() } label: {
                                 Image(systemName: "chevron.left")
                                     .font(.system(size: 20, weight: .semibold))
@@ -41,10 +37,10 @@ struct TaskDetailView: View, Identifiable {
                                     .font(.system(size: 28))
                                     .foregroundStyle(.blue)
                             }
-                        }
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 12)
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .padding(.top, geo.safeAreaInsets.top + 8)
                     .background(Color(.systemBackground))
                     
                 Form {

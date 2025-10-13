@@ -17,15 +17,19 @@ struct WelcomeView: View {
                 // Content
                 VStack(spacing: 0) {
                     Spacer()
-                        .frame(height: geo.safeAreaInsets.top)
+                        .frame(height: geo.safeAreaInsets.top + 20)
                     
                     // App logo/title
-                    VStack(spacing: 12) {
+                    VStack(spacing: 16) {
                         Image("2")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 100, height: 100)
                             .shadow(color: .white.opacity(0.3), radius: 15)
+                        
+                        Text("Welcome to")
+                            .font(.system(size: 18, weight: .medium))
+                            .foregroundStyle(.white.opacity(0.8))
                         
                         Text("TASKI AI")
                             .font(.system(size: 42, weight: .black, design: .rounded))
@@ -36,7 +40,7 @@ struct WelcomeView: View {
                             .font(.system(size: 16, weight: .medium))
                             .foregroundStyle(.white.opacity(0.7))
                     }
-                    .padding(.bottom, 50)
+                    .padding(.bottom, 40)
                     
                     // 3 Notification Cards
                     VStack(spacing: 12) {
@@ -171,15 +175,12 @@ struct WelcomeView: View {
         time: String
     ) -> some View {
         HStack(spacing: 12) {
-            // Icon
-            ZStack {
-                Circle()
-                    .fill(backgroundColor)
-                    .frame(width: 40, height: 40)
-                Image(systemName: icon)
-                    .font(.system(size: 20))
-                    .foregroundStyle(iconColor)
-            }
+            // Logo Icon
+            Image("2")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 40, height: 40)
+                .clipShape(Circle())
             
             // Content
             VStack(alignment: .leading, spacing: 4) {
