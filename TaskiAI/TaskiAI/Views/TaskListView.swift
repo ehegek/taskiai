@@ -28,7 +28,7 @@ struct TaskListView: View {
             GeometryReader { geo in
                 VStack(spacing: 0) {
                     Spacer()
-                        .frame(height: max(geo.safeAreaInsets.top, 44))
+                        .frame(height: geo.safeAreaInsets.top + 8)
                     header
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: 12) {
@@ -50,7 +50,9 @@ struct TaskListView: View {
         .navigationDestination(item: $selectedTask) { task in
             TaskDetailView(task: task)
         }
-        .ignoresSafeArea(.keyboard, edges: .bottom)
+        .onTapGesture {
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        }
     }
 
     private var header: some View {

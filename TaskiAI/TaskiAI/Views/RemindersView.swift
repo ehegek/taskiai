@@ -18,7 +18,7 @@ struct RemindersView: View {
                     // Header with proper spacing
                     VStack(spacing: 0) {
                         Spacer()
-                            .frame(height: max(geo.safeAreaInsets.top, 44))
+                            .frame(height: geo.safeAreaInsets.top + 8)
                         
                         HStack {
                             Button { dismiss() } label: {

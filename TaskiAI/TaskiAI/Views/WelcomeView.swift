@@ -20,21 +20,9 @@ struct WelcomeView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 // Overlay content (notifications + button + text)
-                VStack(spacing: 20) {
+                VStack(spacing: 0) {
                     Spacer()
-                        .frame(height: max(geo.safeAreaInsets.top + 140, 180))
-                    
-                    // Welcome text
-                    VStack(spacing: 8) {
-                        Text("Welcome To")
-                            .font(.system(size: 24, weight: .semibold))
-                            .foregroundStyle(.white)
-                        Text("TASKI AI")
-                            .font(.system(size: 48, weight: .black))
-                            .foregroundStyle(.white)
-                            .tracking(2)
-                    }
-                    .shadow(color: .black.opacity(0.5), radius: 10)
+                        .frame(height: geo.safeAreaInsets.top + 60)
                     
                     // 3 Notification Cards
                     VStack(spacing: 12) {
