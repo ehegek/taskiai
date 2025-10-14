@@ -12,7 +12,7 @@ struct SubscriptionSettingsView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         Spacer()
-                            .frame(height: max(geo.safeAreaInsets.top + 10, 50))
+                            .frame(height: max(geo.safeAreaInsets.top + 4, 50))
                         
                         HStack {
                             Button { dismiss() } label: {
