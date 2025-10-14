@@ -10,8 +10,15 @@ struct RemindersView: View {
     @State private var selectedTask: Task?
     
     var body: some View {
-        VStack(spacing: 0) {
-            if tasksWithReminders.isEmpty {
+        GeometryReader { geo in
+            ZStack {
+                Color(.systemBackground).ignoresSafeArea()
+                
+                VStack(spacing: 0) {
+                    Spacer()
+                        .frame(height: geo.safeAreaInsets.top + 60)
+                    
+                    if tasksWithReminders.isEmpty {
                         // Empty state
                         VStack(spacing: 20) {
                             Spacer()
@@ -41,26 +48,29 @@ struct RemindersView: View {
                             .padding(.horizontal, 20)
                             .padding(.vertical, 16)
                         }
-            }
-        }
-        .safeAreaInset(edge: .top, spacing: 0) {
-            GeometryReader { geo in
-                HStack {
-                    Button { dismiss() } label: {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 20, weight: .semibold))
-                            .foregroundStyle(.primary)
                     }
-                    Spacer()
-                    Text("Reminders")
-                        .font(.system(size: 20, weight: .bold))
-                    Spacer()
-                    Color.clear.frame(width: 20)
                 }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 12)
-                .padding(.top, geo.safeAreaInsets.top)
-                .background(Color(.systemBackground).ignoresSafeArea(edges: .top))
+                
+                // Floating header
+                VStack {
+                    HStack {
+                        Button { dismiss() } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundStyle(.primary)
+                        }
+                        Spacer()
+                        Text("Reminders")
+                            .font(.system(size: 20, weight: .bold))
+                        Spacer()
+                        Color.clear.frame(width: 20)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .padding(.top, geo.safeAreaInsets.top)
+                    .background(Color(.systemBackground))
+                    Spacer()
+                }
             }
         }
         .navigationBarHidden(true)
