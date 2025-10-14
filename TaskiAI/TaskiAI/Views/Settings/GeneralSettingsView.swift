@@ -7,59 +7,50 @@ struct GeneralSettingsView: View {
     @AppStorage("app.theme") private var selectedTheme = "System"
     
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                Color(.systemBackground).ignoresSafeArea()
-                
-                VStack(spacing: 0) {
-                    Spacer()
-                        .frame(height: geo.safeAreaInsets.top + 70)
-                    
-                    Form {
-                        Section("Appearance") {
-                            Picker("Theme", selection: $selectedTheme) {
-                                Text("System").tag("System")
-                                Text("Light").tag("Light")
-                                Text("Dark").tag("Dark")
-                            }
-                        }
-                        
-                        Section("Notifications") {
-                            Toggle("Enable Notifications", isOn: $notificationsEnabled)
-                            Toggle("Sound", isOn: $soundEnabled)
-                        }
-                        
-                        Section("App") {
-                            HStack {
-                                Text("Version")
-                                Spacer()
-                                Text("1.0.0")
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
+        ZStack {
+            Color(.systemBackground).ignoresSafeArea()
+            
+            Form {
+                Section("Appearance") {
+                    Picker("Theme", selection: $selectedTheme) {
+                        Text("System").tag("System")
+                        Text("Light").tag("Light")
+                        Text("Dark").tag("Dark")
                     }
                 }
                 
-                // Floating header
-                VStack {
+                Section("Notifications") {
+                    Toggle("Enable Notifications", isOn: $notificationsEnabled)
+                    Toggle("Sound", isOn: $soundEnabled)
+                }
+                
+                Section("App") {
                     HStack {
-                        Button { dismiss() } label: {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 20, weight: .semibold))
-                                .foregroundStyle(.primary)
-                        }
+                        Text("Version")
                         Spacer()
-                        Text("General")
-                            .font(.system(size: 20, weight: .bold))
-                        Spacer()
-                        Color.clear.frame(width: 20)
+                        Text("1.0.0")
+                            .foregroundStyle(.secondary)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .padding(.top, geo.safeAreaInsets.top + 10)
-                    .background(Color(.systemBackground))
-                    Spacer()
                 }
+            }
+        }
+        .safeAreaInset(edge: .top) {
+            GeometryReader { _ in
+                HStack {
+                    Button { dismiss() } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundStyle(.primary)
+                    }
+                    Spacer()
+                    Text("General")
+                        .font(.system(size: 20, weight: .bold))
+                    Spacer()
+                    Color.clear.frame(width: 20)
+                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
+                .background(Color(.systemBackground).ignoresSafeArea(edges: .top))
             }
         }
         .navigationBarHidden(true)

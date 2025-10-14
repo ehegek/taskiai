@@ -17,67 +17,58 @@ struct TaskDetailView: View, Identifiable {
     init(task: Task) { self.task = task; _repeatOn = State(initialValue: task.repeatRule.frequency != .none); _reminderOn = State(initialValue: task.reminderEnabled) }
 
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                Color(.systemBackground).ignoresSafeArea()
+        ZStack {
+            Color(.systemBackground).ignoresSafeArea()
+            
+            Form {
+                TextField("Enter task name", text: $task.title)
+                DatePicker("Date", selection: $task.date, displayedComponents: [.date, .hourAndMinute])
                 
-                VStack(spacing: 0) {
-                    Spacer()
-                        .frame(height: geo.safeAreaInsets.top + 70)
-                    
-                    Form {
-                    TextField("Enter task name", text: $task.title)
-                    DatePicker("Date", selection: $task.date, displayedComponents: [.date, .hourAndMinute])
-                    
-                    Picker("Category", selection: Binding(
-                        get: { task.category?.id ?? UUID() },
-                        set: { id in task.category = categories.first(where: { $0.id == id }); try? context.save() }
-                    )) {
-                        Text("None").tag(UUID())
-                        ForEach(categories) { cat in
-                            Label(cat.name, systemImage: cat.icon ?? "folder.fill").tag(cat.id)
-                        }
+                Picker("Category", selection: Binding(
+                    get: { task.category?.id ?? UUID() },
+                    set: { id in task.category = categories.first(where: { $0.id == id }); try? context.save() }
+                )) {
+                    Text("None").tag(UUID())
+                    ForEach(categories) { cat in
+                        Label(cat.name, systemImage: cat.icon ?? "folder.fill").tag(cat.id)
                     }
-                    
-                    Toggle("Repeat", isOn: Binding(get: { repeatOn }, set: { repeatOn = $0; task.repeatRule.frequency = $0 ? .daily : .none }))
-                    Toggle("Reminder", isOn: Binding(get: { reminderOn }, set: { reminderOn = $0; task.reminderEnabled = $0 }))
-                    if reminderOn {
-                        Picker("Channels", selection: Binding(get: { task.reminderChannels.first ?? .appPush }, set: { task.reminderChannels = [$0]; try? context.save() })) {
-                            ForEach(ReminderChannel.allCases) { ch in Text(ch.displayName).tag(ch) }
-                        }
-                    }
-                    Section("Details (optional)") {
-                        TextField("Notes", text: Binding(get: { task.notes ?? "" }, set: { task.notes = $0 }), axis: .vertical)
-                    }
-                    }
-                    .scrollContentBackground(.hidden)
-                    .onDisappear { try? context.save() }
                 }
                 
-                // Floating header
-                VStack {
-                    HStack {
-                        Button { dismiss() } label: {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 20, weight: .semibold))
-                                .foregroundStyle(.primary)
-                        }
-                        Spacer()
-                        Text("Details")
-                            .font(.system(size: 20, weight: .bold))
-                        Spacer()
-                        Button { try? context.save(); dismiss() } label: {
-                            Image(systemName: "checkmark.circle.fill")
-                                .font(.system(size: 28))
-                                .foregroundStyle(.blue)
-                        }
+                Toggle("Repeat", isOn: Binding(get: { repeatOn }, set: { repeatOn = $0; task.repeatRule.frequency = $0 ? .daily : .none }))
+                Toggle("Reminder", isOn: Binding(get: { reminderOn }, set: { reminderOn = $0; task.reminderEnabled = $0 }))
+                if reminderOn {
+                    Picker("Channels", selection: Binding(get: { task.reminderChannels.first ?? .appPush }, set: { task.reminderChannels = [$0]; try? context.save() })) {
+                        ForEach(ReminderChannel.allCases) { ch in Text(ch.displayName).tag(ch) }
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .padding(.top, geo.safeAreaInsets.top + 10)
-                    .background(Color(.systemBackground))
-                    Spacer()
                 }
+                Section("Details (optional)") {
+                    TextField("Notes", text: Binding(get: { task.notes ?? "" }, set: { task.notes = $0 }), axis: .vertical)
+                }
+            }
+            .scrollContentBackground(.hidden)
+            .onDisappear { try? context.save() }
+        }
+        .safeAreaInset(edge: .top) {
+            GeometryReader { _ in
+                HStack {
+                    Button { dismiss() } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundStyle(.primary)
+                    }
+                    Spacer()
+                    Text("Details")
+                        .font(.system(size: 20, weight: .bold))
+                    Spacer()
+                    Button { try? context.save(); dismiss() } label: {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 28))
+                            .foregroundStyle(.blue)
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
+                .background(Color(.systemBackground).ignoresSafeArea(edges: .top))
             }
         }
         .navigationBarHidden(true)

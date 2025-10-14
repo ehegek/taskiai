@@ -10,67 +10,56 @@ struct RemindersView: View {
     @State private var selectedTask: Task?
     
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                Color(.systemBackground).ignoresSafeArea()
-                
-                VStack(spacing: 0) {
+        ZStack {
+            Color(.systemBackground).ignoresSafeArea()
+            
+            if tasksWithReminders.isEmpty {
+                VStack(spacing: 20) {
                     Spacer()
-                        .frame(height: geo.safeAreaInsets.top + 70)
-                    
-                    if tasksWithReminders.isEmpty {
-                        // Empty state
-                        VStack(spacing: 20) {
-                            Spacer()
-                            Image(systemName: "bell.slash")
-                                .font(.system(size: 60))
-                                .foregroundStyle(.secondary)
-                            Text("No Reminders")
-                                .font(.system(size: 24, weight: .bold))
-                            Text("Add reminders to your tasks to see them here")
-                                .font(.system(size: 16))
-                                .foregroundStyle(.secondary)
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal, 40)
-                            Spacer()
-                        }
-                    } else {
-                        // List of tasks with reminders
-                        ScrollView {
-                            LazyVStack(spacing: 12) {
-                                ForEach(tasksWithReminders) { task in
-                                    reminderCard(task)
-                                        .onTapGesture {
-                                            selectedTask = task
-                                        }
-                                }
-                            }
-                            .padding(.horizontal, 20)
-                            .padding(.vertical, 16)
-                        }
-                    }
+                    Image(systemName: "bell.slash")
+                        .font(.system(size: 60))
+                        .foregroundStyle(.secondary)
+                    Text("No Reminders")
+                        .font(.system(size: 24, weight: .bold))
+                    Text("Add reminders to your tasks to see them here")
+                        .font(.system(size: 16))
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 40)
+                    Spacer()
                 }
-                
-                // Floating header
-                VStack {
-                    HStack {
-                        Button { dismiss() } label: {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 20, weight: .semibold))
-                                .foregroundStyle(.primary)
+            } else {
+                ScrollView {
+                    LazyVStack(spacing: 12) {
+                        ForEach(tasksWithReminders) { task in
+                            reminderCard(task)
+                                .onTapGesture {
+                                    selectedTask = task
+                                }
                         }
-                        Spacer()
-                        Text("Reminders")
-                            .font(.system(size: 20, weight: .bold))
-                        Spacer()
-                        Color.clear.frame(width: 20)
                     }
                     .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .padding(.top, geo.safeAreaInsets.top + 10)
-                    .background(Color(.systemBackground))
-                    Spacer()
+                    .padding(.vertical, 16)
                 }
+            }
+        }
+        .safeAreaInset(edge: .top) {
+            GeometryReader { _ in
+                HStack {
+                    Button { dismiss() } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundStyle(.primary)
+                    }
+                    Spacer()
+                    Text("Reminders")
+                        .font(.system(size: 20, weight: .bold))
+                    Spacer()
+                    Color.clear.frame(width: 20)
+                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
+                .background(Color(.systemBackground).ignoresSafeArea(edges: .top))
             }
         }
         .navigationBarHidden(true)
