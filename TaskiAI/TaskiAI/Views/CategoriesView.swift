@@ -24,27 +24,8 @@ struct CategoriesView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack(spacing: 0) {
-                    // Header with proper spacing
-                    HStack {
-                            Button { dismiss() } label: {
-                                Image(systemName: "chevron.left")
-                                    .font(.system(size: 20, weight: .semibold))
-                                    .foregroundStyle(.primary)
-                            }
-                            Spacer()
-                            Text("Categories")
-                                .font(.system(size: 20, weight: .bold))
-                            Spacer()
-                            Button { showAddCategory = true } label: {
-                                Image(systemName: "plus.circle.fill")
-                                    .font(.system(size: 28))
-                                    .foregroundStyle(.blue)
-                            }
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .padding(.top, 8)
-                    .background(Color(.systemBackground))
+                    Spacer()
+                        .frame(height: 60)
                     
                     // Categories List
                     ScrollView {
@@ -56,6 +37,31 @@ struct CategoriesView: View {
                         .padding(.horizontal, 20)
                         .padding(.bottom, 20)
                     }
+                }
+                
+                // Header at top
+                VStack {
+                    HStack {
+                        Button { dismiss() } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundStyle(.primary)
+                        }
+                        Spacer()
+                        Text("Categories")
+                            .font(.system(size: 20, weight: .bold))
+                        Spacer()
+                        Button { showAddCategory = true } label: {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.system(size: 28))
+                                .foregroundStyle(.blue)
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .padding(.top, 8)
+                    .background(Color(.systemBackground))
+                    Spacer()
                 }
             }
         }

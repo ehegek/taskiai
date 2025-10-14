@@ -21,27 +21,8 @@ struct TaskDetailView: View, Identifiable {
             ZStack {
                 Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
                 VStack(spacing: 0) {
-                    // Custom Header
-                    HStack {
-                            Button { dismiss() } label: {
-                                Image(systemName: "chevron.left")
-                                    .font(.system(size: 20, weight: .semibold))
-                                    .foregroundStyle(.primary)
-                            }
-                            Spacer()
-                            Text("Details")
-                                .font(.system(size: 20, weight: .bold))
-                            Spacer()
-                            Button { try? context.save(); dismiss() } label: {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .font(.system(size: 28))
-                                    .foregroundStyle(.blue)
-                            }
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .padding(.top, 8)
-                    .background(Color(.systemBackground))
+                    Spacer()
+                        .frame(height: 60)
                     
                 Form {
                     TextField("Enter task name", text: $task.title)
@@ -71,15 +52,30 @@ struct TaskDetailView: View, Identifiable {
                 .scrollContentBackground(.hidden)
                 .onDisappear { try? context.save() }
                 }
-            }
-            .navigationBarHidden(true)
-            .safeAreaInset(edge: .bottom) {
-                Button {
-                    try? context.save();
-                    dismiss()
-                } label: {
-                    Text("Done")
-                        .font(.system(size: 17, weight: .semibold))
+                
+                // Header at top
+                VStack {
+                    HStack {
+                        Button { dismiss() } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundStyle(.primary)
+                        }
+                        Spacer()
+                        Text("Details")
+                            .font(.system(size: 20, weight: .bold))
+                        Spacer()
+                        Button { try? context.save(); dismiss() } label: {
+                            Image(systemName: "checkmark.circle.fill")
+                                .font(.system(size: 28))
+                                .foregroundStyle(.blue)
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .padding(.top, 8)
+                    .background(Color(.systemBackground))
+                    Spacer()
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
                         .background(RoundedRectangle(cornerRadius: 14).fill(Color.black))

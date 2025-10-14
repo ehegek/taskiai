@@ -12,23 +12,8 @@ struct AccountSettingsView: View {
                 Color(.systemBackground).ignoresSafeArea()
                 
                 VStack(spacing: 0) {
-                    // Header with proper spacing
-                    HStack {
-                        Button { dismiss() } label: {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 20, weight: .semibold))
-                                .foregroundStyle(.primary)
-                        }
-                        Spacer()
-                        Text("Account")
-                            .font(.system(size: 20, weight: .bold))
-                        Spacer()
-                        Color.clear.frame(width: 20)
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .padding(.top, 8)
-                    .background(Color(.systemBackground))
+                    Spacer()
+                        .frame(height: 60)
                     
                     Form {
                         Section("Profile") {
@@ -56,6 +41,27 @@ struct AccountSettingsView: View {
                             }
                         }
                     }
+                }
+                
+                // Header at top
+                VStack {
+                    HStack {
+                        Button { dismiss() } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundStyle(.primary)
+                        }
+                        Spacer()
+                        Text("Account")
+                            .font(.system(size: 20, weight: .bold))
+                        Spacer()
+                        Color.clear.frame(width: 20)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .padding(.top, 8)
+                    .background(Color(.systemBackground))
+                    Spacer()
                 }
             }
         }

@@ -10,23 +10,8 @@ struct SubscriptionSettingsView: View {
                 Color(.systemBackground).ignoresSafeArea()
                 
                 VStack(spacing: 0) {
-                    // Header with proper spacing
-                    HStack {
-                            Button { dismiss() } label: {
-                                Image(systemName: "chevron.left")
-                                    .font(.system(size: 20, weight: .semibold))
-                                    .foregroundStyle(.primary)
-                            }
-                            Spacer()
-                            Text("Subscriptions")
-                                .font(.system(size: 20, weight: .bold))
-                            Spacer()
-                            Color.clear.frame(width: 20)
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .padding(.top, 8)
-                    .background(Color(.systemBackground))
+                    Spacer()
+                        .frame(height: 60)
                     
                     Form {
                         Section("Current Plan") {
@@ -69,6 +54,27 @@ struct SubscriptionSettingsView: View {
                                 .foregroundStyle(.green)
                         }
                     }
+                }
+                
+                // Header at top
+                VStack {
+                    HStack {
+                        Button { dismiss() } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundStyle(.primary)
+                        }
+                        Spacer()
+                        Text("Subscriptions")
+                            .font(.system(size: 20, weight: .bold))
+                        Spacer()
+                        Color.clear.frame(width: 20)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .padding(.top, 8)
+                    .background(Color(.systemBackground))
+                    Spacer()
                 }
             }
         }
