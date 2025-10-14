@@ -54,7 +54,7 @@ struct TaskDetailView: View, Identifiable {
                 }
                 
                 // Header at top
-                VStack {
+                VStack(spacing: 0) {
                     HStack {
                         Button { dismiss() } label: {
                             Image(systemName: "chevron.left")
@@ -73,16 +73,10 @@ struct TaskDetailView: View, Identifiable {
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 12)
-                    .padding(.top, 8)
                     .background(Color(.systemBackground))
                     Spacer()
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 16)
-                        .background(RoundedRectangle(cornerRadius: 14).fill(Color.black))
-                        .foregroundStyle(.white)
                 }
-                .padding(.horizontal, 20)
-                .padding(.bottom, geo.safeAreaInsets.bottom + 8)
+                .ignoresSafeArea(edges: .top)
             }
         }
     }

@@ -44,7 +44,7 @@ struct AccountSettingsView: View {
                 }
                 
                 // Header at top
-                VStack {
+                VStack(spacing: 0) {
                     HStack {
                         Button { dismiss() } label: {
                             Image(systemName: "chevron.left")
@@ -59,10 +59,10 @@ struct AccountSettingsView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 12)
-                    .padding(.top, 8)
                     .background(Color(.systemBackground))
                     Spacer()
                 }
+                .ignoresSafeArea(edges: .top)
             }
         }
         .navigationBarHidden(true)

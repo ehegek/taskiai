@@ -44,12 +44,12 @@ struct ChatView: View {
                 }
                 
                 // Header at top
-                VStack {
+                VStack(spacing: 0) {
                     header
-                        .padding(.top, 8)
                         .background(Color(.systemBackground))
                     Spacer()
                 }
+                .ignoresSafeArea(edges: .top)
             }
             .navigationTitle("Taski AI Chat")
             .toolbar(.hidden, for: .navigationBar)

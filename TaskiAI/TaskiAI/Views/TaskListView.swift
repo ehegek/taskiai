@@ -45,11 +45,11 @@ struct TaskListView: View {
                 }
                 
                 // Header at top
-                VStack {
+                VStack(spacing: 0) {
                     header
-                        .padding(.top, 8)
                     Spacer()
                 }
+                .ignoresSafeArea(edges: .top)
             }
         }
         .navigationBarHidden(true)
