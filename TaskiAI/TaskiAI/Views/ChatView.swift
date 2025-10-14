@@ -12,44 +12,35 @@ struct ChatView: View {
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                Color(.systemBackground).ignoresSafeArea()
-                
-                VStack(spacing: 0) {
-                    Spacer()
-                        .frame(height: geo.safeAreaInsets.top + 70)
-                    
-                    ScrollViewReader { proxy in
-                        ScrollView {
-                            LazyVStack(alignment: .leading, spacing: 16) {
-                                ForEach(messages) { msg in
-                                    bubble(for: msg)
-                                }
+        ZStack {
+            Color(.systemBackground).ignoresSafeArea()
+            
+            VStack(spacing: 0) {
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        LazyVStack(alignment: .leading, spacing: 16) {
+                            ForEach(messages) { msg in
+                                bubble(for: msg)
                             }
-                            .padding(.horizontal, 20)
-                            .padding(.vertical, 16)
                         }
-                        .onChange(of: messages.count) {
-                            if let last = messages.last {
-                                withAnimation {
-                                    proxy.scrollTo(last.id, anchor: .bottom)
-                                }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 16)
+                    }
+                    .onChange(of: messages.count) {
+                        if let last = messages.last {
+                            withAnimation {
+                                proxy.scrollTo(last.id, anchor: .bottom)
                             }
                         }
                     }
+                }
                 
                 inputBar
-                }
-                
-                // Floating header
-                VStack {
-                    header
-                        .padding(.top, geo.safeAreaInsets.top + 10)
-                        .background(Color(.systemBackground))
-                    Spacer()
-                }
             }
+        }
+        .safeAreaInset(edge: .top) {
+            header
+                .background(Color(.systemBackground))
         }
         .navigationTitle("Taski AI Chat")
         .toolbar(.hidden, for: .navigationBar)
