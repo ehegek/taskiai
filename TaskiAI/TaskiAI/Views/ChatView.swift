@@ -14,7 +14,7 @@ struct ChatView: View {
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
+                Color(.systemBackground)
                 
                 VStack(spacing: 0) {
                     Spacer()
@@ -46,11 +46,12 @@ struct ChatView: View {
                 // Header at top
                 VStack(spacing: 0) {
                     header
+                        .padding(.top, geo.safeAreaInsets.top)
                         .background(Color(.systemBackground))
                     Spacer()
                 }
-                .ignoresSafeArea(edges: .top)
             }
+            .ignoresSafeArea()
             .navigationTitle("Taski AI Chat")
             .toolbar(.hidden, for: .navigationBar)
         }

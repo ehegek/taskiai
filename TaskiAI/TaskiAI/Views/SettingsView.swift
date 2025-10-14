@@ -6,7 +6,7 @@ struct SettingsView: View {
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
+                Color(.systemBackground)
                 
                 VStack(spacing: 0) {
                     Spacer()
@@ -86,11 +86,12 @@ struct SettingsView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 12)
+                    .padding(.top, geo.safeAreaInsets.top)
                     .background(Color(.systemBackground))
                     Spacer()
                 }
-                .ignoresSafeArea(edges: .top)
             }
+            .ignoresSafeArea()
             .navigationTitle("Settings")
             .toolbar(.hidden, for: .navigationBar)
         }

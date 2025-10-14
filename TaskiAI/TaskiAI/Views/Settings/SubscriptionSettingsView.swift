@@ -7,7 +7,7 @@ struct SubscriptionSettingsView: View {
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                Color(.systemBackground).ignoresSafeArea()
+                Color(.systemBackground)
                 
                 VStack(spacing: 0) {
                     Spacer()
@@ -72,11 +72,12 @@ struct SubscriptionSettingsView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 12)
+                    .padding(.top, geo.safeAreaInsets.top)
                     .background(Color(.systemBackground))
                     Spacer()
                 }
-                .ignoresSafeArea(edges: .top)
             }
+            .ignoresSafeArea()
         }
         .navigationBarHidden(true)
     }

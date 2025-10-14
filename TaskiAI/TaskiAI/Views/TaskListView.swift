@@ -19,13 +19,9 @@ struct TaskListView: View {
     }
 
     var body: some View {
-        ZStack {
-            Rectangle()
-                .fill(Color(.systemBackground))
-                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-                .edgesIgnoringSafeArea(.all)
-            
-            GeometryReader { geo in
+        GeometryReader { geo in
+            ZStack {
+                Color(.systemBackground)
                 VStack(spacing: 0) {
                     Spacer()
                         .frame(height: 60)
@@ -47,10 +43,11 @@ struct TaskListView: View {
                 // Header at top
                 VStack(spacing: 0) {
                     header
+                        .padding(.top, geo.safeAreaInsets.top)
                     Spacer()
                 }
-                .ignoresSafeArea(edges: .top)
             }
+            .ignoresSafeArea()
         }
         .navigationBarHidden(true)
         .navigationDestination(item: $selectedTask) { task in

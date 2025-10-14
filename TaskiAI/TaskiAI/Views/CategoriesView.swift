@@ -18,10 +18,7 @@ struct CategoriesView: View {
     var body: some View {
         GeometryReader { geo in
             ZStack {
-                Rectangle()
-                    .fill(Color(.systemBackground))
-                    .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-                    .edgesIgnoringSafeArea(.all)
+                Color(.systemBackground)
                 
                 VStack(spacing: 0) {
                     Spacer()
@@ -59,11 +56,12 @@ struct CategoriesView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 12)
+                    .padding(.top, geo.safeAreaInsets.top)
                     .background(Color(.systemBackground))
                     Spacer()
                 }
-                .ignoresSafeArea(edges: .top)
             }
+            .ignoresSafeArea()
         }
         .navigationBarHidden(true)
         .sheet(isPresented: $showAddCategory) {
