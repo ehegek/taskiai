@@ -35,23 +35,21 @@ struct GeneralSettingsView: View {
             }
         }
         .safeAreaInset(edge: .top) {
-            GeometryReader { _ in
-                HStack {
-                    Button { dismiss() } label: {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 20, weight: .semibold))
-                            .foregroundStyle(.primary)
-                    }
-                    Spacer()
-                    Text("General")
-                        .font(.system(size: 20, weight: .bold))
-                    Spacer()
-                    Color.clear.frame(width: 20)
+            HStack {
+                Button { dismiss() } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundStyle(.primary)
                 }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 12)
-                .background(Color(.systemBackground).ignoresSafeArea(edges: .top))
+                Spacer()
+                Text("General")
+                    .font(.system(size: 20, weight: .bold))
+                Spacer()
+                Color.clear.frame(width: 20)
             }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+            .background(Color(.systemBackground).ignoresSafeArea(edges: .top))
         }
         .navigationBarHidden(true)
     }

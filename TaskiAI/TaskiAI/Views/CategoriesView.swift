@@ -30,27 +30,25 @@ struct CategoriesView: View {
             }
         }
         .safeAreaInset(edge: .top) {
-            GeometryReader { _ in
-                HStack {
-                    Button { dismiss() } label: {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 20, weight: .semibold))
-                            .foregroundStyle(.primary)
-                    }
-                    Spacer()
-                    Text("Categories")
-                        .font(.system(size: 20, weight: .bold))
-                    Spacer()
-                    Button { showAddCategory = true } label: {
-                        Image(systemName: "plus.circle.fill")
-                            .font(.system(size: 28))
-                            .foregroundStyle(.blue)
-                    }
+            HStack {
+                Button { dismiss() } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundStyle(.primary)
                 }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 12)
-                .background(Color(.systemBackground).ignoresSafeArea(edges: .top))
+                Spacer()
+                Text("Categories")
+                    .font(.system(size: 20, weight: .bold))
+                Spacer()
+                Button { showAddCategory = true } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.system(size: 28))
+                        .foregroundStyle(.blue)
+                }
             }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+            .background(Color(.systemBackground).ignoresSafeArea(edges: .top))
         }
         .navigationBarHidden(true)
         .sheet(isPresented: $showAddCategory) {

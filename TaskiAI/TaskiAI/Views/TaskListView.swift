@@ -38,11 +38,8 @@ struct TaskListView: View {
             }
         }
         .safeAreaInset(edge: .top) {
-            GeometryReader { geo in
-                header
-                    .padding(.top, 0)
-                    .background(Color(.systemBackground).ignoresSafeArea(edges: .top))
-            }
+            header
+                .background(Color(.systemBackground).ignoresSafeArea(edges: .top))
         }
         .navigationBarHidden(true)
         .navigationDestination(item: $selectedTask) { task in
