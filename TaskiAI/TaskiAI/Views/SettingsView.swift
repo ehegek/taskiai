@@ -7,57 +7,59 @@ struct SettingsView: View {
         ZStack {
             Color(.systemBackground).ignoresSafeArea()
             
-            List {
-                Section(header: Text("Account").font(.system(size: 14, weight: .semibold))) {
-                    NavigationLink("Account") { AccountSettingsView() }
-                    NavigationLink("General") { GeneralSettingsView() }
-                    NavigationLink("Calendar") { CalendarSettingsView() }
-                }
-                
-                Section(header: Text("Preferences").font(.system(size: 14, weight: .semibold))) {
-                    NavigationLink("Categories") { CategoriesView() }
-                    NavigationLink("Subscriptions") { SubscriptionSettingsView() }
-                }
-                
-                Section(header: Text("Support").font(.system(size: 14, weight: .semibold))) {
-                    Button(action: { rateApp() }) {
-                        HStack {
-                            Text("Rate 5 Stars")
-                            Spacer()
-                            Image(systemName: "star.fill")
-                                .foregroundStyle(.yellow)
+            VStack(spacing: 0) {
+                List {
+                    Section(header: Text("Account").font(.system(size: 14, weight: .semibold))) {
+                        NavigationLink("Account") { AccountSettingsView() }
+                        NavigationLink("General") { GeneralSettingsView() }
+                        NavigationLink("Calendar") { CalendarSettingsView() }
+                    }
+                    
+                    Section(header: Text("Preferences").font(.system(size: 14, weight: .semibold))) {
+                        NavigationLink("Categories") { CategoriesView() }
+                        NavigationLink("Subscriptions") { SubscriptionSettingsView() }
+                    }
+                    
+                    Section(header: Text("Support").font(.system(size: 14, weight: .semibold))) {
+                        Button(action: { rateApp() }) {
+                            HStack {
+                                Text("Rate 5 Stars")
+                                Spacer()
+                                Image(systemName: "star.fill")
+                                    .foregroundStyle(.yellow)
+                            }
+                        }
+                        Button(action: { shareApp() }) {
+                            HStack {
+                                Text("Share with a Friend")
+                                Spacer()
+                                Image(systemName: "square.and.arrow.up")
+                            }
+                        }
+                        Button(action: { contactSupport() }) {
+                            HStack {
+                                Text("Contact Support")
+                                Spacer()
+                                Image(systemName: "envelope")
+                            }
                         }
                     }
-                    Button(action: { shareApp() }) {
-                        HStack {
-                            Text("Share with a Friend")
-                            Spacer()
-                            Image(systemName: "square.and.arrow.up")
-                        }
+                    
+                    Section(header: Text("Legal").font(.system(size: 14, weight: .semibold))) {
+                        NavigationLink("Privacy Policy") { PlaceholderView(title: "Privacy Policy") }
+                        NavigationLink("Terms of Use") { PlaceholderView(title: "Terms of Use") }
                     }
-                    Button(action: { contactSupport() }) {
-                        HStack {
-                            Text("Contact Support")
-                            Spacer()
-                            Image(systemName: "envelope")
-                        }
+                    
+                    Section(header: Text("Developer").font(.system(size: 14, weight: .semibold))) {
+                        Button("Sign Out") { appState.signOut() }
+                            .foregroundStyle(.red)
+                        Button("Reset Onboarding & Subscription") { appState.resetAll() }
+                            .foregroundStyle(.orange)
                     }
                 }
-                
-                Section(header: Text("Legal").font(.system(size: 14, weight: .semibold))) {
-                    NavigationLink("Privacy Policy") { PlaceholderView(title: "Privacy Policy") }
-                    NavigationLink("Terms of Use") { PlaceholderView(title: "Terms of Use") }
-                }
-                
-                Section(header: Text("Developer").font(.system(size: 14, weight: .semibold))) {
-                    Button("Sign Out") { appState.signOut() }
-                        .foregroundStyle(.red)
-                    Button("Reset Onboarding & Subscription") { appState.resetAll() }
-                        .foregroundStyle(.orange)
-                }
+                .listStyle(.insetGrouped)
+                .scrollContentBackground(.hidden)
             }
-            .listStyle(.insetGrouped)
-            .scrollContentBackground(.hidden)
         }
         .safeAreaInset(edge: .top) {
             header
