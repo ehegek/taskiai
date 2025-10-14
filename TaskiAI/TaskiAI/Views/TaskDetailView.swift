@@ -17,14 +17,7 @@ struct TaskDetailView: View, Identifiable {
     init(task: Task) { self.task = task; _repeatOn = State(initialValue: task.repeatRule.frequency != .none); _reminderOn = State(initialValue: task.reminderEnabled) }
 
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                Color(.systemBackground)
-                VStack(spacing: 0) {
-                    Spacer()
-                        .frame(height: 60)
-                    
-                Form {
+        Form {
                     TextField("Enter task name", text: $task.title)
                     DatePicker("Date", selection: $task.date, displayedComponents: [.date, .hourAndMinute])
                     
@@ -48,37 +41,29 @@ struct TaskDetailView: View, Identifiable {
                     Section("Details (optional)") {
                         TextField("Notes", text: Binding(get: { task.notes ?? "" }, set: { task.notes = $0 }), axis: .vertical)
                     }
+        }
+        .scrollContentBackground(.hidden)
+        .onDisappear { try? context.save() }
+        .safeAreaInset(edge: .top) {
+            HStack {
+                Button { dismiss() } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundStyle(.primary)
                 }
-                .scrollContentBackground(.hidden)
-                .onDisappear { try? context.save() }
-                }
-                
-                // Header at top
-                VStack(spacing: 0) {
-                    HStack {
-                        Button { dismiss() } label: {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 20, weight: .semibold))
-                                .foregroundStyle(.primary)
-                        }
-                        Spacer()
-                        Text("Details")
-                            .font(.system(size: 20, weight: .bold))
-                        Spacer()
-                        Button { try? context.save(); dismiss() } label: {
-                            Image(systemName: "checkmark.circle.fill")
-                                .font(.system(size: 28))
-                                .foregroundStyle(.blue)
-                        }
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .padding(.top, geo.safeAreaInsets.top)
-                    .background(Color(.systemBackground))
-                    Spacer()
+                Spacer()
+                Text("Details")
+                    .font(.system(size: 20, weight: .bold))
+                Spacer()
+                Button { try? context.save(); dismiss() } label: {
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 28))
+                        .foregroundStyle(.blue)
                 }
             }
-            .ignoresSafeArea()
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+            .background(Color(.systemBackground))
         }
         .navigationBarHidden(true)
     }

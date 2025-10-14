@@ -10,15 +10,8 @@ struct RemindersView: View {
     @State private var selectedTask: Task?
     
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                Color(.systemBackground)
-                
-                VStack(spacing: 0) {
-                    Spacer()
-                        .frame(height: 60)
-                    
-                    if tasksWithReminders.isEmpty {
+        VStack(spacing: 0) {
+            if tasksWithReminders.isEmpty {
                         // Empty state
                         VStack(spacing: 20) {
                             Spacer()
@@ -48,31 +41,24 @@ struct RemindersView: View {
                             .padding(.horizontal, 20)
                             .padding(.vertical, 16)
                         }
-                    }
-                }
-                
-                // Header at top
-                VStack(spacing: 0) {
-                    HStack {
-                        Button { dismiss() } label: {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 20, weight: .semibold))
-                                .foregroundStyle(.primary)
-                        }
-                        Spacer()
-                        Text("Reminders")
-                            .font(.system(size: 20, weight: .bold))
-                        Spacer()
-                        Color.clear.frame(width: 20)
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .padding(.top, geo.safeAreaInsets.top)
-                    .background(Color(.systemBackground))
-                    Spacer()
-                }
             }
-            .ignoresSafeArea()
+        }
+        .safeAreaInset(edge: .top) {
+            HStack {
+                Button { dismiss() } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundStyle(.primary)
+                }
+                Spacer()
+                Text("Reminders")
+                    .font(.system(size: 20, weight: .bold))
+                Spacer()
+                Color.clear.frame(width: 20)
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+            .background(Color(.systemBackground))
         }
         .navigationBarHidden(true)
         .navigationDestination(item: $selectedTask) { task in

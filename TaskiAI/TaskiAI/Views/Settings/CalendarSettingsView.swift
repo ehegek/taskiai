@@ -6,15 +6,7 @@ struct CalendarSettingsView: View {
     @State private var show24Hour = false
     
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                Color(.systemBackground)
-                
-                VStack(spacing: 0) {
-                    Spacer()
-                        .frame(height: 60)
-                    
-                    Form {
+        Form {
                         Section("Week Settings") {
                             Picker("First Day of Week", selection: $firstDayOfWeek) {
                                 Text("Sunday").tag(0)
@@ -25,31 +17,23 @@ struct CalendarSettingsView: View {
                         Section("Time Format") {
                             Toggle("24-Hour Time", isOn: $show24Hour)
                         }
-                    }
+        }
+        .safeAreaInset(edge: .top) {
+            HStack {
+                Button { dismiss() } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundStyle(.primary)
                 }
-                
-                // Header at top
-                VStack(spacing: 0) {
-                    HStack {
-                        Button { dismiss() } label: {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 20, weight: .semibold))
-                                .foregroundStyle(.primary)
-                        }
-                        Spacer()
-                        Text("Calendar")
-                            .font(.system(size: 20, weight: .bold))
-                        Spacer()
-                        Color.clear.frame(width: 20)
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .padding(.top, geo.safeAreaInsets.top)
-                    .background(Color(.systemBackground))
-                    Spacer()
-                }
+                Spacer()
+                Text("Calendar")
+                    .font(.system(size: 20, weight: .bold))
+                Spacer()
+                Color.clear.frame(width: 20)
             }
-            .ignoresSafeArea()
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+            .background(Color(.systemBackground))
         }
         .navigationBarHidden(true)
     }

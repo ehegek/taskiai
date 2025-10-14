@@ -16,16 +16,7 @@ struct CategoriesView: View {
     ]
     
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                Color(.systemBackground)
-                
-                VStack(spacing: 0) {
-                    Spacer()
-                        .frame(height: 60)
-                    
-                    // Categories List
-                    ScrollView {
+        ScrollView {
                         LazyVStack(spacing: 12) {
                             ForEach(categories) { category in
                                 categoryRow(category)
@@ -33,35 +24,27 @@ struct CategoriesView: View {
                         }
                         .padding(.horizontal, 20)
                         .padding(.bottom, 20)
-                    }
+        }
+        .safeAreaInset(edge: .top) {
+            HStack {
+                Button { dismiss() } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundStyle(.primary)
                 }
-                
-                // Header at top
-                VStack(spacing: 0) {
-                    HStack {
-                        Button { dismiss() } label: {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 20, weight: .semibold))
-                                .foregroundStyle(.primary)
-                        }
-                        Spacer()
-                        Text("Categories")
-                            .font(.system(size: 20, weight: .bold))
-                        Spacer()
-                        Button { showAddCategory = true } label: {
-                            Image(systemName: "plus.circle.fill")
-                                .font(.system(size: 28))
-                                .foregroundStyle(.blue)
-                        }
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .padding(.top, geo.safeAreaInsets.top)
-                    .background(Color(.systemBackground))
-                    Spacer()
+                Spacer()
+                Text("Categories")
+                    .font(.system(size: 20, weight: .bold))
+                Spacer()
+                Button { showAddCategory = true } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.system(size: 28))
+                        .foregroundStyle(.blue)
                 }
             }
-            .ignoresSafeArea()
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+            .background(Color(.systemBackground))
         }
         .navigationBarHidden(true)
         .sheet(isPresented: $showAddCategory) {
