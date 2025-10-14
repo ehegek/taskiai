@@ -19,13 +19,8 @@ struct TaskListView: View {
     }
 
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                Color(.systemBackground)
-                VStack(spacing: 0) {
-                    Spacer()
-                        .frame(height: 60)
-                    ScrollView {
+        VStack(spacing: 0) {
+            ScrollView {
                         LazyVStack(alignment: .leading, spacing: 12) {
                             ForEach(filteredTasks) { task in
                                 TaskBubbleRow(task: task)
@@ -35,19 +30,12 @@ struct TaskListView: View {
                         .padding(.horizontal, 20)
                         .padding(.top, 12)
                         .padding(.bottom, 80)
-                    }
-                    addBar
-                        .padding(.bottom, max(geo.safeAreaInsets.bottom + 10, 20))
-                }
-                
-                // Header at top
-                VStack(spacing: 0) {
-                    header
-                        .padding(.top, geo.safeAreaInsets.top)
-                    Spacer()
-                }
             }
-            .ignoresSafeArea()
+            addBar
+        }
+        .safeAreaInset(edge: .top) {
+            header
+                .background(Color(.systemBackground))
         }
         .navigationBarHidden(true)
         .navigationDestination(item: $selectedTask) { task in

@@ -12,15 +12,8 @@ struct ChatView: View {
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                Color(.systemBackground)
-                
-                VStack(spacing: 0) {
-                    Spacer()
-                        .frame(height: 60)
-                    
-                    ScrollViewReader { proxy in
+        VStack(spacing: 0) {
+            ScrollViewReader { proxy in
                         ScrollView {
                             LazyVStack(alignment: .leading, spacing: 16) {
                                 ForEach(messages) { msg in
@@ -38,23 +31,15 @@ struct ChatView: View {
                             }
                         }
                     }
-                    
-                    inputBar
-                        .padding(.bottom, geo.safeAreaInsets.bottom)
-                }
-                
-                // Header at top
-                VStack(spacing: 0) {
-                    header
-                        .padding(.top, geo.safeAreaInsets.top)
-                        .background(Color(.systemBackground))
-                    Spacer()
-                }
-            }
-            .ignoresSafeArea()
-            .navigationTitle("Taski AI Chat")
-            .toolbar(.hidden, for: .navigationBar)
+            
+            inputBar
         }
+        .safeAreaInset(edge: .top) {
+            header
+                .background(Color(.systemBackground))
+        }
+        .navigationTitle("Taski AI Chat")
+        .toolbar(.hidden, for: .navigationBar)
     }
     
     private var header: some View {

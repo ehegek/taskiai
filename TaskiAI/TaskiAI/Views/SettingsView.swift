@@ -4,15 +4,7 @@ struct SettingsView: View {
     @EnvironmentObject var appState: AppState
     @Environment(\.dismiss) private var dismiss
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                Color(.systemBackground)
-                
-                VStack(spacing: 0) {
-                    Spacer()
-                        .frame(height: 60)
-
-                    List {
+        List {
                     Section(header: Text("Account").font(.system(size: 14, weight: .semibold))) {
                         NavigationLink("Account") { AccountSettingsView() }
                         NavigationLink("General") { GeneralSettingsView() }
@@ -66,35 +58,27 @@ struct SettingsView: View {
                         .foregroundStyle(.orange)
                     }
                     }
-                    .listStyle(.insetGrouped)
-                    .scrollContentBackground(.hidden)
+        .listStyle(.insetGrouped)
+        .scrollContentBackground(.hidden)
+        .safeAreaInset(edge: .top) {
+            HStack {
+                Button { dismiss() } label: {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundStyle(.primary)
                 }
-                
-                // Header at top
-                VStack(spacing: 0) {
-                    HStack {
-                        Button { dismiss() } label: {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 20, weight: .semibold))
-                                .foregroundStyle(.primary)
-                        }
-                        Spacer()
-                        Text("Settings")
-                            .font(.system(size: 20, weight: .bold))
-                        Spacer()
-                        Color.clear.frame(width: 20)
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .padding(.top, geo.safeAreaInsets.top)
-                    .background(Color(.systemBackground))
-                    Spacer()
-                }
+                Spacer()
+                Text("Settings")
+                    .font(.system(size: 20, weight: .bold))
+                Spacer()
+                Color.clear.frame(width: 20)
             }
-            .ignoresSafeArea()
-            .navigationTitle("Settings")
-            .toolbar(.hidden, for: .navigationBar)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+            .background(Color(.systemBackground))
         }
+        .navigationTitle("Settings")
+        .toolbar(.hidden, for: .navigationBar)
     }
     
     private func rateApp() {
