@@ -10,55 +10,60 @@ struct RemindersView: View {
     @State private var selectedTask: Task?
     
     var body: some View {
-        ZStack {
-            Color(.systemBackground).ignoresSafeArea()
-            
-            if tasksWithReminders.isEmpty {
-                VStack(spacing: 20) {
-                    Spacer()
-                    Image(systemName: "bell.slash")
-                        .font(.system(size: 60))
-                        .foregroundStyle(.secondary)
-                    Text("No Reminders")
-                        .font(.system(size: 24, weight: .bold))
-                    Text("Add reminders to your tasks to see them here")
-                        .font(.system(size: 16))
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 40)
-                    Spacer()
-                }
-            } else {
-                ScrollView {
-                    LazyVStack(spacing: 12) {
-                        ForEach(tasksWithReminders) { task in
-                            reminderCard(task)
-                                .onTapGesture {
-                                    selectedTask = task
+        GeometryReader { geo in
+            ZStack(alignment: .top) {
+                Color(.systemBackground).ignoresSafeArea()
+                
+                VStack(spacing: 0) {
+                    Spacer().frame(height: geo.safeAreaInsets.top + 60)
+                    
+                    if tasksWithReminders.isEmpty {
+                        VStack(spacing: 20) {
+                            Spacer()
+                            Image(systemName: "bell.slash")
+                                .font(.system(size: 60))
+                                .foregroundStyle(.secondary)
+                            Text("No Reminders")
+                                .font(.system(size: 24, weight: .bold))
+                            Text("Add reminders to your tasks to see them here")
+                                .font(.system(size: 16))
+                                .foregroundStyle(.secondary)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 40)
+                            Spacer()
+                        }
+                    } else {
+                        ScrollView {
+                            LazyVStack(spacing: 12) {
+                                ForEach(tasksWithReminders) { task in
+                                    reminderCard(task)
+                                        .onTapGesture { selectedTask = task }
                                 }
+                            }
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 16)
                         }
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 16)
                 }
-            }
-        }
-        .safeAreaInset(edge: .top) {
-            HStack {
-                Button { dismiss() } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundStyle(.primary)
+                
+                // Top-aligned floating header
+                HStack {
+                    Button { dismiss() } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundStyle(.primary)
+                    }
+                    Spacer()
+                    Text("Reminders")
+                        .font(.system(size: 20, weight: .bold))
+                    Spacer()
+                    Color.clear.frame(width: 20)
                 }
-                Spacer()
-                Text("Reminders")
-                    .font(.system(size: 20, weight: .bold))
-                Spacer()
-                Color.clear.frame(width: 20)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
+                .padding(.top, geo.safeAreaInsets.top)
+                .background(Color(.systemBackground))
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 12)
-            .background(Color(.systemBackground).ignoresSafeArea(edges: .top))
         }
         .navigationBarHidden(true)
         .navigationDestination(item: $selectedTask) { task in
