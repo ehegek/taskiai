@@ -7,24 +7,10 @@ struct SettingsView: View {
         GeometryReader { geo in
             ZStack {
                 Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
+                
                 VStack(spacing: 0) {
-                    // Header with proper spacing
-                    HStack {
-                        Button { dismiss() } label: {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 20, weight: .semibold))
-                                .foregroundStyle(.primary)
-                        }
-                        Spacer()
-                        Text("Settings")
-                            .font(.system(size: 20, weight: .bold))
-                        Spacer()
-                        Color.clear.frame(width: 20)
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .padding(.top, 8)
-                    .background(Color(.systemBackground))
+                    Spacer()
+                        .frame(height: 60)
 
                     List {
                     Section(header: Text("Account").font(.system(size: 14, weight: .semibold))) {
@@ -82,6 +68,27 @@ struct SettingsView: View {
                     }
                     .listStyle(.insetGrouped)
                     .scrollContentBackground(.hidden)
+                }
+                
+                // Header at top
+                VStack {
+                    HStack {
+                        Button { dismiss() } label: {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundStyle(.primary)
+                        }
+                        Spacer()
+                        Text("Settings")
+                            .font(.system(size: 20, weight: .bold))
+                        Spacer()
+                        Color.clear.frame(width: 20)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 12)
+                    .padding(.top, 8)
+                    .background(Color(.systemBackground))
+                    Spacer()
                 }
             }
             .navigationTitle("Settings")

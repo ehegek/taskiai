@@ -15,9 +15,10 @@ struct ChatView: View {
         GeometryReader { geo in
             ZStack {
                 Color(.systemBackground).ignoresSafeArea(.all, edges: .all)
+                
                 VStack(spacing: 0) {
-                    header
-                        .padding(.top, 8)
+                    Spacer()
+                        .frame(height: 60)
                     
                     ScrollViewReader { proxy in
                         ScrollView {
@@ -40,6 +41,14 @@ struct ChatView: View {
                     
                     inputBar
                         .padding(.bottom, geo.safeAreaInsets.bottom)
+                }
+                
+                // Header at top
+                VStack {
+                    header
+                        .padding(.top, 8)
+                        .background(Color(.systemBackground))
+                    Spacer()
                 }
             }
             .navigationTitle("Taski AI Chat")
