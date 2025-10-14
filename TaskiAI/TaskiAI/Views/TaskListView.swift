@@ -25,7 +25,7 @@ struct TaskListView: View {
                 
                 VStack(spacing: 0) {
                     Spacer()
-                        .frame(height: geo.safeAreaInsets.top + 60)
+                        .frame(height: geo.safeAreaInsets.top + 70)
                     
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: 12) {
@@ -44,7 +44,7 @@ struct TaskListView: View {
                 // Floating header
                 VStack {
                     header
-                        .padding(.top, geo.safeAreaInsets.top)
+                        .padding(.top, geo.safeAreaInsets.top + 10)
                         .background(Color(.systemBackground))
                     Spacer()
                 }

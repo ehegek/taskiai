@@ -13,7 +13,7 @@ struct GeneralSettingsView: View {
                 
                 VStack(spacing: 0) {
                     Spacer()
-                        .frame(height: geo.safeAreaInsets.top + 60)
+                        .frame(height: geo.safeAreaInsets.top + 70)
                     
                     Form {
                         Section("Appearance") {
@@ -56,7 +56,7 @@ struct GeneralSettingsView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 12)
-                    .padding(.top, geo.safeAreaInsets.top)
+                    .padding(.top, geo.safeAreaInsets.top + 10)
                     .background(Color(.systemBackground))
                     Spacer()
                 }
