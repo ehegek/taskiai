@@ -25,26 +25,29 @@ struct CategoriesView: View {
                         .padding(.horizontal, 20)
                         .padding(.bottom, 20)
         }
-        .safeAreaInset(edge: .top) {
-            HStack {
-                Button { dismiss() } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundStyle(.primary)
+        .safeAreaInset(edge: .top, spacing: 0) {
+            GeometryReader { geo in
+                HStack {
+                    Button { dismiss() } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundStyle(.primary)
+                    }
+                    Spacer()
+                    Text("Categories")
+                        .font(.system(size: 20, weight: .bold))
+                    Spacer()
+                    Button { showAddCategory = true } label: {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.system(size: 28))
+                            .foregroundStyle(.blue)
+                    }
                 }
-                Spacer()
-                Text("Categories")
-                    .font(.system(size: 20, weight: .bold))
-                Spacer()
-                Button { showAddCategory = true } label: {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.system(size: 28))
-                        .foregroundStyle(.blue)
-                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
+                .padding(.top, geo.safeAreaInsets.top)
+                .background(Color(.systemBackground).ignoresSafeArea(edges: .top))
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 12)
-            .background(Color(.systemBackground))
         }
         .navigationBarHidden(true)
         .sheet(isPresented: $showAddCategory) {

@@ -46,22 +46,25 @@ struct SubscriptionSettingsView: View {
                                 .foregroundStyle(.green)
                         }
         }
-        .safeAreaInset(edge: .top) {
-            HStack {
-                Button { dismiss() } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundStyle(.primary)
+        .safeAreaInset(edge: .top, spacing: 0) {
+            GeometryReader { geo in
+                HStack {
+                    Button { dismiss() } label: {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundStyle(.primary)
+                    }
+                    Spacer()
+                    Text("Subscriptions")
+                        .font(.system(size: 20, weight: .bold))
+                    Spacer()
+                    Color.clear.frame(width: 20)
                 }
-                Spacer()
-                Text("Subscriptions")
-                    .font(.system(size: 20, weight: .bold))
-                Spacer()
-                Color.clear.frame(width: 20)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
+                .padding(.top, geo.safeAreaInsets.top)
+                .background(Color(.systemBackground).ignoresSafeArea(edges: .top))
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 12)
-            .background(Color(.systemBackground))
         }
         .navigationBarHidden(true)
     }
