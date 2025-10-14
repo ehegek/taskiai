@@ -19,36 +19,45 @@ struct CategoriesView: View {
         ZStack {
             Color(.systemBackground).ignoresSafeArea()
             
-            ScrollView {
-                LazyVStack(spacing: 12) {
-                    ForEach(categories) { category in
-                        categoryRow(category)
+            GeometryReader { geo in
+                ScrollView {
+                    VStack(spacing: 0) {
+                        Spacer()
+                            .frame(height: max(geo.safeAreaInsets.top + 10, 50))
+                        
+                        HStack {
+                            Button { dismiss() } label: {
+                                Image(systemName: "chevron.left")
+                                    .font(.system(size: 20, weight: .semibold))
+                                    .foregroundStyle(.primary)
+                            }
+                            Spacer()
+                            Text("Categories")
+                                .font(.system(size: 20, weight: .bold))
+                            Spacer()
+                            Button { showAddCategory = true } label: {
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.system(size: 28))
+                                    .foregroundStyle(.blue)
+                            }
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 12)
+                        
+                        LazyVStack(spacing: 12) {
+                            ForEach(categories) { category in
+                                categoryRow(category)
+                            }
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.top, 8)
+                        
+                        Spacer()
+                            .frame(height: max(geo.safeAreaInsets.bottom + 20, 40))
                     }
                 }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 20)
+                .scrollIndicators(.hidden)
             }
-        }
-        .safeAreaInset(edge: .top) {
-            HStack {
-                Button { dismiss() } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundStyle(.primary)
-                }
-                Spacer()
-                Text("Categories")
-                    .font(.system(size: 20, weight: .bold))
-                Spacer()
-                Button { showAddCategory = true } label: {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.system(size: 28))
-                        .foregroundStyle(.blue)
-                }
-            }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 12)
-            .background(Color(.systemBackground).ignoresSafeArea(edges: .top))
         }
         .navigationBarHidden(true)
         .sheet(isPresented: $showAddCategory) {

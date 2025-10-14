@@ -10,46 +10,100 @@ struct GeneralSettingsView: View {
         ZStack {
             Color(.systemBackground).ignoresSafeArea()
             
-            Form {
-                Section("Appearance") {
-                    Picker("Theme", selection: $selectedTheme) {
-                        Text("System").tag("System")
-                        Text("Light").tag("Light")
-                        Text("Dark").tag("Dark")
-                    }
-                }
-                
-                Section("Notifications") {
-                    Toggle("Enable Notifications", isOn: $notificationsEnabled)
-                    Toggle("Sound", isOn: $soundEnabled)
-                }
-                
-                Section("App") {
-                    HStack {
-                        Text("Version")
+            GeometryReader { geo in
+                ScrollView {
+                    VStack(spacing: 0) {
                         Spacer()
-                        Text("1.0.0")
-                            .foregroundStyle(.secondary)
+                            .frame(height: max(geo.safeAreaInsets.top + 10, 50))
+                        
+                        HStack {
+                            Button { dismiss() } label: {
+                                Image(systemName: "chevron.left")
+                                    .font(.system(size: 20, weight: .semibold))
+                                    .foregroundStyle(.primary)
+                            }
+                            Spacer()
+                            Text("General")
+                                .font(.system(size: 20, weight: .bold))
+                            Spacer()
+                            Color.clear.frame(width: 20)
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 12)
+                        
+                        VStack(spacing: 20) {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Appearance")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .textCase(.uppercase)
+                                    .foregroundStyle(.secondary)
+                                    .padding(.horizontal, 20)
+                                
+                                VStack(spacing: 0) {
+                                    Picker("Theme", selection: $selectedTheme) {
+                                        Text("System").tag("System")
+                                        Text("Light").tag("Light")
+                                        Text("Dark").tag("Dark")
+                                    }
+                                    .padding()
+                                    .background(Color(.systemGray6))
+                                }
+                                .background(Color(.systemGray6))
+                                .cornerRadius(12)
+                            }
+                            
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Notifications")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .textCase(.uppercase)
+                                    .foregroundStyle(.secondary)
+                                    .padding(.horizontal, 20)
+                                
+                                VStack(spacing: 0) {
+                                    Toggle("Enable Notifications", isOn: $notificationsEnabled)
+                                        .padding()
+                                        .background(Color(.systemGray6))
+                                    
+                                    Divider().padding(.leading, 20)
+                                    
+                                    Toggle("Sound", isOn: $soundEnabled)
+                                        .padding()
+                                        .background(Color(.systemGray6))
+                                }
+                                .background(Color(.systemGray6))
+                                .cornerRadius(12)
+                            }
+                            
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("App")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .textCase(.uppercase)
+                                    .foregroundStyle(.secondary)
+                                    .padding(.horizontal, 20)
+                                
+                                VStack(spacing: 0) {
+                                    HStack {
+                                        Text("Version")
+                                        Spacer()
+                                        Text("1.0.0")
+                                            .foregroundStyle(.secondary)
+                                    }
+                                    .padding()
+                                    .background(Color(.systemGray6))
+                                }
+                                .background(Color(.systemGray6))
+                                .cornerRadius(12)
+                            }
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.top, 12)
+                        
+                        Spacer()
+                            .frame(height: max(geo.safeAreaInsets.bottom + 20, 40))
                     }
                 }
+                .scrollIndicators(.hidden)
             }
-        }
-        .safeAreaInset(edge: .top) {
-            HStack {
-                Button { dismiss() } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundStyle(.primary)
-                }
-                Spacer()
-                Text("General")
-                    .font(.system(size: 20, weight: .bold))
-                Spacer()
-                Color.clear.frame(width: 20)
-            }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 12)
-            .background(Color(.systemBackground).ignoresSafeArea(edges: .top))
         }
         .navigationBarHidden(true)
     }

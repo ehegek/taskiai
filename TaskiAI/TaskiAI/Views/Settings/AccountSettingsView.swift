@@ -10,49 +10,106 @@ struct AccountSettingsView: View {
         ZStack {
             Color(.systemBackground).ignoresSafeArea()
             
-            Form {
-                Section("Profile") {
-                    TextField("Name", text: Binding(
-                        get: { appState.currentUserName ?? "" },
-                        set: { appState.currentUserName = $0 }
-                    ))
-                    TextField("Email", text: $email)
-                        .keyboardType(.emailAddress)
-                        .autocapitalization(.none)
-                }
-                
-                Section("Stats") {
-                    HStack {
-                        Text("Streak")
+            GeometryReader { geo in
+                ScrollView {
+                    VStack(spacing: 0) {
                         Spacer()
-                        Text("\(appState.streakDays) days")
-                            .foregroundStyle(.secondary)
-                    }
-                    HStack {
-                        Text("Referral Code")
+                            .frame(height: max(geo.safeAreaInsets.top + 10, 50))
+                        
+                        HStack {
+                            Button { dismiss() } label: {
+                                Image(systemName: "chevron.left")
+                                    .font(.system(size: 20, weight: .semibold))
+                                    .foregroundStyle(.primary)
+                            }
+                            Spacer()
+                            Text("Account")
+                                .font(.system(size: 20, weight: .bold))
+                            Spacer()
+                            Color.clear.frame(width: 20)
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 12)
+                        
+                        VStack(spacing: 20) {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Profile")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .textCase(.uppercase)
+                                    .foregroundStyle(.secondary)
+                                    .padding(.horizontal, 20)
+                                
+                                VStack(spacing: 0) {
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text("Name")
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                        TextField("Name", text: Binding(
+                                            get: { appState.currentUserName ?? "" },
+                                            set: { appState.currentUserName = $0 }
+                                        ))
+                                    }
+                                    .padding()
+                                    .background(Color(.systemGray6))
+                                    
+                                    Divider().padding(.leading, 20)
+                                    
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text("Email")
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                        TextField("Email", text: $email)
+                                            .keyboardType(.emailAddress)
+                                            .autocapitalization(.none)
+                                    }
+                                    .padding()
+                                    .background(Color(.systemGray6))
+                                }
+                                .background(Color(.systemGray6))
+                                .cornerRadius(12)
+                            }
+                            
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Stats")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .textCase(.uppercase)
+                                    .foregroundStyle(.secondary)
+                                    .padding(.horizontal, 20)
+                                
+                                VStack(spacing: 0) {
+                                    HStack {
+                                        Text("Streak")
+                                        Spacer()
+                                        Text("\(appState.streakDays) days")
+                                            .foregroundStyle(.secondary)
+                                    }
+                                    .padding()
+                                    .background(Color(.systemGray6))
+                                    
+                                    Divider().padding(.leading, 20)
+                                    
+                                    HStack {
+                                        Text("Referral Code")
+                                        Spacer()
+                                        Text(appState.referralCode ?? "None")
+                                            .foregroundStyle(.secondary)
+                                    }
+                                    .padding()
+                                    .background(Color(.systemGray6))
+                                }
+                                .background(Color(.systemGray6))
+                                .cornerRadius(12)
+                            }
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.top, 12)
+                        
                         Spacer()
-                        Text(appState.referralCode ?? "None")
-                            .foregroundStyle(.secondary)
+                            .frame(height: max(geo.safeAreaInsets.bottom + 20, 40))
                     }
                 }
+                .scrollIndicators(.hidden)
             }
-        }
-        .safeAreaInset(edge: .top) {
-            HStack {
-                Button { dismiss() } label: {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundStyle(.primary)
-                }
-                Spacer()
-                Text("Account")
-                    .font(.system(size: 20, weight: .bold))
-                Spacer()
-                Color.clear.frame(width: 20)
-            }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 12)
-            .background(Color(.systemBackground).ignoresSafeArea(edges: .top))
         }
         .navigationBarHidden(true)
     }

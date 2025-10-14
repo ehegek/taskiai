@@ -13,39 +13,46 @@ struct RemindersView: View {
         ZStack {
             Color(.systemBackground).ignoresSafeArea()
             
-            VStack(spacing: 0) {
-                if tasksWithReminders.isEmpty {
-                    VStack(spacing: 20) {
+            GeometryReader { geo in
+                ScrollView {
+                    VStack(spacing: 0) {
                         Spacer()
-                        Image(systemName: "bell.slash")
-                            .font(.system(size: 60))
-                            .foregroundStyle(.secondary)
-                        Text("No Reminders")
-                            .font(.system(size: 24, weight: .bold))
-                        Text("Add reminders to your tasks to see them here")
-                            .font(.system(size: 16))
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 40)
-                        Spacer()
-                    }
-                } else {
-                    ScrollView {
-                        LazyVStack(spacing: 12) {
-                            ForEach(tasksWithReminders) { task in
-                                reminderCard(task)
-                                    .onTapGesture { selectedTask = task }
+                            .frame(height: max(geo.safeAreaInsets.top + 10, 50))
+                        
+                        header
+                        
+                        if tasksWithReminders.isEmpty {
+                            VStack(spacing: 20) {
+                                Spacer()
+                                    .frame(height: 100)
+                                Image(systemName: "bell.slash")
+                                    .font(.system(size: 60))
+                                    .foregroundStyle(.secondary)
+                                Text("No Reminders")
+                                    .font(.system(size: 24, weight: .bold))
+                                Text("Add reminders to your tasks to see them here")
+                                    .font(.system(size: 16))
+                                    .foregroundStyle(.secondary)
+                                    .multilineTextAlignment(.center)
+                                    .padding(.horizontal, 40)
                             }
+                        } else {
+                            LazyVStack(spacing: 12) {
+                                ForEach(tasksWithReminders) { task in
+                                    reminderCard(task)
+                                        .onTapGesture { selectedTask = task }
+                                }
+                            }
+                            .padding(.horizontal, 20)
+                            .padding(.top, 16)
                         }
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 16)
+                        
+                        Spacer()
+                            .frame(height: max(geo.safeAreaInsets.bottom + 20, 40))
                     }
                 }
+                .scrollIndicators(.hidden)
             }
-        }
-        .safeAreaInset(edge: .top) {
-            header
-                .background(Color(.systemBackground).ignoresSafeArea(edges: .top))
         }
         .navigationBarHidden(true)
         .navigationDestination(item: $selectedTask) { task in

@@ -7,66 +7,169 @@ struct SettingsView: View {
         ZStack {
             Color(.systemBackground).ignoresSafeArea()
             
-            VStack(spacing: 0) {
-                List {
-                    Section(header: Text("Account").font(.system(size: 14, weight: .semibold))) {
-                        NavigationLink("Account") { AccountSettingsView() }
-                        NavigationLink("General") { GeneralSettingsView() }
-                        NavigationLink("Calendar") { CalendarSettingsView() }
-                    }
-                    
-                    Section(header: Text("Preferences").font(.system(size: 14, weight: .semibold))) {
-                        NavigationLink("Categories") { CategoriesView() }
-                        NavigationLink("Subscriptions") { SubscriptionSettingsView() }
-                    }
-                    
-                    Section(header: Text("Support").font(.system(size: 14, weight: .semibold))) {
-                        Button(action: { rateApp() }) {
-                            HStack {
-                                Text("Rate 5 Stars")
-                                Spacer()
-                                Image(systemName: "star.fill")
-                                    .foregroundStyle(.yellow)
+            GeometryReader { geo in
+                ScrollView {
+                    VStack(spacing: 0) {
+                        Spacer()
+                            .frame(height: max(geo.safeAreaInsets.top + 10, 50))
+                        
+                        header
+                        
+                        VStack(spacing: 20) {
+                            Section {
+                                VStack(spacing: 0) {
+                                    NavigationLink("Account") { AccountSettingsView() }
+                                        .padding()
+                                        .background(Color(.systemGray6))
+                                    Divider().padding(.leading, 20)
+                                    NavigationLink("General") { GeneralSettingsView() }
+                                        .padding()
+                                        .background(Color(.systemGray6))
+                                    Divider().padding(.leading, 20)
+                                    NavigationLink("Calendar") { CalendarSettingsView() }
+                                        .padding()
+                                        .background(Color(.systemGray6))
+                                }
+                                .background(Color(.systemGray6))
+                                .cornerRadius(12)
+                            } header: {
+                                Text("Account")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.horizontal, 20)
+                                    .padding(.bottom, 6)
+                                    .textCase(.uppercase)
+                                    .foregroundStyle(.secondary)
+                            }
+                            
+                            Section {
+                                VStack(spacing: 0) {
+                                    NavigationLink("Categories") { CategoriesView() }
+                                        .padding()
+                                        .background(Color(.systemGray6))
+                                    Divider().padding(.leading, 20)
+                                    NavigationLink("Subscriptions") { SubscriptionSettingsView() }
+                                        .padding()
+                                        .background(Color(.systemGray6))
+                                }
+                                .background(Color(.systemGray6))
+                                .cornerRadius(12)
+                            } header: {
+                                Text("Preferences")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.horizontal, 20)
+                                    .padding(.bottom, 6)
+                                    .textCase(.uppercase)
+                                    .foregroundStyle(.secondary)
+                            }
+                            
+                            Section {
+                                VStack(spacing: 0) {
+                                    Button(action: { rateApp() }) {
+                                        HStack {
+                                            Text("Rate 5 Stars")
+                                            Spacer()
+                                            Image(systemName: "star.fill")
+                                                .foregroundStyle(.yellow)
+                                        }
+                                        .padding()
+                                        .background(Color(.systemGray6))
+                                    }
+                                    Divider().padding(.leading, 20)
+                                    Button(action: { shareApp() }) {
+                                        HStack {
+                                            Text("Share with a Friend")
+                                            Spacer()
+                                            Image(systemName: "square.and.arrow.up")
+                                        }
+                                        .padding()
+                                        .background(Color(.systemGray6))
+                                    }
+                                    Divider().padding(.leading, 20)
+                                    Button(action: { contactSupport() }) {
+                                        HStack {
+                                            Text("Contact Support")
+                                            Spacer()
+                                            Image(systemName: "envelope")
+                                        }
+                                        .padding()
+                                        .background(Color(.systemGray6))
+                                    }
+                                }
+                                .background(Color(.systemGray6))
+                                .cornerRadius(12)
+                            } header: {
+                                Text("Support")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.horizontal, 20)
+                                    .padding(.bottom, 6)
+                                    .textCase(.uppercase)
+                                    .foregroundStyle(.secondary)
+                            }
+                            
+                            Section {
+                                VStack(spacing: 0) {
+                                    NavigationLink("Privacy Policy") { PlaceholderView(title: "Privacy Policy") }
+                                        .padding()
+                                        .background(Color(.systemGray6))
+                                    Divider().padding(.leading, 20)
+                                    NavigationLink("Terms of Use") { PlaceholderView(title: "Terms of Use") }
+                                        .padding()
+                                        .background(Color(.systemGray6))
+                                }
+                                .background(Color(.systemGray6))
+                                .cornerRadius(12)
+                            } header: {
+                                Text("Legal")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.horizontal, 20)
+                                    .padding(.bottom, 6)
+                                    .textCase(.uppercase)
+                                    .foregroundStyle(.secondary)
+                            }
+                            
+                            Section {
+                                VStack(spacing: 0) {
+                                    Button("Sign Out") { appState.signOut() }
+                                        .foregroundStyle(.red)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .padding()
+                                        .background(Color(.systemGray6))
+                                    Divider().padding(.leading, 20)
+                                    Button("Reset Onboarding & Subscription") { appState.resetAll() }
+                                        .foregroundStyle(.orange)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .padding()
+                                        .background(Color(.systemGray6))
+                                }
+                                .background(Color(.systemGray6))
+                                .cornerRadius(12)
+                            } header: {
+                                Text("Developer")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.horizontal, 20)
+                                    .padding(.bottom, 6)
+                                    .textCase(.uppercase)
+                                    .foregroundStyle(.secondary)
                             }
                         }
-                        Button(action: { shareApp() }) {
-                            HStack {
-                                Text("Share with a Friend")
-                                Spacer()
-                                Image(systemName: "square.and.arrow.up")
-                            }
-                        }
-                        Button(action: { contactSupport() }) {
-                            HStack {
-                                Text("Contact Support")
-                                Spacer()
-                                Image(systemName: "envelope")
-                            }
-                        }
-                    }
-                    
-                    Section(header: Text("Legal").font(.system(size: 14, weight: .semibold))) {
-                        NavigationLink("Privacy Policy") { PlaceholderView(title: "Privacy Policy") }
-                        NavigationLink("Terms of Use") { PlaceholderView(title: "Terms of Use") }
-                    }
-                    
-                    Section(header: Text("Developer").font(.system(size: 14, weight: .semibold))) {
-                        Button("Sign Out") { appState.signOut() }
-                            .foregroundStyle(.red)
-                        Button("Reset Onboarding & Subscription") { appState.resetAll() }
-                            .foregroundStyle(.orange)
+                        .padding(.horizontal, 20)
+                        .padding(.top, 12)
+                        
+                        Spacer()
+                            .frame(height: max(geo.safeAreaInsets.bottom + 20, 40))
                     }
                 }
-                .listStyle(.insetGrouped)
-                .scrollContentBackground(.hidden)
+                .scrollIndicators(.hidden)
             }
-        }
-        .safeAreaInset(edge: .top) {
-            header
-                .background(Color(.systemBackground).ignoresSafeArea(edges: .top))
         }
         .navigationTitle("Settings")
         .toolbar(.hidden, for: .navigationBar)
+        .navigationBarHidden(true)
     }
     
     private var header: some View {
@@ -115,44 +218,47 @@ struct PlaceholderView: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        GeometryReader { geo in
-            ZStack {
-                Color(.systemBackground).ignoresSafeArea()
-                
-                VStack(spacing: 0) {
-                    // Header with proper spacing
-                    HStack {
-                        Button { dismiss() } label: {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 20, weight: .semibold))
-                                .foregroundStyle(.primary)
+        ZStack {
+            Color(.systemBackground).ignoresSafeArea()
+            
+            GeometryReader { geo in
+                ScrollView {
+                    VStack(spacing: 0) {
+                        Spacer()
+                            .frame(height: max(geo.safeAreaInsets.top + 10, 50))
+                        
+                        HStack {
+                            Button { dismiss() } label: {
+                                Image(systemName: "chevron.left")
+                                    .font(.system(size: 20, weight: .semibold))
+                                    .foregroundStyle(.primary)
+                            }
+                            Spacer()
+                            Text(title)
+                                .font(.system(size: 20, weight: .bold))
+                            Spacer()
+                            Color.clear.frame(width: 20)
                         }
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 12)
+                        
+                        VStack(spacing: 16) {
+                            Image(systemName: "doc.text")
+                                .font(.system(size: 60))
+                                .foregroundStyle(.secondary)
+                            Text("Coming Soon")
+                                .font(.system(size: 24, weight: .bold))
+                            Text("This page is under construction")
+                                .font(.system(size: 16))
+                                .foregroundStyle(.secondary)
+                        }
+                        .padding(.top, 100)
+                        
                         Spacer()
-                        Text(title)
-                            .font(.system(size: 20, weight: .bold))
-                        Spacer()
-                        Color.clear.frame(width: 20)
+                            .frame(height: max(geo.safeAreaInsets.bottom + 20, 40))
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .padding(.top, 8)
-                    .background(Color(.systemBackground))
-                    
-                    Spacer()
-                    
-                    VStack(spacing: 16) {
-                        Image(systemName: "doc.text")
-                            .font(.system(size: 60))
-                            .foregroundStyle(.secondary)
-                        Text("Coming Soon")
-                            .font(.system(size: 24, weight: .bold))
-                        Text("This page is under construction")
-                            .font(.system(size: 16))
-                            .foregroundStyle(.secondary)
-                    }
-                    
-                    Spacer()
                 }
+                .scrollIndicators(.hidden)
             }
         }
         .navigationBarHidden(true)
