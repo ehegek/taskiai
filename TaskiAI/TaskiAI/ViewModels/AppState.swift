@@ -85,25 +85,30 @@ final class AppState: ObservableObject {
         applyTheme()
         
         // Load user data from Firestore if authenticated
+        #if canImport(FirebaseFirestore)
         if isAuthenticated, let userId = currentUserId {
             Task {
                 try? await loadUserDataFromFirestore(userId: userId)
             }
         }
+        #endif
     }
 
     func signOut() {
+        #if canImport(FirebaseAuth)
         do {
             try FirebaseAuthService.shared.signOut()
-            isAuthenticated = false
-            hasActiveSubscription = false
-            currentUserName = nil
-            currentUserEmail = nil
-            currentUserId = nil
-            userPhone = nil
         } catch {
             print("Sign out error: \(error)")
         }
+        #endif
+        
+        isAuthenticated = false
+        hasActiveSubscription = false
+        currentUserName = nil
+        currentUserEmail = nil
+        currentUserId = nil
+        userPhone = nil
     }
 
     func resetAll() {
@@ -155,6 +160,7 @@ final class AppState: ObservableObject {
     // MARK: - Firebase Sync
     
     func loadUserDataFromFirestore(userId: String) async throws {
+        #if canImport(FirebaseFirestore)
         guard let userData = try await FirestoreService.shared.getUser(userId: userId) else { return }
         
         await MainActor.run {
@@ -166,9 +172,11 @@ final class AppState: ObservableObject {
             self.lastTaskAddedDay = userData.lastTaskDate
             self.hasActiveSubscription = userData.hasActiveSubscription
         }
+        #endif
     }
     
     private func syncStreakToFirestore() async throws {
+        #if canImport(FirebaseFirestore)
         guard let userId = currentUserId else { return }
         
         if let lastDate = lastTaskAddedDay {
@@ -178,9 +186,11 @@ final class AppState: ObservableObject {
                 lastTaskDate: lastDate
             )
         }
+        #endif
     }
     
     func applyReferralCode(_ code: String) async -> Bool {
+        #if canImport(FirebaseFirestore)
         guard let userId = currentUserId else { return false }
         
         do {
@@ -194,9 +204,13 @@ final class AppState: ObservableObject {
         } catch {
             return false
         }
+        #else
+        return false
+        #endif
     }
     
     func loadReferralStats() async {
+        #if canImport(FirebaseFirestore)
         guard let userId = currentUserId else { return }
         
         do {
@@ -208,5 +222,6 @@ final class AppState: ObservableObject {
         } catch {
             print("Failed to load referral stats: \(error)")
         }
+        #endif
     }
 }

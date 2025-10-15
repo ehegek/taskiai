@@ -20,6 +20,7 @@ final class TaskStore: ObservableObject {
         await appState?.recordTaskAdded(on: date)
         
         // Sync to Firestore if authenticated
+        #if canImport(FirebaseFirestore)
         if let userId = appState?.currentUserId {
             let taskData = TaskData(
                 id: t.id.uuidString,
@@ -37,6 +38,7 @@ final class TaskStore: ObservableObject {
             )
             try? await FirestoreService.shared.syncTask(userId: userId, task: taskData)
         }
+        #endif
     }
     
     func scheduleReminders(for task: Task) async {
