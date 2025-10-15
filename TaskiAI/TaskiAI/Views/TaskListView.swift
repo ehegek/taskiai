@@ -97,7 +97,7 @@ struct TaskListView: View {
                             .fill(Color(.systemGray6))
                     )
                 
-                Button(action: addQuick) {
+                Button { _Concurrency.Task { await addQuick() } } label: {
                     Text("Add")
                         .font(.system(size: 16, weight: .semibold))
                         .padding(.vertical, 12)
@@ -121,9 +121,9 @@ struct TaskListView: View {
         )
     }
 
-    private func addQuick() {
+    private func addQuick() async {
         guard !newTaskTitle.isEmpty else { return }
-        store.addQuickTask(title: newTaskTitle, date: date, context: context)
+        await store.addQuickTask(title: newTaskTitle, date: date, context: context)
         newTaskTitle = ""
     }
 
