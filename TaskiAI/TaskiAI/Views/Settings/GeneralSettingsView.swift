@@ -14,7 +14,7 @@ struct GeneralSettingsView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         Spacer()
-                            .frame(height: max(geo.safeAreaInsets.top + 1, 50))
+                            .frame(height: max(geo.safeAreaInsets.top - 2, 50))
                         
                         HStack {
                             Button { dismiss() } label: {
