@@ -130,29 +130,40 @@ struct AuthView: View {
         await MainActor.run { isLoading = true }
         
         do {
-            let user: FirebaseAuth.User
-            if isSignUp {
-                user = try await FirebaseAuthService.shared.signUp(email: email, password: password)
-                // Create user in Firestore
+            #if canImport(FirebaseAuth)
+            let user = try await (isSignUp
+                ? FirebaseAuthService.shared.signUp(email: email, password: password)
+                : FirebaseAuthService.shared.signIn(email: email, password: password))
+            
+            if isSignUp, let userId = user as? String ?? (user as AnyObject).value(forKey: "uid") as? String {
                 try await FirestoreService.shared.createUser(
-                    userId: user.uid,
+                    userId: userId,
                     email: email,
                     name: email.components(separatedBy: "@").first
                 )
-            } else {
-                user = try await FirebaseAuthService.shared.signIn(email: email, password: password)
             }
             
-            // Load user data
-            try await appState.loadUserDataFromFirestore(userId: user.uid)
-            
+            if let userId = user as? String ?? (user as AnyObject).value(forKey: "uid") as? String {
+                try await appState.loadUserDataFromFirestore(userId: userId)
+                
+                await MainActor.run {
+                    appState.currentUserId = userId
+                    appState.currentUserEmail = email
+                    appState.currentUserName = email.components(separatedBy: "@").first?.capitalized
+                    appState.isAuthenticated = true
+                    isLoading = false
+                }
+            }
+            #else
+            // Fallback when Firebase is not available - use mock auth
             await MainActor.run {
-                appState.currentUserId = user.uid
+                appState.currentUserId = "local-\(UUID().uuidString)"
                 appState.currentUserEmail = email
                 appState.currentUserName = email.components(separatedBy: "@").first?.capitalized
                 appState.isAuthenticated = true
                 isLoading = false
             }
+            #endif
         } catch {
             await MainActor.run {
                 self.error = error.localizedDescription
@@ -175,26 +186,40 @@ struct AuthView: View {
             }
             
             do {
+                #if canImport(FirebaseAuth)
                 let user = try await FirebaseAuthService.shared.signInWithApple(credential: credential)
                 
-                // Check if user exists in Firestore, if not create
-                if try await FirestoreService.shared.getUser(userId: user.uid) == nil {
-                    try await FirestoreService.shared.createUser(
-                        userId: user.uid,
-                        email: user.email,
-                        name: credential.fullName?.givenName
-                    )
+                if let userId = user as? String ?? (user as AnyObject).value(forKey: "uid") as? String {
+                    // Check if user exists in Firestore, if not create
+                    if try await FirestoreService.shared.getUser(userId: userId) == nil {
+                        let userEmail = (user as AnyObject).value(forKey: "email") as? String
+                        try await FirestoreService.shared.createUser(
+                            userId: userId,
+                            email: userEmail,
+                            name: credential.fullName?.givenName
+                        )
+                    }
+                    
+                    try await appState.loadUserDataFromFirestore(userId: userId)
+                    
+                    await MainActor.run {
+                        appState.currentUserId = userId
+                        appState.currentUserEmail = (user as AnyObject).value(forKey: "email") as? String
+                        appState.currentUserName = credential.fullName?.givenName ?? "User"
+                        appState.isAuthenticated = true
+                        isLoading = false
+                    }
                 }
-                
-                try await appState.loadUserDataFromFirestore(userId: user.uid)
-                
+                #else
+                // Fallback when Firebase is not available
                 await MainActor.run {
-                    appState.currentUserId = user.uid
-                    appState.currentUserEmail = user.email
+                    appState.currentUserId = "apple-\(UUID().uuidString)"
+                    appState.currentUserEmail = credential.email
                     appState.currentUserName = credential.fullName?.givenName ?? "User"
                     appState.isAuthenticated = true
                     isLoading = false
                 }
+                #endif
             } catch {
                 await MainActor.run {
                     self.error = error.localizedDescription

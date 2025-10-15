@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
-import FirebaseCore
+// TODO: Uncomment when Firebase SDK is added via SPM
+// import FirebaseCore
 
 @main
 struct TaskiAIApp: App {
@@ -14,8 +15,9 @@ struct TaskiAIApp: App {
     }()
 
     init() {
+        // TODO: Uncomment when Firebase SDK is added
         // Configure Firebase
-        FirebaseApp.configure()
+        // FirebaseApp.configure()
     }
 
     var body: some Scene {

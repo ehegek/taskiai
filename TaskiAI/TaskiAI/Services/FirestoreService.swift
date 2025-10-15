@@ -1,4 +1,8 @@
 import Foundation
+// TODO: Add Firebase SDK via SPM, then uncomment
+// import FirebaseFirestore
+
+#if canImport(FirebaseFirestore)
 import FirebaseFirestore
 
 struct UserData: Codable {
@@ -182,3 +186,51 @@ final class FirestoreService: ObservableObject {
         return String((0..<8).map { _ in letters.randomElement()! })
     }
 }
+
+#else
+
+// Stub implementations when Firebase is not available
+struct UserData: Codable {
+    var userId: String
+    var email: String?
+    var name: String?
+    var referralCode: String
+    var referredBy: String?
+    var referralCount: Int
+    var streakDays: Int
+    var lastTaskDate: Date?
+    var hasActiveSubscription: Bool
+    var createdAt: Date
+    var updatedAt: Date
+}
+
+struct TaskData: Codable {
+    var id: String
+    var userId: String
+    var title: String
+    var notes: String?
+    var date: Date
+    var isCompleted: Bool
+    var categoryName: String?
+    var reminderEnabled: Bool
+    var reminderChannels: [String]
+    var reminderTime: Date?
+    var createdAt: Date
+    var updatedAt: Date
+}
+
+final class FirestoreService: ObservableObject {
+    static let shared = FirestoreService()
+    private init() {}
+    
+    func createUser(userId: String, email: String?, name: String?) async throws {}
+    func getUser(userId: String) async throws -> UserData? { return nil }
+    func updateUser(userId: String, fields: [String: Any]) async throws {}
+    func applyReferralCode(_ code: String, toUser userId: String) async throws -> Bool { return false }
+    func getReferralStats(userId: String) async throws -> (code: String, count: Int) { return ("STUB1234", 0) }
+    func syncTask(userId: String, task: TaskData) async throws {}
+    func getTasks(userId: String) async throws -> [TaskData] { return [] }
+    func updateStreak(userId: String, streakDays: Int, lastTaskDate: Date) async throws {}
+}
+
+#endif

@@ -1,8 +1,14 @@
 import Foundation
-import FirebaseAuth
-import FirebaseCore
+// TODO: Add Firebase SDK via SPM, then uncomment these imports
+// import FirebaseAuth
+// import FirebaseCore
 import AuthenticationServices
 
+#if canImport(FirebaseAuth)
+import FirebaseAuth
+#endif
+
+#if canImport(FirebaseAuth)
 final class FirebaseAuthService: ObservableObject {
     static let shared = FirebaseAuthService()
     
@@ -69,3 +75,19 @@ final class FirebaseAuthService: ObservableObject {
         return currentUser?.email
     }
 }
+#else
+// Stub implementation when Firebase is not available
+final class FirebaseAuthService: ObservableObject {
+    static let shared = FirebaseAuthService()
+    @Published var currentUser: Any?
+    @Published var isAuthenticated = false
+    private init() {}
+    func signUp(email: String, password: String) async throws -> Any { throw NSError(domain: "Firebase", code: -1) }
+    func signIn(email: String, password: String) async throws -> Any { throw NSError(domain: "Firebase", code: -1) }
+    func signInWithApple(credential: ASAuthorizationAppleIDCredential) async throws -> Any { throw NSError(domain: "Firebase", code: -1) }
+    func resetPassword(email: String) async throws {}
+    func signOut() throws {}
+    var currentUserId: String? { return nil }
+    var currentUserEmail: String? { return nil }
+}
+#endif
