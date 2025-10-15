@@ -13,7 +13,7 @@ struct CalendarSettingsView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         Spacer()
-                            .frame(height: max(geo.safeAreaInsets.top - 2, 50))
+                            .frame(height: geo.safeAreaInsets.top)
                         
                         HStack {
                             Button { dismiss() } label: {
