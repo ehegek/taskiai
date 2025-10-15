@@ -161,10 +161,10 @@ struct ChatView: View {
         messages.append(ChatMessage(text: userInput, isUser: true))
         
         // Add a temporary loading message
-        let loadingId = UUID()
+        _ = UUID()
         messages.append(ChatMessage(text: "Thinking...", isUser: false))
         
-        _Concurrency.Task {
+        _Concurrency.Task { @MainActor in
             do {
                 // Fetch all tasks
                 let descriptor = FetchDescriptor<Task>(sortBy: [SortDescriptor(\.date)])

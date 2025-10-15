@@ -79,13 +79,13 @@ struct NewTaskView: View {
                 }
                 .navigationTitle("New Task")
                 .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
+                    ToolbarItemGroup(placement: .topBarLeading) {
                         Button { dismiss() } label: {
                             Image(systemName: "xmark")
                                 .font(.system(size: 16, weight: .semibold))
                         }
                     }
-                    ToolbarItem(placement: .topBarTrailing) {
+                    ToolbarItemGroup(placement: .topBarTrailing) {
                         Button { _Concurrency.Task { await create() } } label: {
                             Image(systemName: "checkmark.circle.fill")
                                 .font(.system(size: 20, weight: .semibold))
@@ -98,7 +98,7 @@ struct NewTaskView: View {
             }
             // Persistent bottom CTA
             .safeAreaInset(edge: .bottom) {
-                Button(action: create) {
+                Button { _Concurrency.Task { await create() } } label: {
                     Text("Create Task")
                         .font(.system(size: 17, weight: .semibold))
                         .frame(maxWidth: .infinity)
