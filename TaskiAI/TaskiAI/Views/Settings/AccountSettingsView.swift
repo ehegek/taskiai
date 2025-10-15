@@ -143,7 +143,7 @@ struct AccountSettingsView: View {
                                             TextField("Enter code", text: $referralCodeInput)
                                                 .textInputAutocapitalization(.characters)
                                             Button("Apply") {
-                                                Task {
+                                                _Concurrency.Task {
                                                     let success = await appState.applyReferralCode(referralCodeInput)
                                                     if success {
                                                         showReferralSuccess = true

@@ -48,13 +48,13 @@ private extension TaskiAIApp {
     }
     
     func requestNotificationPermissions() {
-        Task {
+        _Concurrency.Task {
             _ = await NotificationService.shared.requestAuthorization()
         }
     }
     
     func loadUserReferralData() {
-        Task {
+        _Concurrency.Task {
             await appState.loadReferralStats()
         }
     }

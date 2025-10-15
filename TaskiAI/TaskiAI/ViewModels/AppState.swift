@@ -32,14 +32,14 @@ final class AppState: ObservableObject {
         didSet { 
             UserDefaults.standard.set(streakDays, forKey: Keys.streakDays)
             // Sync to Firestore
-            Task { try? await syncStreakToFirestore() }
+            _Concurrency.Task { try? await syncStreakToFirestore() }
         }
     }
     @Published var lastTaskAddedDay: Date? {
         didSet { 
             UserDefaults.standard.set(lastTaskAddedDay?.timeIntervalSince1970, forKey: Keys.lastTaskDay)
             // Sync to Firestore
-            Task { try? await syncStreakToFirestore() }
+            _Concurrency.Task { try? await syncStreakToFirestore() }
         }
     }
     @Published var referralCode: String? {
@@ -88,7 +88,7 @@ final class AppState: ObservableObject {
         // Load user data from Firestore if authenticated
         #if canImport(FirebaseFirestore)
         if isAuthenticated, let userId = currentUserId {
-            Task {
+            _Concurrency.Task {
                 try? await loadUserDataFromFirestore(userId: userId)
             }
         }

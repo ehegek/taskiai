@@ -64,7 +64,7 @@ struct PaywallView: View {
                                     .padding(.horizontal, 24)
                             }
                             
-                            Button("Restore Purchases") { Task { await restore() } }
+                            Button("Restore Purchases") { _Concurrency.Task { await restore() } }
                                 .font(.system(size: 15))
                                 .foregroundStyle(.white.opacity(0.9))
                             
@@ -105,7 +105,7 @@ struct PaywallView: View {
     private func purchase() {
         guard let pkg = primaryPackage else { error = "No products available"; return }
         isPurchasing = true
-        Task {
+        _Concurrency.Task {
             do {
                 _ = try await rc.purchase(package: pkg, appState: appState)
                 error = nil

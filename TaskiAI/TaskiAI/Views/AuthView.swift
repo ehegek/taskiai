@@ -56,7 +56,7 @@ struct AuthView: View {
                     }
                     
                     VStack(spacing: 12) {
-                        Button(action: { Task { await signInWithEmail() }}) {
+                        Button(action: { _Concurrency.Task { await signInWithEmail() }}) {
                             HStack {
                                 if isLoading {
                                     ProgressView()
@@ -80,7 +80,7 @@ struct AuthView: View {
                                 request.requestedScopes = [.email, .fullName]
                             },
                             onCompletion: { result in
-                                Task {
+                                _Concurrency.Task {
                                     await handleAppleSignIn(result)
                                 }
                             }
