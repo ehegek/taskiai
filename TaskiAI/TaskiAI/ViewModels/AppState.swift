@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import UIKit
 
 /// Global application state for high-level routing and flags.
 final class AppState: ObservableObject {
