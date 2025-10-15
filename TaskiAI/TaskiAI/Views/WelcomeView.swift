@@ -20,27 +20,50 @@ struct WelcomeView: View {
                         .frame(height: geo.safeAreaInsets.top + 60)
                     
                     // App logo/title
-                    VStack(spacing: 20) {
-                        Image("app_logo")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 120, height: 120)
-                            .shadow(color: .white.opacity(0.4), radius: 20)
+                    VStack(spacing: 24) {
+                        ZStack {
+                            Circle()
+                                .fill(
+                                    LinearGradient(
+                                        colors: [Color.blue.opacity(0.3), Color.purple.opacity(0.3)],
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    )
+                                )
+                                .frame(width: 140, height: 140)
+                                .blur(radius: 20)
+                            
+                            Image("app_logo")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 120, height: 120)
+                                .shadow(color: .white.opacity(0.5), radius: 30)
+                        }
                         
-                        Text("Welcome to")
-                            .font(.system(size: 20, weight: .regular))
-                            .foregroundStyle(.white.opacity(0.7))
-                        
-                        Text("TASKI AI")
-                            .font(.system(size: 48, weight: .heavy, design: .rounded))
-                            .foregroundStyle(.white)
-                            .tracking(2)
-                        
-                        Text("Never Miss a Task")
-                            .font(.system(size: 18, weight: .regular))
-                            .foregroundStyle(.white.opacity(0.6))
+                        VStack(spacing: 8) {
+                            Text("Welcome to")
+                                .font(.system(size: 18, weight: .medium, design: .rounded))
+                                .foregroundStyle(.white.opacity(0.8))
+                            
+                            Text("TASKI AI")
+                                .font(.system(size: 52, weight: .black, design: .rounded))
+                                .foregroundStyle(
+                                    LinearGradient(
+                                        colors: [.white, Color(white: 0.85)],
+                                        startPoint: .top,
+                                        endPoint: .bottom
+                                    )
+                                )
+                                .tracking(3)
+                                .shadow(color: .blue.opacity(0.3), radius: 10, y: 5)
+                            
+                            Text("Never Miss a Task Again")
+                                .font(.system(size: 17, weight: .medium, design: .rounded))
+                                .foregroundStyle(.white.opacity(0.7))
+                                .multilineTextAlignment(.center)
+                        }
                     }
-                    .padding(.bottom, 25)
+                    .padding(.bottom, 30)
                     
                     // 3 Notification Cards
                     VStack(spacing: 12) {

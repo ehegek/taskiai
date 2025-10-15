@@ -5,6 +5,10 @@ struct AccountSettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var userName: String = ""
     @State private var email: String = ""
+    @State private var phoneNumber: String = ""
+    @State private var referralCodeInput: String = ""
+    @State private var showReferralSuccess = false
+    @State private var showReferralError = false
     
     var body: some View {
         ZStack {
@@ -58,9 +62,99 @@ struct AccountSettingsView: View {
                                         Text("Email")
                                             .font(.caption)
                                             .foregroundStyle(.secondary)
-                                        TextField("Email", text: $email)
-                                            .keyboardType(.emailAddress)
-                                            .autocapitalization(.none)
+                                        TextField("Email", text: Binding(
+                                            get: { appState.currentUserEmail ?? "" },
+                                            set: { appState.currentUserEmail = $0 }
+                                        ))
+                                        .keyboardType(.emailAddress)
+                                        .autocapitalization(.none)
+                                        .disabled(true)
+                                    }
+                                    .padding()
+                                    .background(Color(.systemGray6))
+                                    
+                                    Divider().padding(.leading, 20)
+                                    
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text("Phone Number")
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                        TextField("Phone Number", text: Binding(
+                                            get: { appState.userPhone ?? "" },
+                                            set: { appState.userPhone = $0 }
+                                        ))
+                                        .keyboardType(.phonePad)
+                                    }
+                                    .padding()
+                                    .background(Color(.systemGray6))
+                                }
+                                .background(Color(.systemGray6))
+                                .cornerRadius(12)
+                            }
+                            
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Referral System")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .textCase(.uppercase)
+                                    .foregroundStyle(.secondary)
+                                    .padding(.horizontal, 20)
+                                
+                                VStack(spacing: 0) {
+                                    HStack {
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text("Your Referral Code")
+                                                .font(.caption)
+                                                .foregroundStyle(.secondary)
+                                            Text(appState.referralCode ?? "Loading...")
+                                                .font(.system(size: 18, weight: .bold, design: .monospaced))
+                                        }
+                                        Spacer()
+                                        Button {
+                                            if let code = appState.referralCode {
+                                                UIPasteboard.general.string = code
+                                            }
+                                        } label: {
+                                            Image(systemName: "doc.on.doc")
+                                                .foregroundStyle(.blue)
+                                        }
+                                    }
+                                    .padding()
+                                    .background(Color(.systemGray6))
+                                    
+                                    Divider().padding(.leading, 20)
+                                    
+                                    HStack {
+                                        Text("Referrals Made")
+                                        Spacer()
+                                        Text("\(appState.referralCount)")
+                                            .font(.system(size: 17, weight: .semibold))
+                                            .foregroundStyle(.green)
+                                    }
+                                    .padding()
+                                    .background(Color(.systemGray6))
+                                    
+                                    Divider().padding(.leading, 20)
+                                    
+                                    VStack(alignment: .leading, spacing: 8) {
+                                        Text("Have a referral code?")
+                                            .font(.caption)
+                                            .foregroundStyle(.secondary)
+                                        HStack {
+                                            TextField("Enter code", text: $referralCodeInput)
+                                                .textInputAutocapitalization(.characters)
+                                            Button("Apply") {
+                                                Task {
+                                                    let success = await appState.applyReferralCode(referralCodeInput)
+                                                    if success {
+                                                        showReferralSuccess = true
+                                                        referralCodeInput = ""
+                                                    } else {
+                                                        showReferralError = true
+                                                    }
+                                                }
+                                            }
+                                            .disabled(referralCodeInput.isEmpty)
+                                        }
                                     }
                                     .padding()
                                     .background(Color(.systemGray6))
@@ -78,21 +172,15 @@ struct AccountSettingsView: View {
                                 
                                 VStack(spacing: 0) {
                                     HStack {
-                                        Text("Streak")
+                                        HStack(spacing: 8) {
+                                            Text("🔥")
+                                                .font(.system(size: 24))
+                                            Text("Streak")
+                                        }
                                         Spacer()
                                         Text("\(appState.streakDays) days")
-                                            .foregroundStyle(.secondary)
-                                    }
-                                    .padding()
-                                    .background(Color(.systemGray6))
-                                    
-                                    Divider().padding(.leading, 20)
-                                    
-                                    HStack {
-                                        Text("Referral Code")
-                                        Spacer()
-                                        Text(appState.referralCode ?? "None")
-                                            .foregroundStyle(.secondary)
+                                            .font(.system(size: 17, weight: .semibold))
+                                            .foregroundStyle(.orange)
                                     }
                                     .padding()
                                     .background(Color(.systemGray6))

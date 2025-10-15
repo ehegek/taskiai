@@ -1,10 +1,13 @@
 import SwiftUI
+import AuthenticationServices
 
 struct AuthView: View {
     @EnvironmentObject var appState: AppState
     @State private var email = ""
     @State private var password = ""
+    @State private var isSignUp = false
     @State private var error: String?
+    @State private var isLoading = false
 
     var body: some View {
         GeometryReader { geo in
@@ -15,10 +18,10 @@ struct AuthView: View {
                     Spacer(minLength: geo.safeAreaInsets.top + 40)
                     
                     VStack(spacing: 12) {
-                        Text("Sign In")
+                        Text(isSignUp ? "Create Account" : "Sign In")
                             .font(.system(size: 34, weight: .bold))
                             .foregroundStyle(.white)
-                        Text("Use your account to continue")
+                        Text(isSignUp ? "Join TaskiAI to get started" : "Use your account to continue")
                             .font(.system(size: 15))
                             .foregroundStyle(.white.opacity(0.7))
                     }
@@ -36,7 +39,7 @@ struct AuthView: View {
                             .foregroundStyle(.white)
                         
                         SecureField("Password", text: $password)
-                            .textContentType(.password)
+                            .textContentType(isSignUp ? .newPassword : .password)
                             .font(.system(size: 17))
                             .padding(16)
                             .background(Color.white.opacity(0.1))
@@ -53,19 +56,61 @@ struct AuthView: View {
                     }
                     
                     VStack(spacing: 12) {
-                        Button(action: signIn) {
-                            Text("Continue")
-                                .font(.system(size: 17, weight: .semibold))
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 16)
-                                .background(Color.white)
-                                .foregroundStyle(.black)
-                                .cornerRadius(18)
+                        Button(action: { Task { await signInWithEmail() }}) {
+                            HStack {
+                                if isLoading {
+                                    ProgressView()
+                                        .tint(.black)
+                                } else {
+                                    Text(isSignUp ? "Sign Up" : "Sign In")
+                                        .font(.system(size: 17, weight: .semibold))
+                                }
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(Color.white)
+                            .foregroundStyle(.black)
+                            .cornerRadius(18)
                         }
+                        .disabled(isLoading)
+                        
+                        // Sign in with Apple button
+                        SignInWithAppleButton(
+                            onRequest: { request in
+                                request.requestedScopes = [.email, .fullName]
+                            },
+                            onCompletion: { result in
+                                Task {
+                                    await handleAppleSignIn(result)
+                                }
+                            }
+                        )
+                        .signInWithAppleButtonStyle(.white)
+                        .frame(height: 50)
+                        .cornerRadius(18)
+                        .padding(.horizontal, 24)
+                        
+                        // Toggle Sign In / Sign Up
+                        Button {
+                            withAnimation {
+                                isSignUp.toggle()
+                                error = nil
+                            }
+                        } label: {
+                            HStack(spacing: 4) {
+                                Text(isSignUp ? "Already have an account?" : "Don't have an account?")
+                                    .foregroundStyle(.white.opacity(0.7))
+                                Text(isSignUp ? "Sign In" : "Sign Up")
+                                    .foregroundStyle(.white)
+                                    .fontWeight(.semibold)
+                            }
+                            .font(.system(size: 14))
+                        }
+                        .padding(.top, 8)
                         
                         Button("Use admin (dev)") { adminBypass() }
-                            .font(.system(size: 15))
-                            .foregroundStyle(.white.opacity(0.8))
+                            .font(.system(size: 13))
+                            .foregroundStyle(.white.opacity(0.5))
                     }
                     .padding(.horizontal, 24)
                     
@@ -76,22 +121,101 @@ struct AuthView: View {
         }
     }
 
-    private func signIn() {
-        // Stub: accept any non-empty credentials; real app would call backend/Sign in with Apple.
+    private func signInWithEmail() async {
         guard !email.isEmpty, !password.isEmpty else {
             error = "Please enter email and password"
             return
         }
-        withAnimation {
-            appState.isAuthenticated = true
-            appState.currentUserName = email.components(separatedBy: "@").first?.capitalized
+        
+        await MainActor.run { isLoading = true }
+        
+        do {
+            let user: FirebaseAuth.User
+            if isSignUp {
+                user = try await FirebaseAuthService.shared.signUp(email: email, password: password)
+                // Create user in Firestore
+                try await FirestoreService.shared.createUser(
+                    userId: user.uid,
+                    email: email,
+                    name: email.components(separatedBy: "@").first
+                )
+            } else {
+                user = try await FirebaseAuthService.shared.signIn(email: email, password: password)
+            }
+            
+            // Load user data
+            try await appState.loadUserDataFromFirestore(userId: user.uid)
+            
+            await MainActor.run {
+                appState.currentUserId = user.uid
+                appState.currentUserEmail = email
+                appState.currentUserName = email.components(separatedBy: "@").first?.capitalized
+                appState.isAuthenticated = true
+                isLoading = false
+            }
+        } catch {
+            await MainActor.run {
+                self.error = error.localizedDescription
+                isLoading = false
+            }
+        }
+    }
+    
+    private func handleAppleSignIn(_ result: Result<ASAuthorization, Error>) async {
+        await MainActor.run { isLoading = true }
+        
+        switch result {
+        case .success(let authorization):
+            guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else {
+                await MainActor.run {
+                    error = "Invalid Apple credential"
+                    isLoading = false
+                }
+                return
+            }
+            
+            do {
+                let user = try await FirebaseAuthService.shared.signInWithApple(credential: credential)
+                
+                // Check if user exists in Firestore, if not create
+                if try await FirestoreService.shared.getUser(userId: user.uid) == nil {
+                    try await FirestoreService.shared.createUser(
+                        userId: user.uid,
+                        email: user.email,
+                        name: credential.fullName?.givenName
+                    )
+                }
+                
+                try await appState.loadUserDataFromFirestore(userId: user.uid)
+                
+                await MainActor.run {
+                    appState.currentUserId = user.uid
+                    appState.currentUserEmail = user.email
+                    appState.currentUserName = credential.fullName?.givenName ?? "User"
+                    appState.isAuthenticated = true
+                    isLoading = false
+                }
+            } catch {
+                await MainActor.run {
+                    self.error = error.localizedDescription
+                    isLoading = false
+                }
+            }
+            
+        case .failure(let error):
+            await MainActor.run {
+                self.error = error.localizedDescription
+                isLoading = false
+            }
         }
     }
 
     private func adminBypass() {
         withAnimation {
+            appState.currentUserId = "admin-dev-id"
             appState.isAuthenticated = true
             appState.currentUserName = "Admin"
+            appState.currentUserEmail = "admin@taskiai.dev"
             appState.hasActiveSubscription = true // bypass paywall in dev
         }
     }

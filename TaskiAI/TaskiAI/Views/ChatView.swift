@@ -155,26 +155,47 @@ struct ChatView: View {
 
     private func send() {
         guard !input.isEmpty else { return }
-        messages.append(ChatMessage(text: input, isUser: true))
-        // Very naive intent: if message contains 'add' and 'task', create a task titled by the message
-        if input.lowercased().contains("add") && input.lowercased().contains("task") {
-            let t = Task(title: input.replacingOccurrences(of: "add", with: "").replacingOccurrences(of: "task", with: "").trimmingCharacters(in: .whitespacesAndNewlines), date: .now)
-            context.insert(t)
-            try? context.save()
-            messages.append(ChatMessage(text: "Added a new task.", isUser: false))
-        } else if input.lowercased().contains("delete") {
-            // naive delete last task
-            if let last = try? context.fetch(FetchDescriptor<Task>(sortBy: [SortDescriptor(\.date, order: .reverse)])).first {
-                context.delete(last)
-                try? context.save()
-                messages.append(ChatMessage(text: "Deleted the most recent task.", isUser: false))
-            } else {
-                messages.append(ChatMessage(text: "I couldn't find a task to delete.", isUser: false))
+        let userInput = input
+        input = "" // Clear immediately for better UX
+        
+        messages.append(ChatMessage(text: userInput, isUser: true))
+        
+        // Add a temporary loading message
+        let loadingId = UUID()
+        messages.append(ChatMessage(text: "Thinking...", isUser: false))
+        
+        Task {
+            do {
+                // Fetch all tasks
+                let descriptor = FetchDescriptor<Task>(sortBy: [SortDescriptor(\.date)])
+                let tasks = try context.fetch(descriptor)
+                
+                // Call GPT-4 with task context
+                let (response, _) = try await OpenAIService.shared.chat(
+                    userMessage: userInput,
+                    tasks: tasks,
+                    context: context
+                )
+                
+                await MainActor.run {
+                    // Remove loading message
+                    if let lastIndex = messages.lastIndex(where: { $0.text == "Thinking..." }) {
+                        messages.remove(at: lastIndex)
+                    }
+                    // Add GPT response
+                    messages.append(ChatMessage(text: response, isUser: false))
+                }
+            } catch {
+                await MainActor.run {
+                    // Remove loading message
+                    if let lastIndex = messages.lastIndex(where: { $0.text == "Thinking..." }) {
+                        messages.remove(at: lastIndex)
+                    }
+                    // Show error
+                    messages.append(ChatMessage(text: "Sorry, I couldn't process that. Error: \(error.localizedDescription)", isUser: false))
+                }
             }
-        } else {
-            messages.append(ChatMessage(text: "Got it.", isUser: false))
         }
-        input = ""
     }
 }
 

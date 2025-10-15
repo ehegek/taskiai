@@ -2,9 +2,9 @@ import SwiftUI
 
 struct GeneralSettingsView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var appState: AppState
     @State private var notificationsEnabled = true
     @State private var soundEnabled = true
-    @AppStorage("app.theme") private var selectedTheme = "System"
     
     var body: some View {
         ZStack {
@@ -40,7 +40,7 @@ struct GeneralSettingsView: View {
                                     .padding(.horizontal, 20)
                                 
                                 VStack(spacing: 0) {
-                                    Picker("Theme", selection: $selectedTheme) {
+                                    Picker("Theme", selection: $appState.selectedTheme) {
                                         Text("System").tag("System")
                                         Text("Light").tag("Light")
                                         Text("Dark").tag("Dark")

@@ -22,6 +22,18 @@
 	<string>__SET_RC_PUBLIC_API_KEY__</string>
 	<key>REVENUECAT_ENTITLEMENT_ID</key>
 	<string>premium</string>
+	<key>OPENAI_API_KEY</key>
+	<string>__SET_OPENAI_API_KEY__</string>
+	<key>TWILIO_ACCOUNT_SID</key>
+	<string>__SET_TWILIO_ACCOUNT_SID__</string>
+	<key>TWILIO_AUTH_TOKEN</key>
+	<string>__SET_TWILIO_AUTH_TOKEN__</string>
+	<key>TWILIO_PHONE_NUMBER</key>
+	<string>__SET_TWILIO_PHONE__</string>
+	<key>TWILIO_EMAIL</key>
+	<string>noreply@taskiai.app</string>
+	<key>SENDGRID_API_KEY</key>
+	<string>__SET_SENDGRID_API_KEY__</string>
 	<key>UIStatusBarHidden</key>
 	<true/>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
