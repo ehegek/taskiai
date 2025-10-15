@@ -86,7 +86,7 @@ struct NewTaskView: View {
                         }
                     }
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button { create() } label: {
+                        Button { _Concurrency.Task { await create() } } label: {
                             Image(systemName: "checkmark.circle.fill")
                                 .font(.system(size: 20, weight: .semibold))
                         }
@@ -117,7 +117,7 @@ struct NewTaskView: View {
         }
     }
 
-    private func create() {
+    private func create() async {
         guard !title.isEmpty else { return }
         let rule = RepeatRule(frequency: repeatOn ? repeatFreq : .none, interval: repeatInterval, endDate: repeatEnd)
         // Default to appPush if reminder is enabled
@@ -125,7 +125,7 @@ struct NewTaskView: View {
         let task = Task(title: title, notes: notes, date: date, isCompleted: false, category: category, reminderEnabled: reminderOn, reminderChannels: defaultChannels, reminderTime: reminderOn ? reminderTime : nil, repeatRule: rule)
         context.insert(task)
         try? context.save()
-        appState.recordTaskAdded(on: Date())
+        await appState.recordTaskAdded(on: Date())
         dismiss()
     }
 }

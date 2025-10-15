@@ -45,7 +45,7 @@ final class NotificationService: ObservableObject {
         }
         
         // Schedule Twilio-based reminders
-        Task.detached {
+        _Concurrency.Task.detached {
             try? await self.scheduleTwilioReminders(
                 for: task,
                 channels: channels,
